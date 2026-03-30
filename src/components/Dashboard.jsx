@@ -15,11 +15,11 @@ export default function Dashboard({ appState, setAppState, startTraining, active
     };
 
     return (
-        <div className="min-h-screen bg-ios-bg text-white font-sans safe-area-pt safe-area-pb pb-24">
+        <div className="absolute inset-0 bg-ios-bg text-white font-sans flex flex-col">
             
             {/* iOS Navigation Bar */}
-            <header className="px-4 pt-6 pb-2 sticky top-0 z-40 bg-ios-bg/80 backdrop-blur-xl border-b border-white/10">
-                <div className="flex justify-between items-end h-12">
+            <header className="px-4 pb-2 shrink-0 z-40 bg-ios-bg/80 backdrop-blur-xl border-b border-white/10 safe-area-pt pt-6">
+                <div className="max-w-lg mx-auto w-full flex justify-between items-end h-12">
                     <h1 className="text-[34px] leading-tight font-bold tracking-tight">Today</h1>
                     <button
                         onClick={() => setAppState('onboarding')}
@@ -30,7 +30,7 @@ export default function Dashboard({ appState, setAppState, startTraining, active
                 </div>
             </header>
 
-            <main className="px-4 mt-6 max-w-lg mx-auto">
+            <main className="px-4 pt-6 max-w-lg mx-auto w-full flex-1 overflow-y-auto pb-32 relative">
                 <div className="mb-8">
                     {/* iOS Segmented Control */}
                     <div className="bg-[#1C1C1E] p-1 rounded-lg flex text-sm">
@@ -85,7 +85,7 @@ export default function Dashboard({ appState, setAppState, startTraining, active
                         </div>
 
                         {/* Sticky Bottom Button */}
-                        <div className="fixed bottom-0 left-0 right-0 p-4 bg-ios-bg/90 backdrop-blur-xl border-t border-white/10 safe-area-pb z-40">
+                        <div className="fixed bottom-0 left-0 right-0 p-4 bg-ios-bg/90 backdrop-blur-xl border-t border-white/10 safe-area-pb z-40 pointer-events-auto">
                             <div className="max-w-lg mx-auto">
                                 <button
                                     onClick={startTraining}
