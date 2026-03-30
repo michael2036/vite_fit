@@ -17,7 +17,11 @@ export default function TrainingMode({
             
             {/* Top Navigation */}
             <header className="px-4 py-2 flex justify-between items-center bg-ios-bg/90 backdrop-blur-md">
-                <button onClick={() => setAppState('dashboard')} className="text-ios-blue flex items-center gap-1 active:opacity-70 text-[17px]">
+                <button 
+                    onClick={() => setAppState('dashboard')} 
+                    className="text-ios-blue flex items-center gap-1 active:opacity-70 text-[17px]"
+                    aria-label="End Session and return to Home"
+                >
                     <ChevronLeft size={24} className="-ml-2"/>
                     End
                 </button>
@@ -48,14 +52,20 @@ export default function TrainingMode({
                 <div className="space-y-4 max-w-lg mx-auto">
                     {/* User 1 Component */}
                     {(activeProfile === 'both' || activeProfile === 'lina') && (
-                        <div className="bg-ios-card rounded-[20px] p-5">
+                        <article className="bg-ios-card rounded-[20px] p-5 shadow-lg shadow-black/20 relative z-10 transition-shadow">
                             <div className="flex justify-between items-center mb-4">
-                                <span className="bg-ios-pink/10 text-ios-pink px-2.5 py-1 rounded-md text-[13px] font-semibold">LINA</span>
-                                <a href={currentEx.lina.videoUrl} target="_blank" rel="noreferrer" className="text-ios-pink active:opacity-70">
+                                <span className="bg-ios-pink/10 text-ios-pink px-2.5 py-1 rounded-md text-[13px] font-semibold tracking-wide">LINA</span>
+                                <a 
+                                    href={currentEx.lina.videoUrl} 
+                                    target="_blank" 
+                                    rel="noreferrer" 
+                                    className="text-ios-pink active:opacity-70 hover:scale-105 transition-transform"
+                                    aria-label={`View video tutorial for ${currentEx.lina.name}`}
+                                >
                                     <PlayCircle size={28} />
                                 </a>
                             </div>
-                            <h3 className="text-[20px] font-semibold mb-2 leading-tight">{currentEx.lina.name}</h3>
+                            <h3 className="text-[20px] font-semibold mb-2 leading-tight tracking-tight">{currentEx.lina.name}</h3>
                             <p className="text-[15px] text-gray-400 mb-6">{currentEx.lina.description}</p>
                             
                             <div className="flex gap-4 mb-4">
@@ -71,19 +81,25 @@ export default function TrainingMode({
                             <div className="bg-[#2C2C2E] p-3 rounded-[14px] text-[15px] text-gray-300">
                                 <span className="font-semibold text-white">Note: </span>{currentEx.lina.notes}
                             </div>
-                        </div>
+                        </article>
                     )}
 
                     {/* User 2 Component */}
                     {(activeProfile === 'both' || activeProfile === 'michael') && (
-                        <div className="bg-ios-card rounded-[20px] p-5">
+                        <article className="bg-ios-card rounded-[20px] p-5 shadow-lg shadow-black/20 relative z-10 transition-shadow">
                             <div className="flex justify-between items-center mb-4">
-                                <span className="bg-ios-blue/10 text-ios-blue px-2.5 py-1 rounded-md text-[13px] font-semibold">MICHAEL</span>
-                                <a href={currentEx.michael.videoUrl} target="_blank" rel="noreferrer" className="text-ios-blue active:opacity-70">
+                                <span className="bg-ios-blue/10 text-ios-blue px-2.5 py-1 rounded-md text-[13px] font-semibold tracking-wide">MICHAEL</span>
+                                <a 
+                                    href={currentEx.michael.videoUrl} 
+                                    target="_blank" 
+                                    rel="noreferrer" 
+                                    className="text-ios-blue active:opacity-70 hover:scale-105 transition-transform"
+                                    aria-label={`View video tutorial for ${currentEx.michael.name}`}
+                                >
                                     <PlayCircle size={28} />
                                 </a>
                             </div>
-                            <h3 className="text-[20px] font-semibold mb-2 leading-tight">{currentEx.michael.name}</h3>
+                            <h3 className="text-[20px] font-semibold mb-2 leading-tight tracking-tight">{currentEx.michael.name}</h3>
                             <p className="text-[15px] text-gray-400 mb-6">{currentEx.michael.description}</p>
                             
                             <div className="flex gap-4 mb-4">
@@ -99,7 +115,7 @@ export default function TrainingMode({
                             <div className="bg-[#2C2C2E] p-3 rounded-[14px] text-[15px] text-gray-300">
                                 <span className="font-semibold text-white">Note: </span>{currentEx.michael.notes}
                             </div>
-                        </div>
+                        </article>
                     )}
                 </div>
             </main>
@@ -110,7 +126,8 @@ export default function TrainingMode({
                     <button 
                         onClick={() => setCurrentExIndex(Math.max(0, currentExIndex - 1))}
                         disabled={currentExIndex === 0}
-                        className="p-3 bg-[#2C2C2E] rounded-full disabled:opacity-30 active:scale-[0.95]"
+                        className="p-3 bg-[#2C2C2E] rounded-full disabled:opacity-30 active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-white outline-none"
+                        aria-label="Previous Exercise"
                     >
                         <ChevronLeft size={24} />
                     </button>
@@ -141,7 +158,8 @@ export default function TrainingMode({
                     <button 
                         onClick={() => setCurrentExIndex(Math.min(workoutPlan[selectedDay].length - 1, currentExIndex + 1))}
                         disabled={currentExIndex === workoutPlan[selectedDay].length - 1}
-                        className="p-3 bg-[#2C2C2E] rounded-full disabled:opacity-30 active:scale-[0.95]"
+                        className="p-3 bg-[#2C2C2E] rounded-full disabled:opacity-30 active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-white outline-none"
+                        aria-label="Next Exercise"
                     >
                         <ChevronRight size={24} />
                     </button>

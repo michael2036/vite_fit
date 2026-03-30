@@ -37,7 +37,7 @@ export default function App() {
 
     // Alert Logic Check
     useEffect(() => {
-        if (timer >= 3600 && !sugarAlertShown && timer < 3605) { // Trigger only once when it hits 60m
+        if (timer >= 3600 && !sugarAlertShown) { // Robust flag-driven bounds limit
             setSugarAlertShown(true);
         }
     }, [timer, sugarAlertShown]);
@@ -53,6 +53,9 @@ export default function App() {
     const startTraining = () => {
         setAppState('training');
         setCurrentExIndex(0);
+        setTimer(0);
+        setCompletedExercises([]);
+        setSugarAlertShown(false);
         setIsTimerRunning(true);
     };
 

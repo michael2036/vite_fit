@@ -33,26 +33,30 @@ export default function Dashboard({ appState, setAppState, startTraining, active
             <main className="px-4 pt-6 max-w-lg mx-auto w-full flex-1 overflow-y-auto pb-32 relative">
                 <div className="mb-8">
                     {/* iOS Segmented Control */}
-                    <div className="bg-[#1C1C1E] p-1 rounded-lg flex text-sm">
+                    <nav className="bg-[#1C1C1E] p-1 rounded-lg flex text-sm" role="tablist" aria-label="Content Views">
                         <button 
                             onClick={() => setActiveTab('routine')}
-                            className={`flex-1 py-1.5 rounded-md font-medium transition-all ${activeTab === 'routine' ? 'bg-[#636366] text-white shadow-sm' : 'text-gray-400'}`}
+                            role="tab"
+                            aria-selected={activeTab === 'routine'}
+                            className={`flex-1 py-1.5 rounded-md font-medium transition-all focus-visible:ring-2 focus-visible:ring-ios-blue outline-none ${activeTab === 'routine' ? 'bg-[#636366] text-white shadow-sm' : 'text-gray-400'}`}
                         >
                             Routine
                         </button>
                         <button 
                             onClick={() => setActiveTab('tips')}
-                            className={`flex-1 py-1.5 rounded-md font-medium transition-all ${activeTab === 'tips' ? 'bg-[#636366] text-white shadow-sm' : 'text-gray-400'}`}
+                            role="tab"
+                            aria-selected={activeTab === 'tips'}
+                            className={`flex-1 py-1.5 rounded-md font-medium transition-all focus-visible:ring-2 focus-visible:ring-ios-blue outline-none ${activeTab === 'tips' ? 'bg-[#636366] text-white shadow-sm' : 'text-gray-400'}`}
                         >
                             Tips & Science
                         </button>
-                    </div>
+                    </nav>
                 </div>
 
                 {activeTab === 'routine' && (
-                    <div className="animate-in fade-in duration-300">
+                    <section className="animate-in fade-in duration-300" aria-label="Routine View">
                         {/* Day Selector - 2x2 Matrix */}
-                        <div className="grid grid-cols-2 gap-3 mb-6">
+                        <div className="grid grid-cols-2 gap-3 mb-6" role="radiogroup" aria-label="Training Days">
                             {['A', 'B', 'C', 'D'].map((day) => {
                                 const dayTitles = { 'A': 'Squat Focus', 'B': 'Hinge Focus', 'C': 'Full Body', 'D': 'Zone 2 Cardio' };
                                 const isSelected = selectedDay === day;
@@ -60,7 +64,9 @@ export default function Dashboard({ appState, setAppState, startTraining, active
                                     <button
                                         key={day}
                                         onClick={() => setSelectedDay(day)}
-                                        className={`p-4 rounded-2xl flex flex-col items-start transition-all ${isSelected ? 'bg-ios-card ring-1 ring-ios-blue' : 'bg-[#1C1C1E] opacity-70'}`}
+                                        role="radio"
+                                        aria-checked={isSelected}
+                                        className={`p-4 rounded-2xl flex flex-col items-start transition-all focus-visible:ring-2 focus-visible:ring-white outline-none ${isSelected ? 'bg-ios-card ring-1 ring-ios-blue' : 'bg-[#1C1C1E] opacity-70'}`}
                                     >
                                         <span className={`text-[12px] font-semibold uppercase tracking-wider ${isSelected ? 'text-ios-blue' : 'text-gray-500'}`}>
                                             Day {day}
@@ -95,30 +101,30 @@ export default function Dashboard({ appState, setAppState, startTraining, active
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </section>
                 )}
 
                 {activeTab === 'tips' && (
-                    <div className="animate-in fade-in duration-300 space-y-4">
-                        <div className="bg-ios-card p-6 rounded-[20px]">
-                            <h2 className="text-[20px] font-semibold text-white mb-2">Backing Science</h2>
+                    <section className="animate-in fade-in duration-300 space-y-4" aria-labelledby="science-heading">
+                        <article className="bg-ios-card p-6 rounded-[20px]">
+                            <h2 id="science-heading" className="text-[20px] font-semibold text-white mb-2">Backing Science</h2>
                             <p className="text-[15px] text-gray-400 leading-relaxed">
                                 Curated to stabilize glycemic levels via progressive hypertrophy, and develop functional strength for Jiu-Jitsu without overloading the Central Nervous System.
                             </p>
-                        </div>
+                        </article>
                         
                         {expertTips.map((tip, i) => (
-                            <div key={i} className="bg-ios-card p-5 rounded-[20px] flex gap-4">
-                                <div className="mt-1">
+                            <article key={i} className="bg-ios-card p-5 rounded-[20px] flex gap-4">
+                                <div className="mt-1" aria-hidden="true">
                                     {getTipIcon(tip.icon)}
                                 </div>
                                 <div>
                                     <h3 className="text-[17px] font-semibold text-white mb-1.5">{tip.title}</h3>
                                     <p className="text-[15px] text-gray-400 leading-relaxed">{tip.description}</p>
                                 </div>
-                            </div>
+                            </article>
                         ))}
-                    </div>
+                    </section>
                 )}
             </main>
         </div>
