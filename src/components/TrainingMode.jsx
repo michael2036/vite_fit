@@ -40,7 +40,7 @@ export default function TrainingMode({
             </div>
 
             {/* Main Content Carousel */}
-            <main className="flex-1 overflow-y-auto no-scrollbar pb-24 px-4 mt-6">
+            <main className="flex-1 overflow-y-auto no-scrollbar pb-6 px-4 mt-6 relative">
                 <div className="text-center mb-6">
                     <p className="text-[13px] font-semibold text-gray-500 uppercase tracking-widest mb-1">
                         {currentExIndex + 1} OF {workoutPlan[selectedDay].length}
@@ -121,7 +121,7 @@ export default function TrainingMode({
             </main>
 
             {/* Bottom Nav Bar - iOS Sticky ToolBar */}
-            <footer className="fixed bottom-0 left-0 right-0 bg-[#1C1C1E]/90 backdrop-blur-xl border-t border-white/10 pb-safe px-4 pt-3 pb-8">
+            <footer className="shrink-0 bg-[#1C1C1E]/90 backdrop-blur-xl border-t border-white/10 px-4 pt-3 pb-8 safe-area-pb z-40 relative">
                 <div className="max-w-lg mx-auto flex justify-between items-center gap-4">
                     <button 
                         onClick={() => setCurrentExIndex(Math.max(0, currentExIndex - 1))}
