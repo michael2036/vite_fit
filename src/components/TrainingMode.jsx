@@ -11,7 +11,7 @@ export default function TrainingMode({
     const progress = Math.round(((currentExIndex + 1) / workoutPlan[selectedDay].length) * 100);
 
     return (
-        <div className="fixed inset-0 bg-ios-bg z-50 text-white font-sans flex flex-col animate-in slide-in-from-bottom-full duration-300">
+        <div className="fixed inset-0 bg-ios-bg z-50 text-white font-sans flex flex-col animate-in slide-in-from-bottom-full duration-300 safe-area-pt">
             {/* iOS Modal Handle Bar */}
             <div className="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mt-2 mb-1"></div>
             

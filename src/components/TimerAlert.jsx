@@ -8,7 +8,10 @@ export default function TimerAlert({ sugarAlertShown, setSugarAlertShown }) {
     if (!sugarAlertShown) return null;
 
     return (
-        <div className="fixed top-4 left-4 right-4 z-[100] animate-in slide-in-from-top-4 fade-in duration-300 mx-auto max-w-sm">
+        <div 
+            className="fixed left-4 right-4 z-[100] animate-in slide-in-from-top-4 fade-in duration-300 mx-auto max-w-sm"
+            style={{ top: 'max(1rem, env(safe-area-inset-top))' }}
+        >
             <div className="bg-[#1C1C1E]/95 backdrop-blur-xl rounded-[24px] p-4 shadow-2xl border border-white/10 flex items-start gap-4 cursor-pointer active:scale-95 transition-transform"
                  onClick={() => setSugarAlertShown(false)}>
                 

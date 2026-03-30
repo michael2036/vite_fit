@@ -72,7 +72,7 @@ export default function Dashboard({ appState, setAppState, startTraining, active
                         </div>
 
                         {/* List Sequence - iOS List Style */}
-                        <div className="bg-ios-card rounded-[20px] overflow-hidden mb-8">
+                        <div className="bg-ios-card rounded-[20px] overflow-hidden mb-24">
                             {workoutPlan[selectedDay].map((ex, i) => (
                                 <div key={ex.id} className={`p-4 flex flex-col ${i !== workoutPlan[selectedDay].length - 1 ? 'border-b border-white/10' : ''}`}>
                                     <div className="flex items-center gap-3 mb-1">
@@ -84,12 +84,17 @@ export default function Dashboard({ appState, setAppState, startTraining, active
                             ))}
                         </div>
 
-                        <button
-                            onClick={startTraining}
-                            className="w-full py-4 bg-ios-blue text-white rounded-[20px] font-semibold text-[17px] active:scale-[0.98] transition-transform flex justify-center items-center gap-2"
-                        >
-                            <Play size={20} fill="currentColor" /> Start Session Now
-                        </button>
+                        {/* Sticky Bottom Button */}
+                        <div className="fixed bottom-0 left-0 right-0 p-4 bg-ios-bg/90 backdrop-blur-xl border-t border-white/10 safe-area-pb z-40">
+                            <div className="max-w-lg mx-auto">
+                                <button
+                                    onClick={startTraining}
+                                    className="w-full py-4 bg-ios-blue text-white rounded-[20px] font-semibold text-[17px] active:scale-[0.98] transition-transform flex justify-center items-center gap-2 shadow-lg shadow-ios-blue/20"
+                                >
+                                    <Play size={20} fill="currentColor" /> Start Session Now
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 )}
 
