@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dumbbell, Activity, Users, ShieldAlert } from 'lucide-react';
+import { Users, User, UserRound } from 'lucide-react';
 
 export default function Onboarding({ setAppState, setActiveProfile }) {
     return (
@@ -17,23 +17,31 @@ export default function Onboarding({ setAppState, setActiveProfile }) {
                 <h1 className="text-4xl font-semibold text-white tracking-tight mb-3">
                     CoupleFit
                 </h1>
-                <p className="text-lg text-ios-separator font-medium max-w-sm mx-auto">
-                    Sincronicen sus metas. Entrenen juntos, progresen a su propio ritmo.
-                </p>
             </div>
 
             <div className="w-full max-w-md space-y-4 z-10 mb-8">
                 
                 <button
+                    onClick={() => { setActiveProfile('lina'); setAppState('dashboard'); }}
+                    className="w-full relative p-5 rounded-[20px] bg-ios-card active:scale-[0.98] transition-all duration-200 overflow-hidden text-left flex items-center gap-4 border border-white/5"
+                >
+                    <div className="w-12 h-12 rounded-xl bg-ios-pink/20 text-ios-pink flex items-center justify-center shrink-0">
+                        <UserRound size={24} />
+                    </div>
+                    <div className="flex-1">
+                        <h3 className="text-[17px] font-semibold text-white">Lina</h3>
+                    </div>
+                </button>
+
+                <button
                     onClick={() => { setActiveProfile('michael'); setAppState('dashboard'); }}
                     className="w-full relative p-5 rounded-[20px] bg-ios-card active:scale-[0.98] transition-all duration-200 overflow-hidden text-left flex items-center gap-4 border border-white/5"
                 >
                     <div className="w-12 h-12 rounded-xl bg-ios-blue/20 text-ios-blue flex items-center justify-center shrink-0">
-                        <Activity size={24} />
+                        <User size={24} />
                     </div>
                     <div className="flex-1">
                         <h3 className="text-[17px] font-semibold text-white">Michael</h3>
-                        <p className="text-[14px] text-ios-separator">Avanzado • Foco BJJ</p>
                     </div>
                 </button>
 
@@ -46,20 +54,6 @@ export default function Onboarding({ setAppState, setActiveProfile }) {
                     </div>
                     <div className="flex-1">
                         <h3 className="text-[17px] font-semibold text-white">Modo Pareja</h3>
-                        <p className="text-[14px] text-ios-separator">Vista Sincronizada</p>
-                    </div>
-                </button>
-
-                <button
-                    onClick={() => { setActiveProfile('lina'); setAppState('dashboard'); }}
-                    className="w-full relative p-5 rounded-[20px] bg-ios-card active:scale-[0.98] transition-all duration-200 overflow-hidden text-left flex items-center gap-4 border border-white/5"
-                >
-                    <div className="w-12 h-12 rounded-xl bg-ios-pink/20 text-ios-pink flex items-center justify-center shrink-0">
-                        <ShieldAlert size={24} />
-                    </div>
-                    <div className="flex-1">
-                        <h3 className="text-[17px] font-semibold text-white">Lina</h3>
-                        <p className="text-[14px] text-ios-separator">Principiante • Hipertrofia</p>
                     </div>
                 </button>
 

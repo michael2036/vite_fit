@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Dumbbell, Users, Activity, ShieldAlert, Play, BookOpen } from 'lucide-react';
 import { workoutPlan, expertTips } from '../data/workoutData';
 
@@ -13,6 +13,11 @@ export default function Dashboard({ appState, setAppState, startTraining, active
             default: return <BookOpen className="text-white" size={24} />;
         }
     };
+
+    const randomizedTips = useMemo(() => {
+        const filteredTips = expertTips.filter(t => t.profile === activeProfile);
+        return [...filteredTips].sort(() => 0.5 - Math.random()).slice(0, 3);
+    }, [activeProfile]);
 
     return (
         <div className="absolute inset-0 bg-ios-bg text-white font-sans flex flex-col">
@@ -113,7 +118,7 @@ export default function Dashboard({ appState, setAppState, startTraining, active
                             </p>
                         </article>
                         
-                        {expertTips.map((tip, i) => (
+                        {randomizedTips.map((tip, i) => (
                             <article key={i} className="bg-ios-card p-5 rounded-[20px] flex gap-4">
                                 <div className="mt-1" aria-hidden="true">
                                     {getTipIcon(tip.icon)}

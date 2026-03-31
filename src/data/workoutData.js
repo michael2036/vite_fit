@@ -135,19 +135,111 @@ export const workoutPlan = {
 };
 
 export const expertTips = [
+    // Michael (Hombre / BJJ Focus)
     {
+        profile: 'michael',
         icon: 'Activity',
-        title: 'Autorregulación para Michael',
-        description: 'Si tuviste una sesión de sparring/rolls muy dura en BJJ la noche anterior, reduce tus series principales de 4 a 3. El BJJ genera mucho daño muscular por contracciones isométricas; no fuerces la máquina si te sientes fatigado.'
+        title: 'Autorregulación (BJJ)',
+        description: 'Si tuviste una sesión de sparring muy dura la noche anterior, reduce tus series de fuerza de 4 a 3. El BJJ genera mucho daño muscular isométrico.'
     },
     {
+        profile: 'michael',
         icon: 'ShieldAlert',
-        title: 'Nutrición Peri-entrenamiento para Lina',
-        description: 'Para evitar usar el "botón de pánico" del azúcar rápido, asegúrate de consumir una combinación de carbohidratos de bajo índice glucémico y proteína unos 90 minutos antes de entrenar (ej. avena con proteína whey).'
+        title: 'Cuidado de Articulaciones',
+        description: 'Prioriza el rango de movimiento completo en el tren superior. Tener hombros sanos es vital para defender sumisiones y mantener la longevidad en los tatamis.'
     },
     {
+        profile: 'michael',
         icon: 'CheckCircle',
-        title: 'Sobrecarga Progresiva (Ambos)',
-        description: 'Utilicen el modelo de "Doble Progresión". Si el rango es 10-12, usen un peso con el que solo puedan sacar 10. Cuando logren sacar 12 reps en todas las series con ese mismo peso, es el momento de subir la carga.'
+        title: 'Sobrecarga Progresiva',
+        description: 'Enfócate en la sobrecarga con peso. Si el rango es 5-8 y logras sacar 8 reps fáciles con buena técnica, sube al menos 2.5 kg en la siguiente sesión.'
+    },
+    {
+        profile: 'michael',
+        icon: 'Activity',
+        title: 'Recuperación Activa',
+        description: 'Los días de Zona 2 (Cardio) son para limpiar metabolitos y ayudar a tu sistema nervioso, no para competir. Mantén el ritmo conversacional.'
+    },
+    {
+        profile: 'michael',
+        icon: 'ShieldAlert',
+        title: 'Estiramientos Dinámicos',
+        description: 'No te saltes la movilidad pre-entreno. Rotar caderas y hombros evitará pinzamientos durante las sentadillas pesadas o los levantamientos.'
+    },
+    {
+        profile: 'michael',
+        icon: 'CheckCircle',
+        title: 'Nutrición Post-Entreno',
+        description: 'El estrés combinado del BJJ y las pesas requiere una reposición agresiva. Asegura al menos 30-40g de proteína magra dentro de las 2 horas posteriores al ejercicio.'
+    },
+
+    // Lina (Mujer / Hipertrofia / Control Glucosa)
+    {
+        profile: 'lina',
+        icon: 'ShieldAlert',
+        title: 'Prevención de Hipoglucemia',
+        description: 'Para evitar el "botón de pánico", consume carbohidratos de bajo índice glucémico y proteína 90 minutos antes de entrenar.'
+    },
+    {
+        profile: 'lina',
+        icon: 'Activity',
+        title: 'Conexión Mente-Músculo',
+        description: 'En ejercicios como el Hip Thrust o Curl de Isquios, detente 1 segundo en el punto de máxima contracción (arriba) para asegurar activar las fibras correctas.'
+    },
+    {
+        profile: 'lina',
+        icon: 'CheckCircle',
+        title: 'Descanso entre Series',
+        description: 'Tu objetivo es hipertrofia y control metabólico. No te apures. Respeta los tiempos de descanso (1.5 a 2 minutos completos) para poder sacar todas las repeticiones.'
+    },
+    {
+        profile: 'lina',
+        icon: 'Activity',
+        title: 'Tensión Mecánica',
+        description: 'Para el tren inferior, baja el peso de forma lenta y controlada (excéntrica de 3 segundos). Allí es donde se produce el mayor estímulo de crecimiento para glúteos.'
+    },
+    {
+        profile: 'lina',
+        icon: 'ShieldAlert',
+        title: 'Hidratación Continua',
+        description: 'Las bajadas de energía suelen confundirse con deshidratación leve. Toma pequeños sorbos de agua con electrolitos durante toda la sesión.'
+    },
+    {
+        profile: 'lina',
+        icon: 'CheckCircle',
+        title: 'Sobrecarga con Reps',
+        description: 'Usa el modelo de "Doble Progresión". Si tu rango es 10-12, trabaja con ese peso hasta que saques 12 en todas las series, y solo entonces sube de peso suavemente.'
+    },
+
+    // Pareja (Both)
+    {
+        profile: 'both',
+        icon: 'CheckCircle',
+        title: 'Apoyo Mutuo',
+        description: 'Utilicen los descansos para pasarse las pesas o motivarse mutuamente, pero respeten la concentración técnica de cada uno al hacer el set.'
+    },
+    {
+        profile: 'both',
+        icon: 'Activity',
+        title: 'Logística de Máquinas',
+        description: 'Aprovechen la estación al máximo. Mientras uno descansa el otro hace su serie. Esto mantiene la temperatura elevada y ahorra tiempo.'
+    },
+    {
+        profile: 'both',
+        icon: 'ShieldAlert',
+        title: 'Adaptabilidad',
+        description: 'Si una máquina compartida está ocupada en el gimnasio, busquen una alternativa de peso libre (mancuernas) que simule el mismo patrón de movimiento.'
+    },
+    {
+        profile: 'both',
+        icon: 'Activity',
+        title: 'Cita de Entrenamiento',
+        description: 'El entrenamiento en pareja segrega endorfinas y oxitocina, reforzando el vínculo. Disfruten el proceso tanto como el resultado físico.'
+    },
+    {
+        profile: 'both',
+        icon: 'CheckCircle',
+        title: 'Comunicación Total',
+        description: 'Si hoy tienen niveles de energía diferentes, está bien. Regula el peso pero mantén el ritmo de las estaciones para terminar juntos.'
     }
 ];
