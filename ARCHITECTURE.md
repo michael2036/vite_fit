@@ -46,3 +46,8 @@ The timer system connects natively to the browser's `Notification` API. Once the
 The application leverages a `wrangler.toml` file mapping explicitly to the `/dist` directory. When pushed, Cloudflare Pages bypasses complex Node.js rendering and statically serves the highly optimized Vite SPA bundles globally.
 
 Because of `vite-plugin-pwa` integration, Service Workers automatically intercept network requests, cache the interface assets, and enable completely offline functionality inside the gym where connectivity drops.
+
+## 6. AI Agentic Workflows
+The project was designed with Autonomous / Agentic updating via natural language. 
+To modify the workout database logic, the user does not need to adjust the nested JSON inside `src/data/workoutData.js`. 
+Instead, a root-level proxy markdown file `workouts.md` is updated each month. A defined agentic workflow (`.agents/workflows/update-workouts.md`) intercepts natural language commands, safely parses the markdown file layout, retains specific logic parameters (such as synthetic `videoUrl`), and independently transpiles the new content back into `workoutData.js` structures.
