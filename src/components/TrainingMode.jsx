@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, PlayCircle, ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import { workoutPlan } from '../data/workoutData';
+import { motion, useAnimation } from 'framer-motion';
+import { useDrag } from '@use-gesture/react';
 
 export default function TrainingMode({ 
     setAppState, activeProfile, selectedDay, timer, currentExIndex, setCurrentExIndex, 
@@ -10,15 +12,75 @@ export default function TrainingMode({
     const isDone = completedExercises.includes(currentEx.id);
     const progress = Math.round(((currentExIndex + 1) / workoutPlan[selectedDay].length) * 100);
 
+    const controls = useAnimation();
+
+    // Native iOS Gesture (Swipe to dismiss)
+    const bind = useDrag(({ movement: [mx, my], velocity: [vx, vy], down, cancel, active }) => {
+        const dist = Math.max(mx, my);
+        const vel = Math.max(vx, vy);
+        
+        if (dist > window.innerWidth / 3 || (vel > 1.2 && dist > 50)) {
+            if (!active) {
+                if (mx > my) {
+                    controls.start({ x: window.innerWidth, transition: { duration: 0.2 } }).then(() => setAppState('dashboard'));
+                } else {
+                    controls.start({ y: window.innerHeight, transition: { duration: 0.2 } }).then(() => setAppState('dashboard'));
+                }
+            }
+        } else {
+            controls.start({ 
+                x: down && mx > my ? Math.max(0, mx) : 0, 
+                y: down && my > mx ? Math.max(0, my) : 0, 
+                transition: { type: 'spring', bounce: 0, duration: 0.4 } 
+            });
+        }
+    }, { filterTaps: true, axis: 'lock' });
+
+    useEffect(() => {
+        controls.start({ x: 0, y: 0, transition: { duration: 0.35, ease: 'easeOut' } });
+    }, [controls]);
+
+    const handleExit = async () => {
+        if (navigator.vibrate) navigator.vibrate(20);
+        await controls.start({ y: '100%', transition: { duration: 0.3, ease: 'easeIn' } });
+        setAppState('dashboard');
+    };
+
+    const triggerHaptic = (duration = 30) => {
+        if (navigator.vibrate) navigator.vibrate(duration);
+    };
+
+    const handleNext = () => {
+        triggerHaptic();
+        setCurrentExIndex(Math.min(workoutPlan[selectedDay].length - 1, currentExIndex + 1));
+    };
+
+    const handlePrev = () => {
+        triggerHaptic();
+        setCurrentExIndex(Math.max(0, currentExIndex - 1));
+    };
+
+    const handleFinish = () => {
+        triggerHaptic([30, 50, 30]);
+        endSession();
+    };
+
     return (
-        <div className="fixed inset-0 bg-ios-bg z-50 text-white font-sans flex flex-col animate-in slide-in-from-bottom-full duration-300 safe-area-pt">
+        <motion.div 
+            {...bind()}
+            initial={{ y: '100%', x: 0 }}
+            animate={controls}
+            exit={{ y: '100%', transition: { duration: 0.3 } }}
+            className="fixed inset-0 bg-ios-bg z-50 text-white font-sans flex flex-col safe-area-pt touch-pan-y"
+            style={{ touchAction: 'pan-y' }}
+        >
             {/* iOS Modal Handle Bar */}
-            <div className="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mt-2 mb-1"></div>
+            <div className="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mt-2 mb-1 cursor-grab active:cursor-grabbing"></div>
             
             {/* Top Navigation */}
             <header className="px-4 py-2 flex justify-between items-center bg-ios-bg/90 backdrop-blur-md">
                 <button 
-                    onClick={() => setAppState('dashboard')} 
+                    onClick={handleExit} 
                     className="text-ios-blue flex items-center gap-1 active:opacity-70 text-[17px]"
                     aria-label="End Session and return to Home"
                 >
@@ -124,7 +186,7 @@ export default function TrainingMode({
             <footer className="shrink-0 bg-[#1C1C1E]/90 backdrop-blur-xl border-t border-white/10 px-4 pt-3 pb-8 safe-area-pb z-40 relative">
                 <div className="max-w-lg mx-auto flex justify-between items-center gap-4">
                     <button 
-                        onClick={() => setCurrentExIndex(Math.max(0, currentExIndex - 1))}
+                        onClick={handlePrev}
                         disabled={currentExIndex === 0}
                         className="p-3 bg-[#2C2C2E] rounded-full disabled:opacity-30 active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-white outline-none"
                         aria-label="Previous Exercise"
@@ -134,7 +196,7 @@ export default function TrainingMode({
 
                     {currentExIndex === workoutPlan[selectedDay].length - 1 ? (
                         <button
-                            onClick={endSession}
+                            onClick={handleFinish}
                             className="flex-1 py-3.5 bg-ios-green text-white rounded-[20px] font-semibold text-[17px] active:scale-[0.98] transition-transform text-center"
                         >
                             Finish Workout
@@ -144,7 +206,7 @@ export default function TrainingMode({
                             onClick={() => {
                                 toggleCurrentExercise(currentEx.id);
                                 if (!isDone) {
-                                    setTimeout(() => setCurrentExIndex(Math.min(workoutPlan[selectedDay].length - 1, currentExIndex + 1)), 500);
+                                    setTimeout(handleNext, 400); // 400ms delay to see checkmark before sliding to next
                                 }
                             }}
                             className={`flex-1 py-3.5 rounded-[20px] font-semibold text-[17px] active:scale-[0.98] transition-transform flex justify-center items-center gap-2 ${
@@ -156,7 +218,7 @@ export default function TrainingMode({
                     )}
 
                     <button 
-                        onClick={() => setCurrentExIndex(Math.min(workoutPlan[selectedDay].length - 1, currentExIndex + 1))}
+                        onClick={handleNext}
                         disabled={currentExIndex === workoutPlan[selectedDay].length - 1}
                         className="p-3 bg-[#2C2C2E] rounded-full disabled:opacity-30 active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-white outline-none"
                         aria-label="Next Exercise"
@@ -165,6 +227,6 @@ export default function TrainingMode({
                     </button>
                 </div>
             </footer>
-        </div>
+        </motion.div>
     );
 }
