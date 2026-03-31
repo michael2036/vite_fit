@@ -11,10 +11,12 @@ The application achieves a pixel-perfect **iOS Native Interface (HIG)** using Ta
 
 ### Key Components:
 - `App.jsx`: Global application state orchestrator. Manages `activeProfile`, `selectedDay`, and the native 60-m background timer state avoiding stale transitions.
-- `WorkoutData.js`: Centralized structural data dictionary storing decoupled user paths (Michael vs Lina).
+- `src/data/workoutData.js`: Centralized structural data dictionary storing decoupled user paths (Michael vs Lina).
 - `Dashboard.jsx`: Segmented-control driven landing page utilizing semantic HTML (`<nav>`, `<section>`), 2x2 radio grid selections, and sticky-action layers.
 - `TrainingMode.jsx`: Immersive full-screen workout carousel providing real-time independent rep tracking and embedded progression timers.
 - `TimerAlert.jsx`: Absolute-positioned push notification logic bound dynamically to Apple's safe inset properties.
+
+*Note: The user interface is completely localized in **Spanish**, while the source code logic and documentation remain in English.*
 
 ## Accessibility (a11y)
 Fully compliant with ARIA tags. Segmented controls are classified as `role="tablist"`, visual SVGs assert `aria-hidden`, and icon-only paginators utilize descriptive `aria-label` attributes for screen readers.
