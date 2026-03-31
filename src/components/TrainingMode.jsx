@@ -6,7 +6,7 @@ import { useDrag } from '@use-gesture/react';
 
 export default function TrainingMode({ 
     setAppState, activeProfile, selectedDay, timer, currentExIndex, setCurrentExIndex, 
-    completedExercises, toggleCurrentExercise, endSession, formatTime 
+    completedExercises, toggleCurrentExercise, endSession, earlyExit, formatTime 
 }) {
     const currentEx = workoutPlan[selectedDay][currentExIndex];
     const isDone = completedExercises.includes(currentEx.id);
@@ -22,9 +22,9 @@ export default function TrainingMode({
         if (dist > window.innerWidth / 3 || (vel > 1.2 && dist > 50)) {
             if (!active) {
                 if (mx > my) {
-                    controls.start({ x: window.innerWidth, transition: { duration: 0.2 } }).then(() => setAppState('dashboard'));
+                    controls.start({ x: window.innerWidth, transition: { duration: 0.2 } }).then(() => earlyExit());
                 } else {
-                    controls.start({ y: window.innerHeight, transition: { duration: 0.2 } }).then(() => setAppState('dashboard'));
+                    controls.start({ y: window.innerHeight, transition: { duration: 0.2 } }).then(() => earlyExit());
                 }
             }
         } else {
@@ -43,7 +43,7 @@ export default function TrainingMode({
     const handleExit = async () => {
         if (navigator.vibrate) navigator.vibrate(20);
         await controls.start({ y: '100%', transition: { duration: 0.3, ease: 'easeIn' } });
-        setAppState('dashboard');
+        earlyExit();
     };
 
     const triggerHaptic = (duration = 30) => {

@@ -14,6 +14,7 @@ The application achieves a pixel-perfect **iOS Native Interface (HIG)** using Ta
 - `src/data/workoutData.js`: Centralized structural data dictionary storing decoupled user paths (Michael vs Lina).
 - `Dashboard.jsx`: Segmented-control driven landing page utilizing semantic HTML (`<nav>`, `<section>`), 2x2 radio grid selections, and sticky-action layers.
 - `TrainingMode.jsx`: Immersive full-screen workout carousel providing real-time independent rep tracking and embedded progression timers.
+- `EndSplash.jsx`: Full-screen celebration component providing success feedback with Framer-Motion spring animations upon workout completion.
 - `TimerAlert.jsx`: Absolute-positioned push notification logic bound dynamically to Apple's safe inset properties.
 
 *Note: The user interface is completely localized in **Spanish**, while the source code logic and documentation remain in English.*

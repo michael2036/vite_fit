@@ -36,7 +36,7 @@ The main panel must contain tabbed navigation (Tabs):
   - Execution notes or tips (Nota).
   - External link to a tutorial video (YouTube).
 - **Progress Bar**: A visual indicator at the top showing the percentage of completed blocks.
-- **Completion**: A dedicated "Finalizar Sesión" (Finish Session) button that appears only on the last exercise, allowing a return to the Dashboard and resetting the state.
+- **Completion**: A dedicated "Finalizar Sesión" (Finish Session) button that appears only on the last exercise. Upon pressing, the application transitions to a celebratory "Splash Screen" (`EndSplash`), providing visual feedback before automatically returning to the Dashboard and resetting the state.
 
 ### 3.4. Security and Monitoring Module (Timer and Alerts)
 - **Timer**: Upon starting the workout, a timer visible in the header must begin.

@@ -5,6 +5,7 @@ import Onboarding from './components/Onboarding';
 import Dashboard from './components/Dashboard';
 import TrainingMode from './components/TrainingMode';
 import TimerAlert from './components/TimerAlert';
+import EndSplash from './components/EndSplash';
 
 export default function App() {
     const [isAppReady, setIsAppReady] = useState(false);
@@ -82,6 +83,19 @@ export default function App() {
     };
 
     const endSession = () => {
+        setIsTimerRunning(false);
+        setSessionStartTime(null);
+        setAppState('endsplash');
+    };
+
+    const finishToDashboard = () => {
+        setAppState('dashboard');
+        setTimer(0);
+        setCompletedExercises([]);
+        setSugarAlertShown(false);
+    };
+
+    const earlyExit = () => {
         setIsTimerRunning(false);
         setSessionStartTime(null);
         setAppState('dashboard');
@@ -171,8 +185,13 @@ export default function App() {
                                         if (navigator.vibrate) navigator.vibrate(50);
                                     }}
                                     endSession={endSession}
+                                    earlyExit={earlyExit}
                                     formatTime={formatTime}
                                 />
+                            )}
+
+                            {appState === 'endsplash' && (
+                                <EndSplash key="endsplash" onComplete={finishToDashboard} />
                             )}
                         </AnimatePresence>
                     </motion.div>
