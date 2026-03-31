@@ -85,10 +85,10 @@ export default function TrainingMode({
                     aria-label="End Session and return to Home"
                 >
                     <ChevronLeft size={24} className="-ml-2"/>
-                    End
+                    Fin
                 </button>
                 <div className="flex flex-col items-center">
-                    <span className="text-[12px] font-medium text-gray-400">Day {selectedDay}</span>
+                    <span className="text-[12px] font-medium text-gray-400">Día {selectedDay}</span>
                     <span className={`font-mono text-[17px] font-semibold ${timer >= 3600 ? 'text-ios-pink animate-pulse' : 'text-white'}`}>
                         {formatTime(timer)}
                     </span>
@@ -105,7 +105,7 @@ export default function TrainingMode({
             <main className="flex-1 overflow-y-auto no-scrollbar pb-6 px-4 mt-6 relative">
                 <div className="text-center mb-6">
                     <p className="text-[13px] font-semibold text-gray-500 uppercase tracking-widest mb-1">
-                        {currentExIndex + 1} OF {workoutPlan[selectedDay].length}
+                        {currentExIndex + 1} DE {workoutPlan[selectedDay].length}
                     </p>
                     <h2 className="text-[28px] font-bold leading-tight mb-2">{currentEx.category}</h2>
                     <p className="text-[15px] text-gray-400">{currentEx.sharedEquipment}</p>
@@ -132,7 +132,7 @@ export default function TrainingMode({
                             
                             <div className="flex gap-4 mb-4">
                                 <div className="flex-1 bg-[#2C2C2E] rounded-[14px] p-3 text-center">
-                                    <div className="text-[12px] text-gray-400 font-medium mb-1">SETS</div>
+                                    <div className="text-[12px] text-gray-400 font-medium mb-1">SERIES</div>
                                     <div className="text-[22px] font-bold text-ios-pink">{currentEx.lina.sets}</div>
                                 </div>
                                 <div className="flex-1 bg-[#2C2C2E] rounded-[14px] p-3 text-center">
@@ -141,7 +141,7 @@ export default function TrainingMode({
                                 </div>
                             </div>
                             <div className="bg-[#2C2C2E] p-3 rounded-[14px] text-[15px] text-gray-300">
-                                <span className="font-semibold text-white">Note: </span>{currentEx.lina.notes}
+                                <span className="font-semibold text-white">Nota: </span>{currentEx.lina.notes}
                             </div>
                         </article>
                     )}
@@ -166,7 +166,7 @@ export default function TrainingMode({
                             
                             <div className="flex gap-4 mb-4">
                                 <div className="flex-1 bg-[#2C2C2E] rounded-[14px] p-3 text-center">
-                                    <div className="text-[12px] text-gray-400 font-medium mb-1">SETS</div>
+                                    <div className="text-[12px] text-gray-400 font-medium mb-1">SERIES</div>
                                     <div className="text-[22px] font-bold text-ios-blue">{currentEx.michael.sets}</div>
                                 </div>
                                 <div className="flex-1 bg-[#2C2C2E] rounded-[14px] p-3 text-center">
@@ -175,7 +175,7 @@ export default function TrainingMode({
                                 </div>
                             </div>
                             <div className="bg-[#2C2C2E] p-3 rounded-[14px] text-[15px] text-gray-300">
-                                <span className="font-semibold text-white">Note: </span>{currentEx.michael.notes}
+                                <span className="font-semibold text-white">Nota: </span>{currentEx.michael.notes}
                             </div>
                         </article>
                     )}
@@ -199,7 +199,7 @@ export default function TrainingMode({
                             onClick={handleFinish}
                             className="flex-1 py-3.5 bg-ios-green text-white rounded-[20px] font-semibold text-[17px] active:scale-[0.98] transition-transform text-center"
                         >
-                            Finish Workout
+                            Finalizar Sesión
                         </button>
                     ) : (
                         <button
@@ -213,7 +213,7 @@ export default function TrainingMode({
                                 isDone ? 'bg-[#2C2C2E] text-ios-green ring-1 ring-ios-green' : 'bg-ios-blue text-white'
                             }`}
                         >
-                            {isDone ? <><Check size={20}/> Completed</> : 'Complete & Next'}
+                            {isDone ? <><Check size={20}/> Completado</> : 'Completar y Siguiente'}
                         </button>
                     )}
 

@@ -55,8 +55,8 @@ export default function App() {
 
     const triggerSystemNotification = () => {
         if ('Notification' in window && Notification.permission === 'granted') {
-            new window.Notification("CoupleFit Alert", {
-                body: "60 minutes reached! Time to check blood sugar levels and hydrate.",
+            new window.Notification("Alerta CoupleFit", {
+                body: "¡60 minutos alcanzados! Es hora de revisar los niveles de glucosa e hidratarse.",
                 icon: "/pwa-192x192.png",
                 vibrate: [200, 100, 200]
             });

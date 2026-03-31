@@ -20,11 +20,11 @@ export default function TimerAlert({ sugarAlertShown, setSugarAlertShown }) {
                 </div>
                 
                 <div className="flex-1">
-                    <h4 className="text-[15px] font-semibold text-white">60 Minute Alert</h4>
-                    <p className="text-[15px] text-gray-300 leading-tight mt-0.5">Lina: Ensure you monitor energy levels and consider fast carbs immediately to prevent hypoglycemia.</p>
+                    <h4 className="text-[15px] font-semibold text-white">Alerta de 60 Minutos</h4>
+                    <p className="text-[15px] text-gray-300 leading-tight mt-0.5">Lina: Asegúrate de monitorear tus niveles de energía y considera carbohidratos rápidos inmediatamente para prevenir hipoglucemia.</p>
                 </div>
                 
-                <div className="text-[12px] text-gray-500 font-medium">Now</div>
+                <div className="text-[12px] text-gray-500 font-medium">Ahora</div>
             </div>
         </div>
     );

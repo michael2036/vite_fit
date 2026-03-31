@@ -18,14 +18,14 @@ export default function Dashboard({ appState, setAppState, startTraining, active
         <div className="absolute inset-0 bg-ios-bg text-white font-sans flex flex-col">
             
             {/* iOS Navigation Bar */}
-            <header className="px-4 pb-2 shrink-0 z-40 bg-ios-bg/80 backdrop-blur-xl border-b border-white/10 safe-area-pt pt-6">
+            <header className="px-4 pb-2 shrink-0 z-40 bg-ios-bg/80 backdrop-blur-xl border-b border-white/10 safe-area-pt pt-2">
                 <div className="max-w-lg mx-auto w-full flex justify-between items-end h-12">
-                    <h1 className="text-[34px] leading-tight font-bold tracking-tight">Today</h1>
+                    <h1 className="text-[34px] leading-tight font-bold tracking-tight">Hoy</h1>
                     <button
                         onClick={() => setAppState('onboarding')}
                         className="text-[17px] text-ios-blue flex items-center gap-1 active:opacity-70 font-medium pb-1.5"
                     >
-                        {activeProfile === 'both' ? 'Couple' : activeProfile === 'michael' ? 'Michael' : 'Lina'}
+                        {activeProfile === 'both' ? 'Pareja' : activeProfile === 'michael' ? 'Michael' : 'Lina'}
                     </button>
                 </div>
             </header>
@@ -40,7 +40,7 @@ export default function Dashboard({ appState, setAppState, startTraining, active
                             aria-selected={activeTab === 'routine'}
                             className={`flex-1 py-1.5 rounded-md font-medium transition-all focus-visible:ring-2 focus-visible:ring-ios-blue outline-none ${activeTab === 'routine' ? 'bg-[#636366] text-white shadow-sm' : 'text-gray-400'}`}
                         >
-                            Routine
+                            Rutina
                         </button>
                         <button 
                             onClick={() => setActiveTab('tips')}
@@ -48,7 +48,7 @@ export default function Dashboard({ appState, setAppState, startTraining, active
                             aria-selected={activeTab === 'tips'}
                             className={`flex-1 py-1.5 rounded-md font-medium transition-all focus-visible:ring-2 focus-visible:ring-ios-blue outline-none ${activeTab === 'tips' ? 'bg-[#636366] text-white shadow-sm' : 'text-gray-400'}`}
                         >
-                            Tips & Science
+                            Consejos y Ciencia
                         </button>
                     </nav>
                 </div>
@@ -58,7 +58,7 @@ export default function Dashboard({ appState, setAppState, startTraining, active
                         {/* Day Selector - 2x2 Matrix */}
                         <div className="grid grid-cols-2 gap-3 mb-6" role="radiogroup" aria-label="Training Days">
                             {['A', 'B', 'C', 'D'].map((day) => {
-                                const dayTitles = { 'A': 'Squat Focus', 'B': 'Hinge Focus', 'C': 'Full Body', 'D': 'Zone 2 Cardio' };
+                                const dayTitles = { 'A': 'Foco Sentadilla', 'B': 'Foco Bisagra', 'C': 'Cuerpo Completo', 'D': 'Cardio Zona 2' };
                                 const isSelected = selectedDay === day;
                                 return (
                                     <button
@@ -69,7 +69,7 @@ export default function Dashboard({ appState, setAppState, startTraining, active
                                         className={`p-4 rounded-2xl flex flex-col items-start transition-all focus-visible:ring-2 focus-visible:ring-white outline-none ${isSelected ? 'bg-ios-card ring-1 ring-ios-blue' : 'bg-[#1C1C1E] opacity-70'}`}
                                     >
                                         <span className={`text-[12px] font-semibold uppercase tracking-wider ${isSelected ? 'text-ios-blue' : 'text-gray-500'}`}>
-                                            Day {day}
+                                            Día {day}
                                         </span>
                                         <span className="text-[15px] font-medium text-white mt-1 text-left">{dayTitles[day]}</span>
                                     </button>
@@ -97,7 +97,7 @@ export default function Dashboard({ appState, setAppState, startTraining, active
                                     onClick={startTraining}
                                     className="w-full py-4 bg-ios-blue text-white rounded-[20px] font-semibold text-[17px] active:scale-[0.98] transition-transform flex justify-center items-center gap-2 shadow-lg shadow-ios-blue/20"
                                 >
-                                    <Play size={20} fill="currentColor" /> Start Session Now
+                                    <Play size={20} fill="currentColor" /> Iniciar Sesión Ahora
                                 </button>
                             </div>
                         </div>
@@ -107,9 +107,9 @@ export default function Dashboard({ appState, setAppState, startTraining, active
                 {activeTab === 'tips' && (
                     <section className="animate-in fade-in duration-300 space-y-4" aria-labelledby="science-heading">
                         <article className="bg-ios-card p-6 rounded-[20px]">
-                            <h2 id="science-heading" className="text-[20px] font-semibold text-white mb-2">Backing Science</h2>
+                            <h2 id="science-heading" className="text-[20px] font-semibold text-white mb-2">Respaldado por la Ciencia</h2>
                             <p className="text-[15px] text-gray-400 leading-relaxed">
-                                Curated to stabilize glycemic levels via progressive hypertrophy, and develop functional strength for Jiu-Jitsu without overloading the Central Nervous System.
+                                Curado para estabilizar los niveles glucémicos mediante hipertrofia progresiva y desarrollar fuerza funcional para Jiu-Jitsu sin sobrecargar el Sistema Nervioso Central.
                             </p>
                         </article>
                         

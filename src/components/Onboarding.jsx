@@ -18,7 +18,7 @@ export default function Onboarding({ setAppState, setActiveProfile }) {
                     CoupleFit
                 </h1>
                 <p className="text-lg text-ios-separator font-medium max-w-sm mx-auto">
-                    Synchronize your goals. Train together, progress at your own pace.
+                    Sincronicen sus metas. Entrenen juntos, progresen a su propio ritmo.
                 </p>
             </div>
 
@@ -33,7 +33,7 @@ export default function Onboarding({ setAppState, setActiveProfile }) {
                     </div>
                     <div className="flex-1">
                         <h3 className="text-[17px] font-semibold text-white">Michael</h3>
-                        <p className="text-[14px] text-ios-separator">Advanced • BJJ Focus</p>
+                        <p className="text-[14px] text-ios-separator">Avanzado • Foco BJJ</p>
                     </div>
                 </button>
 
@@ -45,8 +45,8 @@ export default function Onboarding({ setAppState, setActiveProfile }) {
                         <Users size={24} />
                     </div>
                     <div className="flex-1">
-                        <h3 className="text-[17px] font-semibold text-white">Couple Mode</h3>
-                        <p className="text-[14px] text-ios-separator">Synchronized View</p>
+                        <h3 className="text-[17px] font-semibold text-white">Modo Pareja</h3>
+                        <p className="text-[14px] text-ios-separator">Vista Sincronizada</p>
                     </div>
                 </button>
 
@@ -59,7 +59,7 @@ export default function Onboarding({ setAppState, setActiveProfile }) {
                     </div>
                     <div className="flex-1">
                         <h3 className="text-[17px] font-semibold text-white">Lina</h3>
-                        <p className="text-[14px] text-ios-separator">Beginner • Hypertrophy</p>
+                        <p className="text-[14px] text-ios-separator">Principiante • Hipertrofia</p>
                     </div>
                 </button>
 
