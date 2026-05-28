@@ -26,12 +26,9 @@ export default function Dashboard({ appState, setAppState, startTraining, active
             <header className="px-4 pb-2 shrink-0 z-40 bg-ios-bg/80 backdrop-blur-xl border-b border-white/10 safe-area-pt pt-2">
                 <div className="max-w-lg mx-auto w-full flex justify-between items-end h-12">
                     <h1 className="text-[34px] leading-tight font-bold tracking-tight">Hoy</h1>
-                    <button
-                        onClick={() => setAppState('onboarding')}
-                        className="text-[17px] text-ios-blue flex items-center gap-1 active:opacity-70 font-medium pb-1.5"
-                    >
-                        {activeProfile === 'both' ? 'Pareja' : activeProfile === 'michael' ? 'Michael' : 'Lina'}
-                    </button>
+                    <span className="text-[17px] text-ios-pink font-semibold pb-1.5 tracking-tight flex items-center gap-1">
+                        CoupleFit
+                    </span>
                 </div>
             </header>
 
@@ -60,10 +57,19 @@ export default function Dashboard({ appState, setAppState, startTraining, active
 
                 {activeTab === 'routine' && (
                     <section className="animate-in fade-in duration-300" aria-label="Routine View">
-                        {/* Day Selector - 2x2 Matrix */}
-                        <div className="grid grid-cols-2 gap-3 mb-6" role="radiogroup" aria-label="Training Days">
-                            {['A', 'B', 'C', 'D'].map((day) => {
-                                const dayTitles = { 'A': 'Foco Sentadilla', 'B': 'Foco Bisagra', 'C': 'Cuerpo Completo', 'D': 'Cardio Zona 2' };
+                        {/* Day Selector - 3 Column Layout */}
+                        <div className="grid grid-cols-3 gap-2 mb-6" role="radiogroup" aria-label="Training Days">
+                            {['D1', 'D2', 'D3'].map((day) => {
+                                const dayTitles = { 
+                                    'D1': 'Titán', 
+                                    'D2': 'Encélado', 
+                                    'D3': 'Mimas' 
+                                };
+                                const daySubtitles = {
+                                    'D1': 'Fuerza & Core',
+                                    'D2': 'Tensión Mecánica',
+                                    'D3': 'Bisagra & Poder'
+                                };
                                 const isSelected = selectedDay === day;
                                 return (
                                     <button
@@ -71,12 +77,13 @@ export default function Dashboard({ appState, setAppState, startTraining, active
                                         onClick={() => setSelectedDay(day)}
                                         role="radio"
                                         aria-checked={isSelected}
-                                        className={`p-4 rounded-2xl flex flex-col items-start transition-all focus-visible:ring-2 focus-visible:ring-white outline-none ${isSelected ? 'bg-ios-card ring-1 ring-ios-blue' : 'bg-[#1C1C1E] opacity-70'}`}
+                                        className={`p-3 rounded-2xl flex flex-col items-start transition-all focus-visible:ring-2 focus-visible:ring-white outline-none ${isSelected ? 'bg-ios-card ring-1 ring-ios-blue' : 'bg-[#1C1C1E] opacity-70'}`}
                                     >
-                                        <span className={`text-[12px] font-semibold uppercase tracking-wider ${isSelected ? 'text-ios-blue' : 'text-gray-500'}`}>
-                                            Día {day}
+                                        <span className={`text-[10px] font-semibold uppercase tracking-wider ${isSelected ? 'text-ios-blue' : 'text-gray-500'}`}>
+                                            {day === 'D1' ? 'Día 1' : day === 'D2' ? 'Día 2' : 'Día 3'}
                                         </span>
-                                        <span className="text-[15px] font-medium text-white mt-1 text-left">{dayTitles[day]}</span>
+                                        <span className="text-[13px] font-bold text-white mt-1 text-left line-clamp-1 leading-tight">{dayTitles[day]}</span>
+                                        <span className="text-[11px] text-gray-400 text-left mt-0.5">{daySubtitles[day]}</span>
                                     </button>
                                 );
                             })}
@@ -84,13 +91,13 @@ export default function Dashboard({ appState, setAppState, startTraining, active
 
                         {/* List Sequence - iOS List Style */}
                         <div className="bg-ios-card rounded-[20px] overflow-hidden mb-24">
-                            {workoutPlan[selectedDay].map((ex, i) => (
+                            {workoutPlan[selectedDay]?.map((ex, i) => (
                                 <div key={ex.id} className={`p-4 flex flex-col ${i !== workoutPlan[selectedDay].length - 1 ? 'border-b border-white/10' : ''}`}>
                                     <div className="flex items-center gap-3 mb-1">
                                         <span className="w-5 h-5 rounded-full bg-[#2C2C2E] text-gray-400 text-[11px] font-bold flex items-center justify-center shrink-0">{i+1}</span>
-                                        <span className="text-[17px] font-medium text-white">{ex.category}</span>
+                                        <span className="text-[17px] font-medium text-white">{ex.name}</span>
                                     </div>
-                                    <span className="text-[14px] text-gray-400 ml-8">{ex.sharedEquipment}</span>
+                                    <span className="text-[13px] text-gray-400 ml-8">{ex.category} • {ex.sharedEquipment}</span>
                                 </div>
                             ))}
                         </div>

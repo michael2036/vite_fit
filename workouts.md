@@ -1,107 +1,235 @@
-# CoupleFit Monthly Workouts
+# CoupleFit: Programa de Fuerza de 3 Días (3-Day Strength Program)
 
-> **AI Instruction**: When the user asks to update the workouts, read this file carefully. You must parse this Markdown file and use it to completely overwrite `src/data/workoutData.js` (specifically the `workoutPlan` object). Maintain the exact JSON structure required by the application. Do not modify the `expertTips` array unless explicitly instructed.
+> **Instrucción de IA / AI Instruction**: Este archivo representa el plan mensual unificado de entrenamiento de fuerza en pareja. Al procesar este archivo, debes transpilar completamente su estructura para sobrescribir `src/data/workoutData.js`, manteniendo los principios de base de movimiento unificada, progresión de carga personalizada por pareja y enlaces de tutoriales multimedia directos.
 
-## Day A: Foco Sentadilla
-- **A0: Calentamiento General**
-  - **Shared Equipment**: Máquinas de Cardio
-  - **Lina**: Cinta (Caminata ligera) o Elíptica (1 set, 5-10 mins). *Notes*: Ritmo suave para elevar la temperatura y ritmo cardíaco.
-  - **Michael**: Assault Bike, Remo o Cinta (1 set, 5-10 mins). *Notes*: Ritmo moderado. Prepara las articulaciones para el peso.
-- **A1: Patrón Sentadilla (Pierna)**
-  - **Shared Equipment**: Zona de Pesas Libres / Racks
-  - **Lina**: Sentadilla en Copa (Goblet Squat) con Kettlebell (3 sets, 10-12 reps). *Notes*: Foco en la profundidad y postura recta.
-  - **Michael**: Sentadilla Trasera con Barra (Back Squat) (4 sets, 5-8 reps). *Notes*: RIR 2. Controla la fase excéntrica.
-- **A2: Empuje Horizontal (Pecho)**
-  - **Shared Equipment**: Bancos Planos
-  - **Lina**: Press de Pecho con Mancuernas (3 sets, 10-12 reps). *Notes*: Movimiento controlado, estiramiento completo.
-  - **Michael**: Press de Banca con Barra (4 sets, 5-8 reps). *Notes*: Fuerza pesada. Pide spotter si vas al límite.
-- **A3: Tracción Horizontal (Espalda)**
-  - **Shared Equipment**: Zona de Remos
-  - **Lina**: Remo Sentado en Polea (Cable Row) (3 sets, 10-12 reps). *Notes*: Aprieta las escápulas atrás.
-  - **Michael**: Remo Pendlay con Barra (4 sets, 6-8 reps). *Notes*: Explosivo desde el suelo.
-- **A4: Aislamiento Pierna**
-  - **Shared Equipment**: Máquina de Isquios
-  - **Lina**: Curl de Isquios (3 sets, 12-15 reps). *Notes*: Movimiento lento, no uses impulso.
-  - **Michael**: Curl de Isquios (3 sets, 12-15 reps). *Notes*: Mismo equipo, sube la carga.
-- **A5: Core / Finisher**
-  - **Shared Equipment**: Zona de Colchonetas
-  - **Lina**: Plancha Abdominal (Plank) (3 sets, 30-40s). *Notes*: Mantén la respiración constante.
-  - **Michael**: Rueda Abdominal o KB Swings (3 sets, 10-15 reps). *Notes*: Máxima extensión para control de cadera.
-- **A6: Vuelta a la Calma (Movilidad)**
-  - **Shared Equipment**: Colchonetas (Juntos)
-  - **Lina & Michael**: Movilidad Funcional (Follow Along) (1 set, 5-10 mins). *Notes*: Sigan el video. Respiren profundo.
+---
 
-## Day B: Foco Bisagra
-- **B0: Calentamiento General**
-  - **Shared Equipment**: Máquinas de Cardio
-  - **Lina**: Cinta (Caminata ligera) o Elíptica (1 set, 5-10 mins). *Notes*: Ritmo suave.
-  - **Michael**: Assault Bike, Remo o Cinta (1 set, 5-10 mins). *Notes*: Ritmo moderado.
-- **B1: Patrón Bisagra (Cadena Posterior)**
-  - **Shared Equipment**: Pesas Libres
-  - **Lina**: Peso Muerto Rumano (RDL) con Mancuernas (3 sets, 10-12 reps). *Notes*: Siente el estiramiento en los isquios.
-  - **Michael**: Peso Muerto Convencional/Sumo con Barra (4 sets, 5-8 reps). *Notes*: RIR 2. Protege la zona lumbar.
-- **B2: Tracción Vertical (Espalda)**
-  - **Shared Equipment**: Estación de Dominadas / Poleas
-  - **Lina**: Jalón al pecho en polea (Lat Pulldown) (3 sets, 10-12 reps). *Notes*: Pecho arriba, codos hacia abajo.
-  - **Michael**: Dominadas (Pull-ups) lastradas o libres (4 sets, 5-8 reps). *Notes*: Rango de movimiento completo.
-- **B3: Empuje Vertical / Inclinado**
-  - **Shared Equipment**: Bancos / Zona de peso libre
-  - **Lina**: Press de Hombros con mancuernas sentada (3 sets, 10-12 reps). *Notes*: No arquear excesivamente la espalda.
-  - **Michael**: Press Militar o Fondos en paralelas (Dips) (4 sets, 6-8 reps). *Notes*: Control de hombros. Explosivo al subir.
-- **B4: Aislamiento Pierna**
-  - **Shared Equipment**: Máquina Extensión Cuádriceps
-  - **Lina**: Extensión de Cuádriceps (3 sets, 12-15 reps). *Notes*: Aguanta 1 segundo arriba.
-  - **Michael**: Extensión de Cuádriceps (3 sets, 12-15 reps). *Notes*: Mismo equipo, máxima contracción.
-- **B5: Finisher Agarre / Funcional**
-  - **Shared Equipment**: Pasillo / Kettlebells
-  - **Lina**: Paseo del Granjero (3 sets, 30 metros). *Notes*: Pecho alto, pasos cortos y firmes.
-  - **Michael**: Turkish Get-Ups o Paseo Granjero pesado (3 sets, 3x lado / 30m). *Notes*: Ideal para BJJ: Movilidad y agarre.
-- **B6: Vuelta a la Calma (Movilidad)**
-  - **Shared Equipment**: Colchonetas (Juntos)
-  - **Lina & Michael**: Estiramientos Cadena Posterior (1 set, 5-10 mins). *Notes*: Foco en relajar isquios y espalda baja.
+## ESTRUCTURA DEL PROGRAMA DE FUERZA (3 DÍAS)
 
-## Day C: Cuerpo Completo
-- **C0: Calentamiento General**
-  - **Shared Equipment**: Máquinas de Cardio
-  - **Lina**: Cinta o Elíptica (1 set, 5-10 mins). *Notes*: Preparación inicial.
-  - **Michael**: Assault Bike, Remo o Cinta (1 set, 5-10 mins). *Notes*: Cardio ligero.
-- **C1: Pierna Unilateral (Estabilidad)**
-  - **Shared Equipment**: Pesas Libres / Mancuernas
-  - **Lina**: Zancadas (Lunges) hacia atrás (3 sets, 10 por pierna). *Notes*: Torso recto, baja controladamente.
-  - **Michael**: Sentadilla Búlgara pesada (3 sets, 8-10 por pierna). *Notes*: Foco en el equilibrio y profundidad.
-- **C2: Empuje Corporal (Pecho/Tríceps)**
-  - **Shared Equipment**: Colchonetas / Paralelas
-  - **Lina**: Flexiones (Push-ups) apoyando rodillas (3 sets, Al fallo -2). *Notes*: Baja el pecho casi hasta el suelo.
-  - **Michael**: Fondos en paralelas o Flexiones estrictas (3 sets, 10-15 reps). *Notes*: Control excéntrico.
-- **C3: Cadena Posterior (Glúteos)**
-  - **Shared Equipment**: Zona de Barras / Bancos
-  - **Lina**: Hip Thrust con Mancuerna o Disco (3 sets, 12-15 reps). *Notes*: Aprieta glúteos arriba por 2 segundos.
-  - **Michael**: Hip Thrust pesado con Barra (3 sets, 8-10 reps). *Notes*: Máxima extensión de cadera en cada repetición.
-- **C4: Salud Postural y Hombros**
-  - **Shared Equipment**: Estación de Poleas
-  - **Lina**: Face Pulls en Polea (3 sets, 15 reps). *Notes*: Tira hacia tu frente, separando la cuerda.
-  - **Michael**: Face Pulls pesados (3 sets, 12-15 reps). *Notes*: Crucial para compensar la postura encorvada de BJJ.
-- **C5: Finisher Acondicionamiento**
-  - **Shared Equipment**: Máquinas de Cardio / Kettlebells
-  - **Lina**: Caminata rápida en cinta (Inclinada) (1 set, 10-15 mins). *Notes*: Cardio ligero para asimilar el trabajo.
-  - **Michael**: Kettlebell Snatches o Remo Ergómetro (3 sets, 10-12 / 1 min). *Notes*: Alta intensidad (HIIT).
-- **C6: Vuelta a la Calma (Movilidad)**
-  - **Shared Equipment**: Colchonetas (Juntos)
-  - **Lina & Michael**: Yoga Flow de Recuperación (1 set, 10 mins). *Notes*: Ideal para cerrar la semana de entrenamiento.
+Este programa elimina las divisiones de género rígidas y se enfoca en una **base de movimiento compartida** por pareja, donde la dificultad e intensidad se personalizan de manera individual regulando la carga (peso), ritmo (tempo) y rango de movimiento (ROM).
 
-## Day D: Cardio Zona 2
-- **D0: Calentamiento Dinámico**
-  - **Shared Equipment**: Colchonetas libres
-  - **Lina**: Movilidad Articular Suave (1 set, 5 mins). *Notes*: Prepara las articulaciones.
-  - **Michael**: Movilidad Específica (1 set, 5 mins). *Notes*: Rotaciones de cadera y hombros.
-- **D1: Trabajo Principal: Cardio Zona 2**
-  - **Shared Equipment**: Zona de Cardio
-  - **Lina**: Cinta Inclinada o Elíptica (1 set, 30-40 mins). *Notes*: Ritmo conversacional.
-  - **Michael**: Remo Estático o Bicicleta (1 set, 30-40 mins). *Notes*: Recuperación activa.
-- **D2: Core de Estabilidad**
-  - **Shared Equipment**: Colchonetas
-  - **Lina**: Dead Bugs (3 sets, 10 por lado). *Notes*: Mantén la espalda baja pegada al suelo.
-  - **Michael**: Plancha Lateral (Side Plank) (3 sets, 30s por lado). *Notes*: Alineación perfecta de la columna.
-- **D3: Vuelta a la Calma**
-  - **Shared Equipment**: Colchonetas
-  - **Lina & Michael**: Estiramiento y Respiración (1 set, 5 mins). *Notes*: Relaja el sistema nervioso central.
+### FASES DEL ENTRENAMIENTO DIARIO
+1. **Activación y Movilidad (Calentamiento):** 5-10 minutos de cardio ligero y movilidad articular dinámica para elevar la temperatura corporal central y lubricar articulaciones.
+2. **Fuerza Principal (Ejercicios 1 a 4):** Ejercicios multiarticulares con alta demanda de fuerza. Descanso completo de 1.5 a 2 minutos entre series.
+3. **Bloque Accesorio y Core (Ejercicios 5 a 8):** Ejercicios unilaterales, de aislamiento y control abdominal para estabilidad lumbopélvica. Descanso de 60 a 90 segundos.
+4. **Vuelta a la Calma (Descompresión):** 5 minutos de respiración diafragmática y estiramientos estáticos suaves para activar el sistema parasimpático y acelerar la recuperación.
+
+---
+
+## DÍA 1: Titán (Fuerza & Core)
+*Enfoque en construir una base sólida de fuerza global y control anti-rotación del core.*
+
+- **1. Sentadillas en Copa (Goblet Squats)**
+  - **Shared Equipment**: Zona de Mancuernas / Kettlebells
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=f-Vf2yRRqOg)
+  - **Volumen**: 3-4 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Carga pesada buscando profundidad máxima y estabilidad pélvica profunda (RIR 2).
+    - **Lina**: Carga moderada con foco en la postura recta y descenso controlado en 3 segundos (tempo excéntrico).
+
+- **2. Remo en Suspensión TRX o Remo Inclinado (Bent Row)**
+  - **Shared Equipment**: Estación de TRX / Barra y Discos
+  - **Video Tutorial**: [TRX Row](https://www.youtube.com/watch?v=IEky4NL3LLQ) | [Bent Row](https://www.youtube.com/watch?v=6gvmcqr226U)
+  - **Volumen**: 3-4 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Remo inclinado pesado con barra olímpica para fuerza de tirón e hipertrofia de espalda.
+    - **Lina**: Remo TRX ajustando el ángulo corporal para máxima retracción escapular y aislamiento.
+
+- **3. Sentadilla Unilateral / Zancadas (Split Squats)**
+  - **Shared Equipment**: Banco Plano y Mancuernas
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=Wcmg-3iHwjQ)
+  - **Volumen**: 2-3 series x 8-10 reps por lado
+  - **Progreso Personalizado**:
+    - **Michael**: Sentadilla Búlgara pesada con el pie trasero elevado en el banco.
+    - **Lina**: Zancada estática (Split Squat) progresando el rango de movimiento hasta rozar el suelo de forma estable.
+
+- **4. Press de Hombro Vertical (Overhead Presses)**
+  - **Shared Equipment**: Mancuernas / Barra de Peso Libre
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=22gQUcvcW1o)
+  - **Volumen**: 2-3 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Press Militar de pie con barra libre para involucrar estabilizadores del core.
+    - **Lina**: Press de hombros sentada con mancuernas para aislamiento estricto y seguridad en la lumbar.
+
+- **5. Curl de Isquios en Pelota de Estabilidad (Stability Ball Leg Curl)**
+  - **Shared Equipment**: Fitball / Colchonetas
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=spowfx8sOKM)
+  - **Volumen**: 2-3 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Cadera elevada al máximo con contracción isométrica de 2 segundos arriba.
+    - **Lina**: Extensión lenta y controlada de las piernas reteniendo la pelota (foco excéntrico).
+
+- **6. Extensiones de Tríceps tras Nuca (Triceps Extensions)**
+  - **Shared Equipment**: Mancuerna Única / Estación de Poleas
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=LXkCrxn3caQ)
+  - **Volumen**: 2-3 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Carga pesada con mancuerna a dos manos tras nuca o fondos de tríceps en banco.
+    - **Lina**: Extensión en polea alta con cuerda buscando la máxima extensión de codo.
+
+- **7. Arrastre de Pesa Rusa en Plancha Alta (Tall Plank KB Drags)**
+  - **Shared Equipment**: Colchoneta & Kettlebell o Mancuerna
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=6bBaM_ot1pE)
+  - **Volumen**: 2-3 series x 8-10 reps por lado
+  - **Progreso Personalizado**:
+    - **Michael**: Kettlebell pesada (16-24 kg) manteniendo caderas completamente paralelas al suelo.
+    - **Lina**: Carga ligera centrándose en el bloqueo del core y control de la respiración.
+
+- **8. Supermans (Extensión Lumbar)**
+  - **Shared Equipment**: Colchonetas de Fitness
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=dKCTIFR1sCc)
+  - **Volumen**: 2-3 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Sostener contracción de glúteos e interescapular por 3 segundos arriba en cada rep.
+    - **Lina**: Movimiento controlado sin tirones bruscos en la columna.
+
+---
+
+## DÍA 2: Encélado (Tensión Mecánica)
+*Enfoque en hipertrofia equilibrada de tren superior y patrones de empuje-tracción horizontal.*
+
+- **1. Press de Banca Plano (Bench Press)**
+  - **Shared Equipment**: Banco Plano & Barra o Mancuernas
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=hm_TrCkhJgo)
+  - **Volumen**: 3-4 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Barra cargada buscando sobrecarga de peso gradual y técnica estricta.
+    - **Lina**: Press con mancuernas para mayor rango y comodidad en los hombros.
+
+- **2. Zancadas Inversas (Reverse Lunges)**
+  - **Shared Equipment**: Zona de Pesas Libres / Mancuernas
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=xrPteyQLGAo)
+  - **Volumen**: 3-4 series x 8-10 reps por lado
+  - **Progreso Personalizado**:
+    - **Michael**: Mancuernas pesadas ejecutando zancadas alternadas con control.
+    - **Lina**: Zancada hacia atrás con mancuernas ligeras, empujando desde el talón de la pierna delantera.
+
+- **3. Aperturas Inversas / Pájaros (Reverse Flyes)**
+  - **Shared Equipment**: Mancuernas Ligeras
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=hf7jnF45N_I)
+  - **Volumen**: 2-3 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Torso inclinado a 90 grados, elevación explosiva y frenado controlado.
+    - **Lina**: Sentada con torso inclinado, enfocada en apretar las escápulas atrás.
+
+- **4. Hip Thrusts o Puentes de Glúteo (Bridges)**
+  - **Shared Equipment**: Banco Plano & Barra o Colchonetas
+  - **Video Tutorial**: [Hip Thrust](https://www.youtube.com/watch?v=76t0z3Tdx6Q) | [Bridge](https://www.youtube.com/watch?v=FJNPGhF1R-Y)
+  - **Volumen**: 2-3 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Hip Thrust pesado con barra cargada y contracción fuerte de glúteo arriba.
+    - **Lina**: Hip Thrust con mancuerna o disco, con pausa de 2 segundos en el bloqueo de cadera.
+
+- **5. Sentadillas Laterales / Cosacas (Lateral Squats)**
+  - **Shared Equipment**: Espacio Libre (Mancuerna/Kettlebell opcional)
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=0lLIWWSmMm4)
+  - **Volumen**: 2-3 series x 8-10 reps por lado
+  - **Progreso Personalizado**:
+    - **Michael**: Carga Goblet con kettlebell buscando máxima profundidad en la flexión lateral.
+    - **Lina**: Con peso corporal, agarrada a una polea o soporte para mayor estabilidad si es necesario.
+
+- **6. Elevaciones Laterales con Mancuerna (Lateral Raises)**
+  - **Shared Equipment**: Mancuernas Ligeras
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=XPPfnSEATJA)
+  - **Volumen**: 2-3 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Elevaciones estrictas sin impulso (hombros atrás). Bajada controlada.
+    - **Lina**: Doble progresión: domina las 12 repeticiones limpias antes de pensar en subir el peso.
+
+- **7. Rotaciones con Banda (Banded) o en Polea (Cable Rotations)**
+  - **Shared Equipment**: Estación de Poleas o Banda Elástica
+  - **Video Tutorial**: [Banded Rotations](https://www.youtube.com/watch?v=L5J3juj8PYg) | [Cable Rotations](https://www.youtube.com/watch?v=58GS24huLx4)
+  - **Volumen**: 2-3 series x 8-10 reps por lado
+  - **Progreso Personalizado**:
+    - **Michael**: Giro explosivo y retención isométrica en polea media.
+    - **Lina**: Rotación controlada con banda elástica, sintiendo el trabajo oblicuo.
+
+- **8. Plancha Frontal Isométrica (Front Plank)**
+  - **Shared Equipment**: Colchoneta
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=rCk2uctmMwc)
+  - **Volumen**: 2-3 series x 20-30 segundos
+  - **Progreso Personalizado**:
+    - **Michael**: Plancha RKC activa (apretando activamente codos hacia pies y contrayendo glúteos).
+    - **Lina**: Mantener postura neutral perfecta controlando la respiración constante.
+
+---
+
+## DÍA 3: Mimas (Bisagra & Poder)
+*Enfoque en tracción vertical, bisagra de cadera pesada y fuerza reactiva unilateral.*
+
+- **1. Peso Muerto Convencional o Rumano (Deadlifts)**
+  - **Shared Equipment**: Plataforma / Barra y Discos
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=rw4E6qodyyk)
+  - **Volumen**: 3-4 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Peso Muerto convencional pesado desde el suelo con barra olímpica para fuerza de cadena posterior (BJJ).
+    - **Lina**: Peso Muerto Rumano (RDL) con mancuernas o barra ligera, enfatizando el estiramiento profundo de isquios y flexión de cadera.
+
+- **2. Jalón al Pecho (Lat Pulldowns) o Dominadas (Pullups)**
+  - **Shared Equipment**: Polea Alta de Jalón / Barra de Dominadas
+  - **Video Tutorial**: [Lat Pulldown](https://www.youtube.com/watch?v=JGeRYIZdojU) | [Pullups](https://www.youtube.com/watch?v=LWSSa1SPges)
+  - **Volumen**: 3-4 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Dominadas estrictas libres o lastradas (rango completo: de bloqueo inferior a barbilla sobre la barra).
+    - **Lina**: Jalón en polea alta con barra ancha, retrayendo escápulas y llevando la barra al pecho superior.
+
+- **3. Subidas al Cajón con Mancuernas (Step Ups)**
+  - **Shared Equipment**: Cajón Pliométrico & Mancuernas
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=DxUNi119Qzs)
+  - **Volumen**: 2-3 series x 8-10 reps por lado
+  - **Progreso Personalizado**:
+    - **Michael**: Subida explosiva a cajón de 60cm controlando la bajada en 3 segundos sin rebote.
+    - **Lina**: Subida controlada a cajón de 45cm asistiendo el empuje únicamente con la pierna de apoyo elevada.
+
+- **4. Press de Banca Inclinado (Incline Bench Press)**
+  - **Shared Equipment**: Banco Inclinado & Barra o Mancuernas
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=Fv5EYoJfRt4)
+  - **Volumen**: 2-3 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Press inclinado pesado con barra para fuerza e hipertrofia del pectoral superior.
+    - **Lina**: Press inclinado con mancuernas para mayor confort articular y equilibrio lateral.
+
+- **5. Zancadas Cruzadas / Reverencia (Curtsy Lunges)**
+  - **Shared Equipment**: Mancuernas Ligeras / Moderadas
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=XoglWOLQJVA)
+  - **Volumen**: 2-3 series x 8-10 reps por lado
+  - **Progreso Personalizado**:
+    - **Michael**: Zancada cruzada dinámica pesada sosteniendo mancuernas a los costados.
+    - **Lina**: Zancada de reverencia suave vigilando que la rodilla delantera no sufra valgo.
+
+- **6. Curl de Bíceps Alterno (Biceps Curls)**
+  - **Shared Equipment**: Mancuernas
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=SB41wiGbkaw)
+  - **Volumen**: 2-3 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Curl supino estricto de pie sin balanceos. Bajada lenta controlada de 3 segundos.
+    - **Lina**: Curl martillo con mancuernas sentado para aislar flexores de codo.
+
+- **7. Press Pallof / Anti-Rotación Estática (Anti-Rotation Presses)**
+  - **Shared Equipment**: Estación de Poleas o Banda Elástica
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=9rN0mNLOxXc)
+  - **Volumen**: 2-3 series x 8-10 reps por lado
+  - **Progreso Personalizado**:
+    - **Michael**: Sostenimiento isométrico de 3 segundos al frente en máxima extensión en polea cargada.
+    - **Lina**: Estabilización estática con banda elástica alineada perfectamente al esternón.
+
+- **8. Abdominales Tuck Up (Tuck Ups)**
+  - **Shared Equipment**: Colchoneta
+  - **Video Tutorial**: [Ver Video](https://www.youtube.com/watch?v=_ytHhpMgFTI)
+  - **Volumen**: 2-3 series x 10-12 reps
+  - **Progreso Personalizado**:
+    - **Michael**: Extensión y flexión rápida de core con freno isométrico antes de tocar suelo.
+    - **Lina**: Control del rango para evitar sobrecargar o arquear la zona lumbar.
+
+---
+
+## GUÍA DE SOBRECARGA PROGRESIVA (CÓMO PROGRESAR)
+
+Educa y aplica estas 6 variables en tus rutinas para evitar el estancamiento y asegurar progreso a largo plazo:
+
+1. **Aumento de Volumen (Sets & Reps):** Incrementa las repeticiones por serie (ej. de 8 a 10 reps) o añade una serie extra manteniendo el peso.
+2. **Aumento de Peso:** Agrega resistencia de forma milimétrica (ej. subir 2.5 - 5 lbs o 1-2 kg). Hazlo solo si dominas la técnica y el rango de reps completo.
+3. **Aumento de Rango de Movimiento (ROM):** Trabaja en un recorrido articular más profundo o añade déficit (ej. elevar el pie delantero en zancadas).
+4. **Variación de Tempo (Velocidad):** Modifica los segundos empleados en cada fase del levantamiento (ej. bajar en 4 segundos, pausar 2 segundos abajo).
+5. **Aumento de Densidad:** Reduce paulatinamente el tiempo de descanso entre series (ej. pasar de 90 segundos a 75 segundos).
+6. **Perfeccionamiento Técnico:** Elimina por completo las trampas corporales o impulsos dinámicos. Consigue mayor rigidez abdominal y alineación ósea perfecta.

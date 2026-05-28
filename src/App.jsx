@@ -9,11 +9,11 @@ import EndSplash from './components/EndSplash';
 
 export default function App() {
     const [isAppReady, setIsAppReady] = useState(false);
-    const [appState, setAppState] = useState('onboarding');
+    const [appState, setAppState] = useState('dashboard');
 
     // Dashboard State
     const [activeProfile, setActiveProfile] = useState('both');
-    const [selectedDay, setSelectedDay] = useState('A');
+    const [selectedDay, setSelectedDay] = useState('D1');
     const [activeTab, setActiveTab] = useState('routine'); 
 
     // Training State

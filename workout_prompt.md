@@ -1,3 +1,30 @@
+# Optimized System Prompt: CoupleFit 3-Day Strength Program Migration
+
+This document serves as the **final optimized prompt** and **system instruction package** to execute the migration of the CoupleFit application to a gender-neutral, progressive **3-Day Strength Program**. 
+
+---
+
+## SECTION 1: CORE APPLICATION INSTRUCTIONS
+
+You are a senior frontend developer and fitness UX expert. Your task is to refactor the **CoupleFit** codebase to transition from the old 4-day, gender-divided plan ("Him" vs "Her" - Michael vs Lina) to a unified **3-Day Strength Program** based on the UMT Fitness curriculum.
+
+### Core Architecture Principles:
+1. **Remove Gender Divisions:** Eliminate the dual "Lina" and "Michael" exercise profiles from the data layer. Both partners will now follow the **same exercise base** at the same training station.
+2. **Individualized Load Customization:** Even though partners share the same exercise, they customize their difficulty individually by adjusting the load (adding/removing weight), range of motion (ROM), or tempo according to their fitness level. The UI must reflect this shared-station but independent-load dynamic.
+3. **Descriptive Training Days:** Replace the generic "Day 1, 2, and 3" names with motivating, engaging Spanish titles:
+   - **Día 1: Cimientos de Poder (Fuerza Total & Estabilidad Core)**
+   - **Día 2: Esculpiendo el Templo (Tensión Mecánica & Empuje-Tracción)**
+   - **Día 3: Rendimiento Atlético (Bisagra, Cadena Posterior & Potencia)**
+4. **Video Tutorial Integration:** Every exercise must have its corresponding YouTube tutorial link embedded directly as a clickable, premium tutorial button in the UI.
+5. **Detailed Progression Mechanics:** Integrate clear, actionable scientific progression guidelines in the "Science & Tips" tab, detailing the 6 ways to achieve progressive overload (Volume, Weight, ROM, Tempo, Density, and Technique).
+
+---
+
+## SECTION 2: WORKOUT DATABASE SCHEMA (`src/data/workoutData.js`)
+
+Overwrite `src/data/workoutData.js` with the following unified database structure. Both partners share the movement, but the notes indicate how each can customize their progression.
+
+```javascript
 export const workoutPlan = {
   D1: [
     {
@@ -11,7 +38,7 @@ export const workoutPlan = {
       videoUrl: 'https://www.youtube.com/watch?v=f-Vf2yRRqOg',
       progressionNotes: {
         michael: 'Carga pesada enfocado en profundidad máxima (RIR 2).',
-        lina: 'Carga moderada con foco en la postura recta y descenso controlado en 3 segundos.'
+        lina: 'Carga moderada controlando la bajada en 3 segundos para tensión mecánica.'
       }
     },
     {
@@ -60,7 +87,7 @@ export const workoutPlan = {
     {
       id: 'D1-5',
       category: 'Aislamiento Posterior (Isquios)',
-      name: 'Curl de Isquiotibiales en Pelota de Estabilidad (Stability Ball Leg Curl)',
+      name: 'Curl de Isquiotibiales en Fitball (Stability Ball Leg Curl)',
       description: 'Flexión de rodilla suspendida en pelota de estabilidad. Fortalece isquios, glúteos y el control del core.',
       sets: '2-3',
       reps: '10-12',
@@ -271,7 +298,7 @@ export const workoutPlan = {
       videoUrl: 'https://www.youtube.com/watch?v=DxUNi119Qzs',
       progressionNotes: {
         michael: 'Subidas explosivas a cajón de 60cm controlando la bajada en 3s sin dejarse caer.',
-        lina: 'Subidas controladas a cajón de 45cm asistiendo el empuje únicamente con la pierna de apoyo elevada.'
+        lina: 'Subidas controladas a cajón de 45cm asistiendo el empuje únicamente con la pierna elevada.'
       }
     },
     {
@@ -285,7 +312,7 @@ export const workoutPlan = {
       videoUrl: 'https://www.youtube.com/watch?v=Fv5EYoJfRt4',
       progressionNotes: {
         michael: 'Press inclinado con barra buscando máxima fuerza e hipertrofia.',
-        lina: 'Press inclinado con mancuernas para cuidar la articulación del hombro y elegir estabilidad.'
+        lina: 'Press inclinado con mancuernas para cuidar la articulación del hombro y estabilizar.'
       }
     },
     {
@@ -298,8 +325,8 @@ export const workoutPlan = {
       sharedEquipment: 'Zona Libre & Mancuernas',
       videoUrl: 'https://www.youtube.com/watch?v=XoglWOLQJVA',
       progressionNotes: {
-        michael: 'Zancadas cruzadas dinámicas pesadas sosteniendo mancuernas a los costados.',
-        lina: 'Zancadas de reverencia suave vigilando que la rodilla delantera no sufra valgo.'
+        michael: 'Zancadas cruzadas dinámicas cargando mancuernas pesadas a los lados.',
+        lina: 'Zancadas de reverencia enfocándose en el control de la rodilla delantera para evitar valgo.'
       }
     },
     {
@@ -379,3 +406,74 @@ export const expertTips = [
     description: 'Para terminar la rutina en menos de 60 minutos, pueden realizar los ejercicios de forma alternada (Supersets). Por ejemplo, alternar Sentadilla (D1-1) con Remo (D1-2) para optimizar el tiempo de descanso.'
   }
 ];
+```
+
+---
+
+## SECTION 3: DETAILED TRAINING STAGES & PHASES (EXPLANATIONS)
+
+The application UI must clearly explain each training stage and phase so the user can easily follow along during a session.
+
+### 1. Las Fases del Entrenamiento Diario:
+* **Fase 1: Activación y Movilidad (Calentamiento General):**
+  - **Duración:** 5 a 10 minutos.
+  - **Objetivo:** Incrementar la temperatura central del cuerpo, lubricar articulaciones y activar el sistema neuromuscular a través de cardio ligero y rotaciones específicas (caderas/hombros).
+* **Fase 2: Bloque de Fuerza Principal (Ejercicios 1 a 4):**
+  - **Objetivo:** Estimular fibras de contracción rápida, reclutar unidades motoras y sobrecargar progresivamente los patrones de movimiento primarios (Sentadilla, Empuje, Bisagra, Tracción).
+  - **Esquema:** Sets pesados con descanso completo de 1.5 a 2 minutos.
+* **Fase 3: Bloque Accesorio y Core (Ejercicios 5 a 8):**
+  - **Objetivo:** Corregir asimetrías unilaterales, potenciar la estabilidad core anti-rotación e hipertrofiar grupos musculares secundarios (isquiotibiales, brazos, hombro posterior).
+  - **Esquema:** Sets continuados con mayor enfoque en volumen y tensión mecánica. Descanso de 60 a 90 segundos.
+* **Fase 4: Vuelta a la Calma y Descompresión:**
+  - **Duración:** 5 minutos.
+  - **Objetivo:** Activar el sistema parasimpático para detener la liberación de cortisol y adrenalina, acelerando los procesos de síntesis proteica y recuperación mitocondrial mediante estiramientos suaves y respiración diafragmática profunda.
+
+---
+
+## SECTION 4: THE 6 METHODS OF PROGRESSIVE OVERLOAD (FOR INTERACTIVE HELP / IN-APP SCIENCE & TIPS)
+
+Present these 6 scientific ways to progress to the user dynamically inside the dashboard to educate them:
+
+1. **Aumento de Volumen (Sets & Reps):** Incrementar la cantidad de repeticiones o series semanales manteniendo la misma carga de peso.
+   - *Ejemplo:* Pasar de hacer 3 series de 8 reps a 3 series de 10 reps.
+2. **Aumento de Carga (Peso):** Incrementar gradualmente la resistencia de la barra o mancuerna manteniendo la calidad del movimiento.
+   - *Ejemplo:* Aumentar entre 2.5 y 5 lbs (1.25 - 2.5 kg) por semana cuando se domine el rango de repeticiones establecido.
+3. **Aumento de Rango de Movimiento (ROM):** Ejecutar la misma repetición bajando más profundo o aumentando el recorrido vertical (déficits).
+   - *Ejemplo:* Sentadilla Búlgara progresando de una profundidad corta -> bajada hasta rozar el suelo con la rodilla -> elevar el pie delantero para un déficit extremo.
+4. **Variación del Tempo (Control del Ritmo):** Manipular la velocidad de ejecución. Ralentizar la fase de bajada (excéntrica) o añadir pausas estáticas en máxima tensión (isométricos).
+   - *Ejemplo:* Realizar Goblet Squats bajando de forma controlada en 3-5 segundos (Fase Excéntrica Lenta 5-1-1).
+5. **Aumento de Densidad (Capacidad de Trabajo):** Completar el mismo número de series y repeticiones en menos tiempo total, acortando inteligentemente los periodos de descanso.
+   - *Ejemplo:* Disminuir los intervalos de descanso entre series de 90 segundos a 75 segundos progresivamente.
+6. **Perfeccionamiento Técnico (Forma Impecable):** Lograr una mejor alineación de la columna, mayor estabilidad del core y una contracción más pura del músculo objetivo. Grabar la forma y eliminar cualquier impulso o balanceo.
+
+---
+
+## SECTION 5: STEP-BY-STEP CODE IMPLEMENTATION GUIDE
+
+To successfully migrate the React PWA, follow these concrete implementation steps:
+
+### STEP 1: Update the Workout Data Structure
+- Overwrite `src/data/workoutData.js` with the clean 3-day data layout from **Section 2**.
+- Unify the structure so that both partners leverage the shared exercises, while retaining `progressionNotes` for personalized guidance.
+
+### STEP 2: Refactor `Dashboard.jsx`
+- Replace the Day selector buttons (`Day A, B, C, D`) with a premium 3-day selector:
+  - **Día 1: Cimientos de Poder** (Fuerza Total / Estabilidad Core)
+  - **Día 2: Esculpiendo el Templo** (Tensión Mecánica / Empuje-Tracción)
+  - **Día 3: Rendimiento Atlético** (Bisagra / Cadena Posterior / Potencia)
+- Adapt the preview grid to map correct keys (`D1`, `D2`, `D3`).
+
+### STEP 3: Refactor `TrainingMode.jsx` (Immersive Mode)
+- Modify the split-screen card: instead of showing different exercises, render the **unified exercise name and description** at the top with the embedded **YouTube tutorial link**.
+- Render two distinct customized sections side-by-side at the bottom:
+  - **Zona Michael (BJJ/Fuerza):** Display Michael's custom progression notes, target reps, sets, and a personalized weight tracking input.
+  - **Zona Lina (Hipertrofia):** Display Lina's custom progression notes, target reps, sets, and a personalized weight/rep tracker.
+- Maintain all modern HIG interactions: backdrop blur, haptics on complete, safe margins, and swipe gestures.
+
+### STEP 4: Integrate detailed explanations
+- Render the 4 training stages as an interactive header or sidebar inside the training carousel so partners know what stage they are in (e.g. *Fase 1: Activación*, *Fase 2: Fuerza Principal*).
+- Integrate the **6 Progressive Overload Methods** directly in the "Science & Tips" tab inside the control panel.
+
+### STEP 5: Verify build & PWA compliance
+- Run static checks and ensure `npm run build` is successful.
+- Check service workers and installability in home screen.

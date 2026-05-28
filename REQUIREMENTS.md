@@ -8,7 +8,7 @@ The application handles predefined profiles tailored to specific physiological n
 
 - **User A (Michael)**: Advanced level. Focus on functional strength and conditioning for Brazilian Jiu-Jitsu (BJJ). Requires management of Central Nervous System (CNS) fatigue.
 - **User B (Lina)**: Beginner level. Focus on hypertrophy and metabolic health. Requires strict time monitoring due to a tendency for hypoglycemia (blood sugar drops).
-- **Couple Mode**: A combined view that allows both users to see their respective exercises simultaneously at the same training station.
+- **Couple Mode**: A combined view that allows both users to perform the shared movement base simultaneously at the same training station with their individual progression weights and notes.
 
 ## 3. Functional Specifications
 
@@ -21,20 +21,24 @@ The application handles predefined profiles tailored to specific physiological n
 The main panel must contain tabbed navigation (Tabs):
 
 #### Tab 1: Daily Plan (Rutina)
-- **Training day selector**: Day A (Squat Focus), Day B (Hinge Focus), Day C (Full Body), Day D (Zone 2 Cardio).
+- **Training day selector**: 3-day block with Spanish names based on Saturn's moons:
+  - **Día 1: Titán** (Fuerza & Core)
+  - **Día 2: Encélado** (Tensión Mecánica)
+  - **Día 3: Mimas** (Bisagra & Poder)
 - **Training sequence preview**: Chronological list of blocks to be executed, showing the category and shared equipment.
 - **Call to Action (CTA) button**: "Iniciar Sesión Ahora" (Start Session Now).
 
 #### Tab 2: Science & Tips (Consejos y Ciencia)
-- Display of informational cards with scientific backing and clinical recommendations (e.g., Autoregulation, Peri-workout Nutrition, Progressive Overload).
+- Display of informational cards with scientific backing and clinical recommendations (e.g., Autoregulation, Hypoglycemia Monitoring, and the 6 Methods of Progressive Overload: Volume, Weight, ROM, Tempo, Density, and Technique).
 
 ### 3.3. Immersive Training Mode (Training Mode)
 - **Carousel Navigation**: The interface must show one exercise at a time to avoid distractions. It must include controls for "Next", "Previous", and "Mark as Completed".
-- **Split-Screen**: If "Pareja" mode is active, the exercise card must present both user's routines simultaneously showing:
-  - Name and description of the specific exercise for each profile.
-  - Number of sets (SERIES) and repetitions (REPS).
-  - Execution notes or tips (Nota).
-  - External link to a tutorial video (YouTube).
+- **Split-Screen**: If "Pareja" mode is active, the exercise card must present:
+  - **Unified Header**: The shared exercise name, description, shared equipment, and direct YouTube tutorial link.
+  - **Customized Bottom Sections (Side-by-Side)**: Two distinct areas for Michael and Lina showing:
+    - Target sets and repetitions.
+    - Specific progression notes (e.g., tempo, safety tips).
+    - Individualized weight/rep input tracker to record workout data dynamically.
 - **Progress Bar**: A visual indicator at the top showing the percentage of completed blocks.
 - **Completion**: A dedicated "Finalizar Sesión" (Finish Session) button that appears only on the last exercise. Upon pressing, the application transitions to a celebratory "Splash Screen" (`EndSplash`), providing visual feedback before automatically returning to the Dashboard and resetting the state.
 
@@ -47,15 +51,14 @@ The main panel must contain tabbed navigation (Tabs):
   - The banner must be manually dismissible.
 
 ## 4. Workout Data Structure
-The plan must support a JSON structure that assigns:
-- **Main category and Shared equipment** (e.g., "Squat Pattern", "Free Weights Zone").
-- **User-specific attributes**: `name`, `description`, `sets`, `reps`, `notes`, `videoUrl`.
+The plan must support a unified JSON structure that assigns:
+- **Shared properties**: `name`, `description`, `sets`, `reps`, `sharedEquipment`, and `videoUrl` (plus `videoUrlAlternative` where applicable).
+- **User-specific attributes**: `progressionNotes` containing custom guidelines for both `michael` and `lina`.
 
 **Distribution**:
-- **Day A**: Squat / Push Focus
-- **Day B**: Hinge / Pull Focus
-- **Day C**: Full Body Mix / Correctives
-- **Day D**: Zone 2 Cardio / Active Recovery and Core
+- **Día 1: Titán** (Fuerza & Core)
+- **Día 2: Encélado** (Tensión Mecánica)
+- **Día 3: Mimas** (Bisagra & Poder)
 
 ## 5. Non-Functional & Technical Requirements
 
