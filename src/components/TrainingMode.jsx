@@ -122,6 +122,11 @@ export default function TrainingMode({
     const activeSets = exerciseLogs[currentEx.id] || [];
 
     const getOptionLabels = () => {
+        // Warmups
+        if (currentEx.id === 'D1-WU') return { primary: 'Cinta / Elíptica', alternative: 'Bicicleta Estática / Bandas' };
+        if (currentEx.id === 'D2-WU') return { primary: 'Cinta / Elíptica', alternative: 'Bicicleta Estática / Bandas' };
+        if (currentEx.id === 'D3-WU') return { primary: 'Cinta / Elíptica', alternative: 'Bicicleta Estática / Bandas' };
+
         // D1
         if (currentEx.id === 'D1-1') return { primary: 'Sentadilla Copa/Barra', alternative: 'Prensa de Piernas' };
         if (currentEx.id === 'D1-2') return { primary: 'TRX / Remo Barra', alternative: 'Remo en Máquina' };
@@ -498,14 +503,24 @@ export default function TrainingMode({
                     </div>
 
                     {/* Table Headers */}
-                    <div className="grid grid-cols-12 gap-1 text-[11px] font-bold text-gray-500 uppercase pb-2 px-1">
-                        <div className="col-span-1 text-center">Ser</div>
-                        <div className="col-span-2 text-center">Prev</div>
-                        <div className="col-span-3 text-center">Peso (kg)</div>
-                        <div className="col-span-2 text-center">Reps</div>
-                        <div className="col-span-2 text-center">Fallo</div>
-                        <div className="col-span-2 text-center">Log</div>
-                    </div>
+                    {currentEx.measurementType === 'time' ? (
+                        <div className="grid grid-cols-12 gap-1 text-[11px] font-bold text-gray-500 uppercase pb-2 px-1">
+                            <div className="col-span-1 text-center">Ser</div>
+                            <div className="col-span-2 text-center">Prev</div>
+                            <div className="col-span-5 text-center">Duración</div>
+                            <div className="col-span-2 text-center">Fallo</div>
+                            <div className="col-span-2 text-center">Log</div>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-12 gap-1 text-[11px] font-bold text-gray-500 uppercase pb-2 px-1">
+                            <div className="col-span-1 text-center">Ser</div>
+                            <div className="col-span-2 text-center">Prev</div>
+                            <div className="col-span-3 text-center">Peso (kg)</div>
+                            <div className="col-span-2 text-center">Reps</div>
+                            <div className="col-span-2 text-center">Fallo</div>
+                            <div className="col-span-2 text-center">Log</div>
+                        </div>
+                    )}
 
                     {/* Table Rows */}
                     <div className="space-y-2">
@@ -513,9 +528,15 @@ export default function TrainingMode({
                             const prevLog = getPreviousLog(currentEx.id);
                             const prevSet = prevLog?.sets?.[idx];
                             
-                            // Displays original absolute weights in Previo history tag so they can see their real absolute history,
-                            // while the input box pre-populates with the scaled auto-regulated weight suggestions!
-                            const prevSuggestionText = prevSet ? `${prevSet.weight}k × ${prevSet.reps}` : '—';
+                            const formatTimeVal = (sec) => {
+                                if (sec >= 60) return `${Math.floor(sec / 60)}m`;
+                                return `${sec}s`;
+                            };
+
+                            // Displays original absolute weights or time in Previo history tag
+                            const prevSuggestionText = prevSet 
+                                ? (currentEx.measurementType === 'time' ? formatTimeVal(prevSet.reps) : `${prevSet.weight}k × ${prevSet.reps}`) 
+                                : '—';
 
                             return (
                                 <div 
@@ -538,44 +559,86 @@ export default function TrainingMode({
                                         {prevSuggestionText}
                                     </div>
 
-                                    {/* Weight Input Box with Quick Add/Sub buttons */}
-                                    <div className="col-span-3 flex items-center justify-center gap-0.5">
-                                        <button 
-                                            onClick={() => updateSetField(idx, 'weight', Math.max(0, (Number(set.weight) || 0) - 2.5))}
-                                            disabled={set.completed}
-                                            className="w-4 h-4 bg-[#2C2C2E] rounded flex items-center justify-center text-[10px] font-bold text-gray-400 active:scale-90 disabled:opacity-30"
-                                        >
-                                            -
-                                        </button>
-                                        <input 
-                                            type="number"
-                                            step="0.5"
-                                            value={set.weight === 0 ? '' : set.weight}
-                                            placeholder={prevSet ? prevSet.weight : "0"}
-                                            disabled={set.completed}
-                                            onChange={(e) => updateSetField(idx, 'weight', parseFloat(e.target.value) || 0)}
-                                            className="w-10 h-7 bg-[#2C2C2E] text-center text-[13px] font-bold rounded-md border-0 focus:ring-1 focus:ring-ios-blue text-white p-0 disabled:opacity-60 font-mono"
-                                        />
-                                        <button 
-                                            onClick={() => updateSetField(idx, 'weight', (Number(set.weight) || 0) + 2.5)}
-                                            disabled={set.completed}
-                                            className="w-4 h-4 bg-[#2C2C2E] rounded flex items-center justify-center text-[10px] font-bold text-gray-400 active:scale-90 disabled:opacity-30"
-                                        >
-                                            +
-                                        </button>
-                                    </div>
+                                    {currentEx.measurementType === 'time' ? (
+                                        /* Time Duration Input Box with Quick Add/Sub buttons */
+                                        <div className="col-span-5 flex items-center justify-center gap-1.5">
+                                            <button 
+                                                onClick={() => {
+                                                    const step = currentEx.id.includes('WU') ? 60 : 5;
+                                                    updateSetField(idx, 'reps', Math.max(0, (Number(set.reps) || 0) - step));
+                                                    updateSetField(idx, 'weight', 0);
+                                                }}
+                                                disabled={set.completed}
+                                                className="px-1.5 py-0.5 bg-[#2C2C2E] rounded text-[10px] font-bold text-gray-400 active:scale-90 disabled:opacity-30 select-none shrink-0"
+                                            >
+                                                -{currentEx.id.includes('WU') ? '1m' : '5s'}
+                                            </button>
+                                            <input 
+                                                type="number"
+                                                value={set.reps === 0 ? '' : set.reps}
+                                                placeholder={prevSet ? prevSet.reps : (currentEx.id.includes('WU') ? "600" : "30")}
+                                                disabled={set.completed}
+                                                onChange={(e) => {
+                                                    updateSetField(idx, 'reps', parseInt(e.target.value) || 0);
+                                                    updateSetField(idx, 'weight', 0);
+                                                }}
+                                                className="w-14 h-7 bg-[#2C2C2E] text-center text-[13px] font-bold rounded-md border-0 focus:ring-1 focus:ring-ios-blue text-white p-0 disabled:opacity-60 font-mono"
+                                            />
+                                            <span className="text-[10px] font-bold text-gray-500 select-none">s</span>
+                                            <button 
+                                                onClick={() => {
+                                                    const step = currentEx.id.includes('WU') ? 60 : 5;
+                                                    updateSetField(idx, 'reps', (Number(set.reps) || 0) + step);
+                                                    updateSetField(idx, 'weight', 0);
+                                                }}
+                                                disabled={set.completed}
+                                                className="px-1.5 py-0.5 bg-[#2C2C2E] rounded text-[10px] font-bold text-gray-400 active:scale-90 disabled:opacity-30 select-none shrink-0"
+                                            >
+                                                +{currentEx.id.includes('WU') ? '1m' : '5s'}
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            {/* Weight Input Box with Quick Add/Sub buttons */}
+                                            <div className="col-span-3 flex items-center justify-center gap-0.5">
+                                                <button 
+                                                    onClick={() => updateSetField(idx, 'weight', Math.max(0, (Number(set.weight) || 0) - 2.5))}
+                                                    disabled={set.completed}
+                                                    className="w-4 h-4 bg-[#2C2C2E] rounded flex items-center justify-center text-[10px] font-bold text-gray-400 active:scale-90 disabled:opacity-30"
+                                                >
+                                                    -
+                                                </button>
+                                                <input 
+                                                    type="number"
+                                                    step="0.5"
+                                                    value={set.weight === 0 ? '' : set.weight}
+                                                    placeholder={prevSet ? prevSet.weight : "0"}
+                                                    disabled={set.completed}
+                                                    onChange={(e) => updateSetField(idx, 'weight', parseFloat(e.target.value) || 0)}
+                                                    className="w-10 h-7 bg-[#2C2C2E] text-center text-[13px] font-bold rounded-md border-0 focus:ring-1 focus:ring-ios-blue text-white p-0 disabled:opacity-60 font-mono"
+                                                />
+                                                <button 
+                                                    onClick={() => updateSetField(idx, 'weight', (Number(set.weight) || 0) + 2.5)}
+                                                    disabled={set.completed}
+                                                    className="w-4 h-4 bg-[#2C2C2E] rounded flex items-center justify-center text-[10px] font-bold text-gray-400 active:scale-90 disabled:opacity-30"
+                                                >
+                                                    +
+                                                </button>
+                                            </div>
 
-                                    {/* Reps Input */}
-                                    <div className="col-span-2 flex items-center justify-center gap-0.5">
-                                        <input 
-                                            type="number"
-                                            value={set.reps === 0 ? '' : set.reps}
-                                            placeholder={prevSet ? prevSet.reps : "10"}
-                                            disabled={set.completed}
-                                            onChange={(e) => updateSetField(idx, 'reps', parseInt(e.target.value) || 0)}
-                                            className="w-8 h-7 bg-[#2C2C2E] text-center text-[13px] font-bold rounded-md border-0 focus:ring-1 focus:ring-ios-blue text-white p-0 disabled:opacity-60 font-mono"
-                                        />
-                                    </div>
+                                            {/* Reps Input */}
+                                            <div className="col-span-2 flex items-center justify-center gap-0.5">
+                                                <input 
+                                                    type="number"
+                                                    value={set.reps === 0 ? '' : set.reps}
+                                                    placeholder={prevSet ? prevSet.reps : "10"}
+                                                    disabled={set.completed}
+                                                    onChange={(e) => updateSetField(idx, 'reps', parseInt(e.target.value) || 0)}
+                                                    className="w-8 h-7 bg-[#2C2C2E] text-center text-[13px] font-bold rounded-md border-0 focus:ring-1 focus:ring-ios-blue text-white p-0 disabled:opacity-60 font-mono"
+                                                />
+                                            </div>
+                                        </>
+                                    )}
 
                                     {/* Fallo Checkbox Indicator (iOS style Failure check) */}
                                     <div className="col-span-2 flex items-center justify-center px-0.5">

@@ -1,6 +1,23 @@
 export const workoutPlan = {
   D1: [
     {
+      id: 'D1-WU',
+      category: 'Preparación Fisiológica',
+      name: 'Calentamiento: Cardio y Movilidad (10 min)',
+      description: '10 minutos de activación ligera de cardio y movilidad para tren inferior y empujes. Alternativa: Bicicleta estática y bandas de resistencia.',
+      sets: '1',
+      reps: '600',
+      sharedEquipment: 'Cinta, Elíptica o Bicicleta Estática',
+      videoUrl: 'https://www.youtube.com/watch?v=3qyWpJ34dWw',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=oMcSAyzyQX4',
+      measurementType: 'time',
+      hasAlternative: true,
+      progressionNotes: {
+        michael: 'Cinta inclinada o elíptica a ritmo moderado (zona 2 cardíaca).',
+        lina: 'Cinta ligera o bicicleta estática enfocada en movilidad articular dinámica.'
+      }
+    },
+    {
       id: 'D1-1',
       category: 'Patrón Sentadilla (Tren Inferior)',
       name: 'Sentadillas con Barra / Mancuerna o Prensa de Piernas',
@@ -124,6 +141,23 @@ export const workoutPlan = {
   ],
   D2: [
     {
+      id: 'D2-WU',
+      category: 'Preparación Fisiológica',
+      name: 'Calentamiento: Cardio y Movilidad (10 min)',
+      description: '10 minutos de activación ligera de cardio y movilidad para torso. Alternativa: Elíptica de palancas o bicicleta estática.',
+      sets: '1',
+      reps: '600',
+      sharedEquipment: 'Cinta, Elíptica o Bicicleta Estática',
+      videoUrl: 'https://www.youtube.com/watch?v=1e528F0pYPg',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=oMcSAyzyQX4',
+      measurementType: 'time',
+      hasAlternative: true,
+      progressionNotes: {
+        michael: 'Elíptica movilizando brazos o remo ergómetro para preparar el tren superior.',
+        lina: 'Bicicleta estática suave y movilidad de hombros con banda elástica.'
+      }
+    },
+    {
       id: 'D2-1',
       category: 'Empuje Horizontal (Pecho)',
       name: 'Press de Banca Plano con Barra / Mancuernas o Máquina de Pecho',
@@ -239,6 +273,7 @@ export const workoutPlan = {
       reps: '20-30 seg',
       sharedEquipment: 'Colchoneta',
       videoUrl: 'https://www.youtube.com/watch?v=rCk2uctmMwc',
+      measurementType: 'time',
       progressionNotes: {
         michael: 'Plancha activa contrayendo core, glúteos y empujando el suelo.',
         lina: 'Plancha en antebrazos controlando respiración diafragmática.'
@@ -246,6 +281,23 @@ export const workoutPlan = {
     }
   ],
   D3: [
+    {
+      id: 'D3-WU',
+      category: 'Preparación Fisiológica',
+      name: 'Calentamiento: Cardio y Movilidad (10 min)',
+      description: '10 minutos de activación ligera para cadena posterior. Alternativa: Bicicleta estática y movilidad de cadera.',
+      sets: '1',
+      reps: '600',
+      sharedEquipment: 'Cinta, Elíptica o Bicicleta Estática',
+      videoUrl: 'https://www.youtube.com/watch?v=divaflydT7M',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=oMcSAyzyQX4',
+      measurementType: 'time',
+      hasAlternative: true,
+      progressionNotes: {
+        michael: 'Cinta inclinada a paso rápido o elíptica progresiva preparando caderas.',
+        lina: 'Bicicleta estática suave y estiramientos dinámicos de isquiotibiales.'
+      }
+    },
     {
       id: 'D3-1',
       category: 'Patrón Bisagra (Cadena Posterior)',
@@ -399,7 +451,8 @@ export const expertTips = [
 /**
  * Dynamically generates 3 months of progressive workout logs for the Test User.
  * Spaced out 3 times a week (Mon, Wed, Fri) over 12 weeks = 36 sessions.
- * Showcases clear progressive overload in weights, volume, and score.
+ * Showcases realistic progressive overload, biological day-to-day noise,
+ * wellness fluctuations (good/bad days), and accurate muscle/CNS fatigue dips.
  */
 export function seedMockDataForTestUser() {
   const baseWeights = {
@@ -418,12 +471,11 @@ export function seedMockDataForTestUser() {
   const dayNames = { 'D1': 'Titán', 'D2': 'Encélado', 'D3': 'Mimas' };
   const mockLogs = [];
   
-  // 12 weeks of historical workouts
   const totalWeeks = 12;
   const now = Date.now();
   
   // Track previous tonnage per workout day for scoring
-  const lastTonnagePerDay = { 'D1': 0, 'D2': 0, 'D3': 0 };
+  const tonnageHistoryByDay = { 'D1': [], 'D2': [], 'D3': [] };
 
   for (let w = 0; w < totalWeeks; w++) {
     // Generate D1 (Mon), D2 (Wed), D3 (Fri)
@@ -432,55 +484,121 @@ export function seedMockDataForTestUser() {
       const routine = workoutPlan[day];
       
       // Calculate historical date (3 workouts per week, Mon/Wed/Fri)
-      // w = 0 is 12 weeks ago, w = 11 is this week
       const weeksAgo = totalWeeks - 1 - w;
       const dayOffset = (2 - d) * 2; // Fri is 0, Wed is 2, Mon is 4 days offset
-      const timestamp = now - (weeksAgo * 7 * 24 * 3600 * 1000) - (dayOffset * 24 * 3600 * 1000) - (2 * 3600 * 1000); // subtract a couple hours
+      const timestamp = now - (weeksAgo * 7 * 24 * 3600 * 1000) - (dayOffset * 24 * 3600 * 1000) - (2 * 3600 * 1000);
       const dateStr = new Date(timestamp).toISOString();
 
-      const sessionDuration = 2500 + (w * 30) + Math.floor(Math.random() * 300); // 40-50 minutes, slightly increasing
+      // 1. BIOLOGICAL FLUCTUATIONS: Simulate Sleep, CNS Fatigue & Soreness
+      // Test user is generally consistent, but has occasional fatigue drops (BJJ or bad night)
+      const randSleep = Math.random();
+      const sleepState = randSleep > 0.85 ? 'poor' : randSleep > 0.65 ? 'excellent' : 'normal';
+      
+      const randCns = Math.random();
+      const cnsState = randCns > 0.85 ? 'exhausted' : randCns > 0.65 ? 'tired' : 'fresh';
+      
+      const randDOMS = Math.random();
+      const sorenessState = randDOMS > 0.90 ? 'very_sore' : randDOMS > 0.70 ? 'sore' : 'recovered';
+
+      // Calculate real biological auto-regulation scaling factor
+      const sleepFactor = sleepState === 'excellent' ? 1.0 : sleepState === 'normal' ? 0.95 : 0.85;
+      const cnsFactor = cnsState === 'fresh' ? 1.0 : cnsState === 'tired' ? 0.90 : 0.75;
+      const sorenessFactor = sorenessState === 'recovered' ? 1.0 : sorenessState === 'sore' ? 0.95 : 0.85;
+      const autoRegulationFactor = Math.min(sleepFactor, cnsFactor, sorenessFactor);
+
+      // Random session duration (38 to 58 minutes) representing pacing
+      const sessionDuration = 2280 + Math.floor(Math.random() * 1200); 
       
       const exercisesLogged = routine.map(ex => {
-        const baseW = baseWeights[ex.id];
-        const inc = increments[ex.id];
+        const isTimeBased = ex.measurementType === 'time';
+        const numSets = ex.id.includes('WU') ? 1 : (ex.id === 'D1-1' || ex.id === 'D2-1' || ex.id === 'D3-1') ? 4 : 3;
         
-        // Calculate weight with progressive overload
-        // Adds random noise of ±0.5kg for extra realism
-        let weight = baseW > 0 ? baseW + (inc * w) : 0;
-        if (weight > 0) {
-          weight = Math.round(weight * 2) / 2; // round to nearest 0.5kg
-        }
+        // Randomly select option (75% free weights/primary, 25% machines/alternative)
+        const selectedOption = ex.hasAlternative && (Math.random() > 0.75) ? 'alternative' : 'primary';
 
-        // Sets: standard 3 completed sets, 4 for compound lifts D1-1, D2-1, D3-1
-        const numSets = (ex.id === 'D1-1' || ex.id === 'D2-1' || ex.id === 'D3-1') ? 4 : 3;
-        const targetReps = ex.reps.includes('-') ? parseInt(ex.reps.split('-')[1]) : parseInt(ex.reps);
-        
         const sets = [];
         for (let s = 1; s <= numSets; s++) {
-          // Reps slightly decline in later sets due to fatigue
-          const repsNoise = s === 1 ? 0 : s === 2 ? -1 : -2;
-          const reps = Math.max(8, targetReps + repsNoise + (Math.random() > 0.7 ? 1 : 0));
-          const alFallo = s === numSets; // Scientific approach: the final set of each exercise is pushed to failure!
-          sets.push({
-            setNum: s,
-            weight: weight,
-            reps: reps,
-            alFallo: alFallo,
-            completed: true
-          });
+          if (isTimeBased) {
+            let repsVal = 30; // default plancha
+            if (ex.id.includes('WU')) {
+              // Warmup: ~10 minutes, slight variance representing exact machine time
+              repsVal = 570 + Math.floor(Math.random() * 60); 
+            } else if (ex.id === 'D2-8') {
+              // Plancha: fluctuates between 20 and 40 seconds depending on fatigue
+              const basePlancha = 25 + Math.floor(autoRegulationFactor * 10);
+              repsVal = basePlancha + Math.floor(Math.random() * 6) - 3;
+            }
+            sets.push({
+              setNum: s,
+              weight: 0,
+              reps: Math.max(15, repsVal),
+              alFallo: false,
+              completed: true
+            });
+          } else {
+            const baseW = baseWeights[ex.id] || 0;
+            const inc = increments[ex.id] || 0;
+            
+            // Calculate base progression weight
+            let weight = baseW > 0 ? baseW + (inc * w) : 0;
+            
+            if (weight > 0) {
+              // Apply biological auto-regulation
+              weight = weight * autoRegulationFactor;
+              
+              // Apply day-to-day strength noise (biological variance of ±5%)
+              const strengthNoise = 0.95 + (Math.random() * 0.1); 
+              weight = weight * strengthNoise;
+              
+              // Adjust weight based on leverage differences for machine alternatives
+              if (selectedOption === 'alternative') {
+                if (ex.id === 'D1-1' || ex.id === 'D1-3' || ex.id === 'D2-4' || ex.id === 'D3-4') {
+                  // Leg press or chest press machine handles more leverage weight
+                  weight = weight * (1.2 + Math.random() * 0.2);
+                } else if (ex.id === 'D1-2' || ex.id === 'D1-5' || ex.id === 'D2-3' || ex.id === 'D3-6') {
+                  // Cable systems or machines with multiple pulleys reduce weight
+                  weight = weight * (0.85 + Math.random() * 0.1);
+                }
+              }
+              
+              // Round to nearest 0.5kg for iron loading realism
+              weight = Math.round(weight * 2) / 2;
+            }
+
+            const targetReps = ex.reps.includes('-') ? parseInt(ex.reps.split('-')[1]) : parseInt(ex.reps) || 10;
+            
+            // Reps fatigue: slightly lower reps in later sets, also influenced by CNS fatigue
+            const repsNoise = s === 1 ? 0 : s === 2 ? -1 : -2;
+            const fatigueModifier = autoRegulationFactor < 0.9 ? -1 : 0;
+            
+            // Reps fluctuate biologically (±1 rep of target)
+            const reps = Math.max(6, targetReps + repsNoise + fatigueModifier + Math.floor(Math.random() * 3) - 1);
+            
+            // final set is pushed to failure, or a random set if pushed hard
+            const alFallo = s === numSets && (Math.random() > 0.25); 
+
+            sets.push({
+              setNum: s,
+              weight: weight,
+              reps: reps,
+              alFallo: alFallo,
+              completed: true
+            });
+          }
         }
 
         return {
           exerciseId: ex.id,
           exerciseName: ex.name,
           category: ex.category,
+          selectedOption: selectedOption,
           sets: sets,
-          duration: 200 + Math.floor(Math.random() * 60), // ~3.5 minutes per exercise
-          restDuration: 60 + Math.floor(Math.random() * 30)  // ~75s rest
+          duration: isTimeBased ? (ex.id.includes('WU') ? 600 : 90) : 180 + Math.floor(Math.random() * 90), // realistic set execution times
+          restDuration: ex.id.includes('WU') ? 15 : 60 + Math.floor(Math.random() * 40) // active rest log
         };
       });
 
-      // Calculate tonnage for this session
+      // Calculate total mechanical tonnage for this session
       let currentTonnage = 0;
       exercisesLogged.forEach(ex => {
         ex.sets.forEach(s => {
@@ -490,26 +608,34 @@ export function seedMockDataForTestUser() {
         });
       });
 
-      // Volume Score
-      const prevTonnage = lastTonnagePerDay[day];
-      let volumeIndex = 1.0;
-      if (prevTonnage > 0) {
-        volumeIndex = currentTonnage / prevTonnage;
+      // 2. VOLUME PROGRESSIVE SCORE: Compare tonnage chronologically to last same-day workout
+      const sameDayHistory = tonnageHistoryByDay[day];
+      let volumeScore = 30; // default for first sessions
+      let overloadDelta = 0;
+
+      if (sameDayHistory.length > 0) {
+        const prevTonnage = sameDayHistory[sameDayHistory.length - 1];
+        if (prevTonnage > 0 && currentTonnage > 0) {
+          const volumeIndex = currentTonnage / prevTonnage;
+          overloadDelta = Math.round(((currentTonnage - prevTonnage) / prevTonnage) * 100);
+          // Score scales down if they did less volume due to fatigue
+          volumeScore = Math.round(Math.min(1.0, volumeIndex) * 30);
+        }
       }
-      const volumeScore = Math.round(Math.min(1.0, volumeIndex) * 30);
-      lastTonnagePerDay[day] = currentTonnage;
+      sameDayHistory.push(currentTonnage);
 
-      // Completion Score: 100% = 60 points
-      const completionScore = 60;
-
-      // Pacing Score: ~8 to 10 points
+      // 3. PACING SCORE: 10 points for good tempo
       const avgSecondsPerEx = sessionDuration / exercisesLogged.length;
       let pacingScore = 10;
       if (avgSecondsPerEx > 480) {
         pacingScore = Math.max(5, Math.round(10 - (avgSecondsPerEx - 480) / 60));
       }
 
-      const score = completionScore + volumeScore + pacingScore;
+      // Completion Score is always 100% (60 points) since test user is perfect at completing routines
+      const completionScore = 60;
+
+      // Final score contains realistic dips and peaks (ranging from 74 to 100)
+      const score = Math.min(100, completionScore + volumeScore + pacingScore);
 
       mockLogs.push({
         id: `seeded-session-${w}-${day}`,
@@ -518,8 +644,15 @@ export function seedMockDataForTestUser() {
         dayName: dayNames[day],
         date: dateStr,
         duration: sessionDuration,
-        score: Math.min(100, score),
-        exercises: exercisesLogged
+        score: score,
+        tonnage: currentTonnage,
+        exercises: exercisesLogged,
+        wellness: {
+          sleep: sleepState,
+          cns: cnsState,
+          soreness: sorenessState,
+          factor: autoRegulationFactor
+        }
       });
     }
   }

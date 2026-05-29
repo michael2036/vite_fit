@@ -57,21 +57,6 @@ export default function App() {
         }
     };
 
-    // Clean up Michael and Lina's legacy logs on start to ensure clean slate
-    useEffect(() => {
-        try {
-            const rawLogs = localStorage.getItem('vitefit_workout_logs');
-            if (rawLogs) {
-                const allLogs = JSON.parse(rawLogs);
-                const filtered = allLogs.filter(log => log.user !== 'michael' && log.user !== 'lina');
-                localStorage.setItem('vitefit_workout_logs', JSON.stringify(filtered));
-                console.log("Cleaned up legacy logs for michael and lina.");
-            }
-        } catch (e) {
-            console.warn("localStorage cleanup of michael/lina logs failed:", e);
-        }
-    }, []);
-
     const handleSetSelectedDay = (day) => {
         setSelectedDay(day);
         try {
@@ -92,18 +77,15 @@ export default function App() {
                 logs = [];
             }
             
-            // Check if test user has logs already
-            const hasTestLogs = logs.some(log => log.user === 'test');
-            if (!hasTestLogs) {
-                const seeded = seedMockDataForTestUser();
-                // Merge with other users' histories to prevent wiping Michael or Lina's logs
-                const combined = [...seeded, ...logs.filter(log => log.user !== 'test')];
-                try {
-                    localStorage.setItem('vitefit_workout_logs', JSON.stringify(combined));
-                } catch (e) {
-                    console.warn("localStorage setItem logs denied", e);
-                }
-                console.log("Seeded 3 months of progressive workouts for Test User successfully!");
+            // Always regenerate fresh biologically realistic mock logs for Test User to see new randomized paths!
+            const seeded = seedMockDataForTestUser();
+            // Merge with other users' histories to prevent wiping Michael or Lina's logs
+            const combined = [...seeded, ...logs.filter(log => log.user !== 'test')];
+            try {
+                localStorage.setItem('vitefit_workout_logs', JSON.stringify(combined));
+                console.log("Regenerated 3 months of progressive workouts with biological noise for Test User successfully!");
+            } catch (e) {
+                console.warn("localStorage setItem logs denied", e);
             }
         } catch (e) {
             console.error("Seeding operation failed", e);

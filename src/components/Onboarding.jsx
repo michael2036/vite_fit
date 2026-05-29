@@ -4,6 +4,14 @@ import { motion } from 'framer-motion';
 
 export default function Onboarding({ setAppState, setActiveUser, triggerSeeding }) {
     
+    const showTestUser = React.useMemo(() => {
+        try {
+            return localStorage.getItem('vitefit_show_test_user') === 'true';
+        } catch (e) {
+            return false;
+        }
+    }, []);
+
     const handleUserSelect = (user) => {
         console.log("CoupleFit Welcome Screen - Profile Selected:", user);
         try {
@@ -94,6 +102,25 @@ export default function Onboarding({ setAppState, setActiveUser, triggerSeeding 
                     </div>
                 </button>
 
+                {/* Conditional Demo User Card */}
+                {showTestUser && (
+                    <button
+                        onClick={() => handleUserSelect('test')}
+                        className="w-full relative p-5 rounded-[22px] bg-ios-card/70 active:scale-[0.98] transition-all duration-200 text-left flex items-center gap-4 border border-white/5 backdrop-blur-xl hover:bg-ios-card/90"
+                    >
+                        <div className="absolute top-0 right-0 w-24 h-full bg-purple-500/5 rounded-r-[22px] blur-sm pointer-events-none"></div>
+                        <div className="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 shadow-inner">
+                            <Activity size={26} />
+                        </div>
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                                <h3 className="text-[18px] font-bold text-white leading-tight">Usuario Demo</h3>
+                                <span className="text-[10px] bg-purple-500/25 text-purple-400 font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">Test</span>
+                            </div>
+                            <p className="text-[13px] text-gray-400 mt-1">Registros progresivos de 3 meses para probar gráficos</p>
+                        </div>
+                    </button>
+                )}
 
             </motion.div>
         </div>

@@ -17,6 +17,16 @@ export default function Dashboard({
     const [editDate, setEditDate] = useState('');
     const [editDuration, setEditDuration] = useState(0);
     const [editExercises, setEditExercises] = useState([]);
+    const [dummyUpdate, setDummyUpdate] = useState(0);
+
+    const isTimeEx = (exId) => {
+        if (exId?.includes('WU')) return true;
+        for (const day of ['D1', 'D2', 'D3']) {
+            const found = workoutPlan[day]?.find(e => e.id === exId);
+            if (found?.measurementType === 'time') return true;
+        }
+        return false;
+    };
 
     // Safeguard haptic feedback across devices/browsers
     const triggerHaptic = (duration = 20) => {
@@ -593,8 +603,7 @@ export default function Dashboard({
             {/* iOS Styled Header */}
             <header className="px-4 pb-2 shrink-0 z-40 bg-ios-bg/95 backdrop-blur-xl border-b border-white/10 safe-area-pt pt-2 flex items-end justify-between">
                 <div className="max-w-lg mx-auto w-full flex justify-between items-end h-12">
-                    <div className="flex flex-col items-start">
-                        <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest leading-none mb-1">Tu Espacio</span>
+                    <div className="flex flex-col items-start justify-end">
                         <h1 className="text-[32px] leading-none font-extrabold tracking-tight">Hola, {userNames[activeUser]}</h1>
                     </div>
                     
@@ -935,17 +944,27 @@ export default function Dashboard({
                                                                 
                                                                 {/* Sets and Weights List */}
                                                                 <div className="flex flex-wrap gap-2">
-                                                                    {ex.sets?.filter(s => s.completed).map((s, sIdx) => (
-                                                                        <div key={sIdx} className="px-2.5 py-1 bg-[#2C2C2E]/60 border border-white/5 rounded-lg flex items-center gap-1.5">
-                                                                            <span className="text-[10px] text-gray-500 font-extrabold">S{s.setNum}</span>
-                                                                            <span className="text-xs font-bold text-gray-200">{s.weight}kg</span>
-                                                                            <span className="text-[10px] text-gray-500 font-bold">×</span>
-                                                                            <span className="text-xs font-bold text-gray-200">{s.reps}r</span>
-                                                                            {s.alFallo && (
-                                                                                <span className="text-[9px] bg-red-500/20 text-red-400 font-bold px-1.5 rounded select-none uppercase tracking-wider">Fallo</span>
-                                                                            )}
-                                                                        </div>
-                                                                    ))}
+                                                                    {ex.sets?.filter(s => s.completed).map((s, sIdx) => {
+                                                                        const isTime = isTimeEx(ex.exerciseId);
+                                                                        const formattedTime = s.reps >= 60 ? `${Math.floor(s.reps / 60)}m ${s.reps % 60}s` : `${s.reps}s`;
+                                                                        return (
+                                                                            <div key={sIdx} className="px-2.5 py-1 bg-[#2C2C2E]/60 border border-white/5 rounded-lg flex items-center gap-1.5">
+                                                                                <span className="text-[10px] text-gray-500 font-extrabold">S{s.setNum}</span>
+                                                                                {isTime ? (
+                                                                                    <span className="text-xs font-bold text-gray-200">{formattedTime}</span>
+                                                                                ) : (
+                                                                                    <>
+                                                                                        <span className="text-xs font-bold text-gray-200">{s.weight}kg</span>
+                                                                                        <span className="text-[10px] text-gray-500 font-bold">×</span>
+                                                                                        <span className="text-xs font-bold text-gray-200">{s.reps}r</span>
+                                                                                    </>
+                                                                                )}
+                                                                                {s.alFallo && (
+                                                                                    <span className="text-[9px] bg-red-500/20 text-red-400 font-bold px-1.5 rounded select-none uppercase tracking-wider">Fallo</span>
+                                                                                )}
+                                                                            </div>
+                                                                        );
+                                                                    })}
                                                                 </div>
 
                                                                 {/* Individual exercise timers */}
@@ -1036,6 +1055,36 @@ export default function Dashboard({
                                     <h3 className="text-[18px] font-extrabold text-white">Administrar Entrenamientos</h3>
                                     <p className="text-[13px] text-gray-400">Edita o elimina registros específicos de tu historial local.</p>
                                 </div>
+
+                                {activeUser === 'michael' && (
+                                    <div className="bg-ios-card p-4 rounded-2xl border border-white/5 space-y-4 shadow-lg">
+                                        <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                                            <span className="text-[14px] font-bold text-white">Opciones de Desarrollador</span>
+                                            <span className="text-[10px] bg-ios-blue/20 text-ios-blue font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">Admin</span>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <div className="space-y-0.5">
+                                                <span className="text-[13px] font-bold text-white block">Mostrar Usuario Demo</span>
+                                                <span className="text-[11px] text-gray-400 block leading-tight">Activa la tarjeta del Usuario de Pruebas en el Onboarding.</span>
+                                            </div>
+                                            <button 
+                                                onClick={() => {
+                                                    triggerHaptic(20);
+                                                    const currentVal = localStorage.getItem('vitefit_show_test_user') === 'true';
+                                                    localStorage.setItem('vitefit_show_test_user', !currentVal ? 'true' : 'false');
+                                                    setDummyUpdate(prev => prev + 1);
+                                                }}
+                                                className={`w-12 h-7 rounded-full transition-all relative flex items-center p-0.5 border ${
+                                                    localStorage.getItem('vitefit_show_test_user') === 'true' 
+                                                        ? 'bg-ios-blue border-ios-blue justify-end' 
+                                                        : 'bg-[#2C2C2E] border-white/10 justify-start'
+                                                }`}
+                                            >
+                                                <span className="w-5 h-5 rounded-full bg-white shadow-md block"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
 
                                 {logs.length === 0 ? (
                                     <div className="p-8 text-center text-gray-500 bg-ios-card/30 rounded-2xl border border-white/5">
@@ -1137,32 +1186,51 @@ export default function Dashboard({
                                                 <div className="space-y-2.5">
                                                     {ex.sets.map((set, setIdx) => {
                                                         if (!set.completed) return null;
+                                                        const isTime = isTimeEx(ex.exerciseId);
                                                         return (
                                                             <div key={setIdx} className="grid grid-cols-12 gap-2 items-center text-[13px]">
                                                                 <span className="col-span-2 text-gray-500 font-extrabold">Set {set.setNum}</span>
                                                                 
-                                                                {/* Weight input */}
-                                                                <div className="col-span-3 flex items-center bg-[#2C2C2E] rounded-lg px-2 py-1">
-                                                                    <span className="text-[10px] text-gray-500 font-bold mr-1">KG</span>
-                                                                    <input 
-                                                                        type="number"
-                                                                        step="0.5"
-                                                                        value={set.weight}
-                                                                        onChange={(e) => handleUpdateEditExerciseSet(exIdx, setIdx, 'weight', parseFloat(e.target.value) || 0)}
-                                                                        className="w-full bg-transparent border-0 p-0 text-center font-bold text-white text-[13px] focus:ring-0 focus:outline-none"
-                                                                    />
-                                                                </div>
+                                                                {isTime ? (
+                                                                    /* Time input (takes 6 columns) */
+                                                                    <div className="col-span-6 flex items-center bg-[#2C2C2E] rounded-lg px-2.5 py-1 justify-between">
+                                                                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Duración (seg)</span>
+                                                                        <input 
+                                                                            type="number"
+                                                                            value={set.reps}
+                                                                            onChange={(e) => {
+                                                                                handleUpdateEditExerciseSet(exIdx, setIdx, 'reps', parseInt(e.target.value) || 0);
+                                                                                handleUpdateEditExerciseSet(exIdx, setIdx, 'weight', 0);
+                                                                            }}
+                                                                            className="w-16 bg-transparent border-0 p-0 text-center font-bold text-white text-[13px] focus:ring-0 focus:outline-none font-mono"
+                                                                        />
+                                                                    </div>
+                                                                ) : (
+                                                                    <>
+                                                                        {/* Weight input */}
+                                                                        <div className="col-span-3 flex items-center bg-[#2C2C2E] rounded-lg px-2 py-1">
+                                                                            <span className="text-[10px] text-gray-500 font-bold mr-1">KG</span>
+                                                                            <input 
+                                                                                type="number"
+                                                                                step="0.5"
+                                                                                value={set.weight}
+                                                                                onChange={(e) => handleUpdateEditExerciseSet(exIdx, setIdx, 'weight', parseFloat(e.target.value) || 0)}
+                                                                                className="w-full bg-transparent border-0 p-0 text-center font-bold text-white text-[13px] focus:ring-0 focus:outline-none"
+                                                                            />
+                                                                        </div>
 
-                                                                {/* Reps input */}
-                                                                <div className="col-span-3 flex items-center bg-[#2C2C2E] rounded-lg px-2 py-1">
-                                                                    <span className="text-[10px] text-gray-500 font-bold mr-1">REPS</span>
-                                                                    <input 
-                                                                        type="number"
-                                                                        value={set.reps}
-                                                                        onChange={(e) => handleUpdateEditExerciseSet(exIdx, setIdx, 'reps', parseInt(e.target.value) || 0)}
-                                                                        className="w-full bg-transparent border-0 p-0 text-center font-bold text-white text-[13px] focus:ring-0 focus:outline-none"
-                                                                    />
-                                                                </div>
+                                                                        {/* Reps input */}
+                                                                        <div className="col-span-3 flex items-center bg-[#2C2C2E] rounded-lg px-2 py-1">
+                                                                            <span className="text-[10px] text-gray-500 font-bold mr-1">REPS</span>
+                                                                            <input 
+                                                                                type="number"
+                                                                                value={set.reps}
+                                                                                onChange={(e) => handleUpdateEditExerciseSet(exIdx, setIdx, 'reps', parseInt(e.target.value) || 0)}
+                                                                                className="w-full bg-transparent border-0 p-0 text-center font-bold text-white text-[13px] focus:ring-0 focus:outline-none"
+                                                                            />
+                                                                        </div>
+                                                                    </>
+                                                                )}
 
                                                                 {/* Fallo input */}
                                                                 <div className="col-span-4 flex items-center bg-[#2C2C2E] rounded-lg px-2.5 py-1 justify-between select-none">
