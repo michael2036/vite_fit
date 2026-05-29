@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { X, ChevronLeft, ChevronRight, Check, Plus, Minus, RotateCcw, Volume2 } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Check, Plus, Minus, RotateCcw } from 'lucide-react';
 import { workoutPlan } from '../data/workoutData';
 import { calculateWorkoutScore } from '../utils/scoreCalculator';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
@@ -14,37 +14,6 @@ const getYoutubeEmbedUrl = (url) => {
         : null;
 };
 
-// Web Audio API offline beep utility
-const playCompletionSound = () => {
-    try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        // Double high-pitch beep
-        const playBeep = (time, freq, dur) => {
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, time);
-            
-            gainNode.gain.setValueAtTime(0.1, time);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, time + dur - 0.05);
-            
-            osc.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            
-            osc.start(time);
-            osc.stop(time + dur);
-        };
-        
-        const now = audioCtx.currentTime;
-        playBeep(now, 880, 0.15);
-        playBeep(now + 0.2, 1200, 0.25);
-    } catch (e) {
-        console.warn("AudioContext block", e);
-    }
-};
-
 export default function TrainingMode({ 
     setAppState, activeUser, selectedDay, timer, currentExIndex, setCurrentExIndex, 
     endSession, earlyExit, formatTime, autoRegulationFactor = 1.0, wellnessAssessment = null
@@ -54,17 +23,17 @@ export default function TrainingMode({
     const dayNames = { 'D1': 'Titán', 'D2': 'Encélado', 'D3': 'Mimas' };
     const progress = Math.round(((currentExIndex + 1) / routine.length) * 100);
 
-    const [videoSource, setVideoSource] = useState('primary');
+    const [selectedOptions, setSelectedOptions] = useState({});
+    const activeOption = selectedOptions[currentEx.id] || 'primary';
     
     // Active Exercise Timing
     const exerciseActiveStartRef = useRef(Date.now());
     const [exerciseDurations, setExerciseDurations] = useState({});
     
-    // Rest Timer State
-    const [restTimeLeft, setRestTimeLeft] = useState(null);
-    const [isRestActive, setIsRestActive] = useState(false);
+    // Transition rest tracking: Measures the time elapsed between exercises
+    const lastExExitTimeRef = useRef(Date.now());
+    const [exerciseFirstSetLogged, setExerciseFirstSetLogged] = useState({});
     const [totalRestDurations, setTotalRestDurations] = useState({});
-    const restTimerIntervalRef = useRef(null);
 
     // Dynamic sets logging state
     // Format: { [exId]: [{ setNum: 1, weight: W, reps: R, completed: false }] }
@@ -99,8 +68,6 @@ export default function TrainingMode({
 
     // Initialize/Load sets for the current exercise
     useEffect(() => {
-        setVideoSource('primary');
-        
         // Save current exercise start time
         exerciseActiveStartRef.current = Date.now();
 
@@ -122,7 +89,7 @@ export default function TrainingMode({
                         setNum: prevSet.setNum,
                         weight: suggestedWeight,
                         reps: prevSet.reps,
-                        rir: prevSet.rir !== undefined ? prevSet.rir : 2, // default fallback to 2
+                        alFallo: prevSet.alFallo !== undefined ? prevSet.alFallo : false,
                         completed: false, // starts fresh
                         isPreviousSuggested: true
                     });
@@ -138,7 +105,7 @@ export default function TrainingMode({
                         setNum: i,
                         weight: 0,
                         reps: defaultReps,
-                        rir: 2, // default RIR
+                        alFallo: false, // default no fallo
                         completed: false,
                         isPreviousSuggested: false
                     });
@@ -154,22 +121,39 @@ export default function TrainingMode({
 
     const activeSets = exerciseLogs[currentEx.id] || [];
 
-    // Clean up rest timer interval on unmount
-    useEffect(() => {
-        return () => {
-            if (restTimerIntervalRef.current) clearInterval(restTimerIntervalRef.current);
-        };
-    }, []);
-
     const getOptionLabels = () => {
-        if (currentEx.id === 'D1-2') return { primary: 'Remo TRX', alternative: 'Remo Inclinado' };
-        if (currentEx.id === 'D2-4') return { primary: 'Hip Thrust', alternative: 'Puente Glúteo' };
-        if (currentEx.id === 'D3-2') return { primary: 'Jalón Pecho', alternative: 'Dominadas' };
-        return { primary: 'Opción A', alternative: 'Opción B' };
+        // D1
+        if (currentEx.id === 'D1-1') return { primary: 'Sentadilla Copa/Barra', alternative: 'Prensa de Piernas' };
+        if (currentEx.id === 'D1-2') return { primary: 'TRX / Remo Barra', alternative: 'Remo en Máquina' };
+        if (currentEx.id === 'D1-3') return { primary: 'Split Squat Manc.', alternative: 'Prensa Unilateral' };
+        if (currentEx.id === 'D1-4') return { primary: 'Press Hombro Barra/Manc.', alternative: 'Prensa de Hombro' };
+        if (currentEx.id === 'D1-5') return { primary: 'Curl Fitball', alternative: 'Leg Curl Sentado' };
+        if (currentEx.id === 'D1-6') return { primary: 'Mancuerna Nuca / Barra', alternative: 'Extensión de Tríceps Polea' };
+        if (currentEx.id === 'D1-8') return { primary: 'Supermans', alternative: 'Extensión Lumbar Máquina' };
+
+        // D2
+        if (currentEx.id === 'D2-1') return { primary: 'Press Banca Barra/Manc.', alternative: 'Prensa de Pecho' };
+        if (currentEx.id === 'D2-2') return { primary: 'Zancada Libre Manc./Barra', alternative: 'Sentadilla Multipower' };
+        if (currentEx.id === 'D2-3') return { primary: 'Pájaros Mancuerna', alternative: 'Pec Deck Invertido' };
+        if (currentEx.id === 'D2-4') return { primary: 'Hip Thrust Barra/Discos', alternative: 'Hip Thrust en Máquina' };
+        if (currentEx.id === 'D2-5') return { primary: 'Cosaca Mancuerna', alternative: 'Máquina Aductora' };
+        if (currentEx.id === 'D2-6') return { primary: 'Lateral Mancuernas', alternative: 'Elevación Lateral Polea' };
+        if (currentEx.id === 'D2-7') return { primary: 'Rotación Banda', alternative: 'Rotación en Polea' };
+
+        // D3
+        if (currentEx.id === 'D3-1') return { primary: 'Peso Muerto Barra/Discos', alternative: 'Hiperextensión 45°' };
+        if (currentEx.id === 'D3-2') return { primary: 'Dominadas', alternative: 'Jalón Pecho Polea' };
+        if (currentEx.id === 'D3-3') return { primary: 'Subida Cajón Manc.', alternative: 'Zancadas Multipower' };
+        if (currentEx.id === 'D3-4') return { primary: 'Press Inclinado Barra/Manc.', alternative: 'Prensa Pecho Inclinada' };
+        if (currentEx.id === 'D3-5') return { primary: 'Curtsy Lunge Manc.', alternative: 'Patada Glúteo Polea' };
+        if (currentEx.id === 'D3-6') return { primary: 'Curl Mancuernas/Barra', alternative: 'Máquina de Bíceps' };
+        if (currentEx.id === 'D3-8') return { primary: 'Tuck Ups Abdomen', alternative: 'Máquina Crunch Abdominal' };
+
+        return { primary: 'Peso Libre (Barra/Manc.)', alternative: 'Máquina / Polea' };
     };
 
     const labels = getOptionLabels();
-    const activeVideoUrl = videoSource === 'primary' ? currentEx.videoUrl : (currentEx.videoUrlAlternative || currentEx.videoUrl);
+    const activeVideoUrl = activeOption === 'primary' ? currentEx.videoUrl : (currentEx.videoUrlAlternative || currentEx.videoUrl);
     const embedUrl = getYoutubeEmbedUrl(activeVideoUrl);
 
     const controls = useAnimation();
@@ -230,12 +214,14 @@ export default function TrainingMode({
     const handleNext = () => {
         saveActiveExerciseDuration();
         triggerHaptic();
+        lastExExitTimeRef.current = Date.now(); // Record transition exit time
         setCurrentExIndex(Math.min(routine.length - 1, currentExIndex + 1));
     };
 
     const handlePrev = () => {
         saveActiveExerciseDuration();
         triggerHaptic();
+        lastExExitTimeRef.current = Date.now(); // Record transition exit time
         setCurrentExIndex(Math.max(0, currentExIndex - 1));
     };
 
@@ -261,7 +247,7 @@ export default function TrainingMode({
                 setNum: nextNum,
                 weight: lastSet ? lastSet.weight : 0,
                 reps: lastSet ? lastSet.reps : 10,
-                rir: lastSet && lastSet.rir !== undefined ? lastSet.rir : 2,
+                alFallo: lastSet && lastSet.alFallo !== undefined ? lastSet.alFallo : false,
                 completed: false,
                 isPreviousSuggested: false
             });
@@ -280,7 +266,7 @@ export default function TrainingMode({
         });
     };
 
-    // Toggle set complete checkbox & launch Rest Timer
+    // Toggle set complete checkbox & calculate transition rest time
     const handleSetToggle = (idx) => {
         const targetSet = activeSets[idx];
         const newCompleted = !targetSet.completed;
@@ -288,54 +274,20 @@ export default function TrainingMode({
         updateSetField(idx, 'completed', newCompleted);
         triggerHaptic(newCompleted ? [40, 30] : 20);
 
-        if (newCompleted) {
-            // Auto trigger dynamic rest timer: 120s for compound multiarticulars (currentExIndex 0-3), 75s for accessories (currentExIndex 4+)
-            const restSeconds = currentExIndex <= 3 ? 120 : 75;
-            startRestTimer(restSeconds);
+        // Transition rest duration: on first completed set, calculate the elapsed rest time between exercises!
+        if (newCompleted && !exerciseFirstSetLogged[currentEx.id]) {
+            const elapsedSeconds = Math.max(0, Math.floor((Date.now() - lastExExitTimeRef.current) / 1000));
+            
+            setTotalRestDurations(tr => ({
+                ...tr,
+                [currentEx.id]: elapsedSeconds
+            }));
+
+            setExerciseFirstSetLogged(prev => ({
+                ...prev,
+                [currentEx.id]: true
+            }));
         }
-    };
-
-    // Rest Timer countdown mechanics
-    const startRestTimer = (seconds) => {
-        if (restTimerIntervalRef.current) clearInterval(restTimerIntervalRef.current);
-        setRestTimeLeft(seconds);
-        setIsRestActive(true);
-
-        restTimerIntervalRef.current = setInterval(() => {
-            setRestTimeLeft(prev => {
-                if (prev <= 1) {
-                    clearInterval(restTimerIntervalRef.current);
-                    setIsRestActive(false);
-                    // Expired - synthesise beep & vibrate
-                    playCompletionSound();
-                    if (navigator.vibrate) navigator.vibrate([150, 80, 150]);
-                    
-                    // Track rest duration completed
-                    setTotalRestDurations(tr => ({
-                        ...tr,
-                        [currentEx.id]: (tr[currentEx.id] || 0) + seconds
-                    }));
-
-                    return null;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-    };
-
-    const adjustRestTime = (amount) => {
-        triggerHaptic(20);
-        setRestTimeLeft(prev => {
-            if (prev === null) return null;
-            return Math.max(0, prev + amount);
-        });
-    };
-
-    const skipRestTimer = () => {
-        triggerHaptic(30);
-        if (restTimerIntervalRef.current) clearInterval(restTimerIntervalRef.current);
-        setIsRestActive(false);
-        setRestTimeLeft(null);
     };
 
     const handleFinish = () => {
@@ -349,11 +301,12 @@ export default function TrainingMode({
                 exerciseId: ex.id,
                 exerciseName: ex.name,
                 category: ex.category,
+                selectedOption: selectedOptions[ex.id] || 'primary',
                 sets: sets.map(s => ({
                     setNum: s.setNum,
                     weight: Number(s.weight) || 0,
                     reps: Number(s.reps) || 0,
-                    rir: s.rir !== undefined ? Number(s.rir) : 2, // persist logged RIR
+                    alFallo: !!s.alFallo, // persist logged alFallo boolean
                     completed: s.completed
                 })),
                 duration: exerciseDurations[ex.id] || 0,
@@ -455,11 +408,11 @@ export default function TrainingMode({
                 {currentEx.videoUrlAlternative && (
                     <div className="flex justify-center gap-2 mb-3 max-w-lg mx-auto" role="tablist">
                         <button
-                            onClick={() => setVideoSource('primary')}
+                            onClick={() => setSelectedOptions(prev => ({ ...prev, [currentEx.id]: 'primary' }))}
                             role="tab"
-                            aria-selected={videoSource === 'primary'}
+                            aria-selected={activeOption === 'primary'}
                             className={`px-4 py-1 rounded-full text-[11px] font-bold transition-all ${
-                                videoSource === 'primary' 
+                                activeOption === 'primary' 
                                     ? 'bg-ios-blue text-white shadow-sm' 
                                     : 'bg-[#2C2C2E] text-gray-400 hover:text-white'
                             }`}
@@ -467,11 +420,11 @@ export default function TrainingMode({
                             {labels.primary}
                         </button>
                         <button
-                            onClick={() => setVideoSource('alternative')}
+                            onClick={() => setSelectedOptions(prev => ({ ...prev, [currentEx.id]: 'alternative' }))}
                             role="tab"
-                            aria-selected={videoSource === 'alternative'}
+                            aria-selected={activeOption === 'alternative'}
                             className={`px-4 py-1 rounded-full text-[11px] font-bold transition-all ${
-                                videoSource === 'alternative' 
+                                activeOption === 'alternative' 
                                     ? 'bg-ios-pink text-white shadow-sm' 
                                     : 'bg-[#2C2C2E] text-gray-400 hover:text-white'
                             }`}
@@ -481,7 +434,7 @@ export default function TrainingMode({
                     </div>
                 )}
 
-                {embedUrl && (
+                {embedUrl ? (
                     <div className="w-full aspect-video rounded-[20px] overflow-hidden mb-4 bg-black border border-white/10 relative shadow-inner max-w-lg mx-auto">
                         <iframe
                             src={embedUrl}
@@ -490,6 +443,22 @@ export default function TrainingMode({
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             allowFullScreen
                         />
+                    </div>
+                ) : (
+                    <div className="w-full aspect-video rounded-[20px] overflow-hidden mb-4 bg-[#1C1C1E]/50 border border-white/10 flex flex-col items-center justify-center p-6 text-center max-w-lg mx-auto">
+                        <span className="text-[32px] mb-2 select-none">📱</span>
+                        <span className="text-[14px] font-bold text-white mb-1">Demostración en Video</span>
+                        <p className="text-[12px] text-gray-400 mb-4 px-4 leading-snug">
+                            Mira una demostración rápida y explicativa en formato vertical directamente en YouTube Shorts.
+                        </p>
+                        <a 
+                            href={`https://www.youtube.com/results?search_query=${encodeURIComponent((activeOption === 'primary' ? currentEx.name : (labels.alternative || currentEx.name)) + ' shorts')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-5 py-2 bg-[#FF0000] hover:bg-[#CC0000] text-white font-bold text-xs rounded-full transition-all flex items-center gap-1.5 shadow-lg shadow-red-500/20 active:scale-95 text-decoration-none"
+                        >
+                            Buscar en YouTube Shorts
+                        </a>
                     </div>
                 )}
 
@@ -534,7 +503,7 @@ export default function TrainingMode({
                         <div className="col-span-2 text-center">Prev</div>
                         <div className="col-span-3 text-center">Peso (kg)</div>
                         <div className="col-span-2 text-center">Reps</div>
-                        <div className="col-span-2 text-center">RIR</div>
+                        <div className="col-span-2 text-center">Fallo</div>
                         <div className="col-span-2 text-center">Log</div>
                     </div>
 
@@ -608,20 +577,20 @@ export default function TrainingMode({
                                         />
                                     </div>
 
-                                    {/* RIR Dropdown Select (iOS native experience) */}
+                                    {/* Fallo Checkbox Indicator (iOS style Failure check) */}
                                     <div className="col-span-2 flex items-center justify-center px-0.5">
-                                        <select
-                                            value={set.rir !== undefined ? set.rir : 2}
+                                        <button
+                                            onClick={() => updateSetField(idx, 'alFallo', !set.alFallo)}
                                             disabled={set.completed}
-                                            onChange={(e) => updateSetField(idx, 'rir', parseInt(e.target.value))}
-                                            className="w-full h-7 bg-[#2C2C2E] text-center text-[11px] font-bold rounded-md border-0 focus:ring-1 focus:ring-ios-blue text-white p-0 py-0.5 disabled:opacity-60 cursor-pointer"
+                                            className={`w-6 h-6 rounded border transition-all active:scale-90 flex items-center justify-center ${
+                                                set.alFallo 
+                                                    ? 'bg-red-500 border-red-500 text-white shadow-sm shadow-red-500/30' 
+                                                    : 'border-white/20 text-transparent bg-[#1C1C1E]'
+                                            }`}
+                                            title="Fallo muscular"
                                         >
-                                            <option value={0}>0</option>
-                                            <option value={1}>1</option>
-                                            <option value={2}>2</option>
-                                            <option value={3}>3</option>
-                                            <option value={4}>4+</option>
-                                        </select>
+                                            <span className="text-[10px] font-extrabold select-none leading-none">F</span>
+                                        </button>
                                     </div>
 
                                     {/* Completed Circle Toggle */}
@@ -644,57 +613,7 @@ export default function TrainingMode({
                 </div>
             </main>
 
-            {/* -------------------- REST TIMER POPUP OVERLAY -------------------- */}
-            <AnimatePresence>
-                {isRestActive && restTimeLeft !== null && (
-                    <motion.div 
-                        className="absolute bottom-28 left-4 right-4 z-[100] max-w-md mx-auto"
-                        initial={{ opacity: 0, y: 50, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                        transition={{ type: "spring", damping: 20, stiffness: 250 }}
-                    >
-                        <div className="bg-[#1C1C1E]/95 backdrop-blur-xl border border-white/10 rounded-[24px] p-4 shadow-2xl flex items-center justify-between gap-4">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-ios-blue/20 text-ios-blue flex items-center justify-center animate-pulse">
-                                    <Volume2 size={20}/>
-                                </div>
-                                <div>
-                                    <h4 className="text-[13px] font-bold text-gray-400 uppercase tracking-wider">Temporizador de Descanso</h4>
-                                    <div className="flex items-baseline gap-1 mt-0.5">
-                                        <span className="font-mono text-[24px] font-extrabold text-white leading-none">
-                                            {restTimeLeft}
-                                        </span>
-                                        <span className="text-[13px] font-semibold text-gray-500">seg</span>
-                                    </div>
-                                </div>
-                            </div>
 
-                            {/* Control Buttons */}
-                            <div className="flex items-center gap-1.5">
-                                <button 
-                                    onClick={() => adjustRestTime(-15)}
-                                    className="px-2.5 py-1.5 bg-[#2C2C2E] active:scale-95 text-[12px] font-bold text-gray-300 rounded-lg"
-                                >
-                                    -15s
-                                </button>
-                                <button 
-                                    onClick={() => adjustRestTime(30)}
-                                    className="px-2.5 py-1.5 bg-[#2C2C2E] active:scale-95 text-[12px] font-bold text-gray-300 rounded-lg"
-                                >
-                                    +30s
-                                </button>
-                                <button 
-                                    onClick={skipRestTimer}
-                                    className="px-3 py-1.5 bg-ios-blue active:scale-95 text-[12px] font-bold text-white rounded-lg ml-1"
-                                >
-                                    Saltar
-                                </button>
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
 
             {/* Bottom Nav Bar - iOS Sticky ToolBar */}
             <footer className="shrink-0 bg-[#1C1C1E]/90 backdrop-blur-xl border-t border-white/10 px-4 pt-3 pb-8 safe-area-pb z-40 relative">

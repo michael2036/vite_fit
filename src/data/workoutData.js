@@ -3,114 +3,120 @@ export const workoutPlan = {
     {
       id: 'D1-1',
       category: 'Patrón Sentadilla (Tren Inferior)',
-      name: 'Sentadillas en Copa (Goblet Squats)',
-      description: 'Sentadilla profunda sosteniendo una mancuerna o kettlebell pegada al pecho. Excelente para la postura y fuerza de cuadríceps.',
+      name: 'Sentadillas con Barra / Mancuerna o Prensa de Piernas',
+      description: 'Sentadilla profunda usando barra libre y discos en rack o mancuerna/kettlebell pesada pegada al pecho. Excelente para cuadríceps y glúteos. Alternativa: Prensa de Piernas inclinada de placas.',
       sets: '3-4',
       reps: '10-12',
-      sharedEquipment: 'Zona de Mancuernas / Kettlebells',
+      sharedEquipment: 'Rack de Barra y Discos / Mancuernas / Prensa de Piernas de Placas',
       videoUrl: 'https://www.youtube.com/watch?v=f-Vf2yRRqOg',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=yZc7fM4E2OQ',
       progressionNotes: {
-        michael: 'Carga pesada enfocado en profundidad máxima (RIR 2).',
-        lina: 'Carga moderada con foco en la postura recta y descenso controlado en 3 segundos.'
+        michael: 'Carga pesada enfocado en profundidad máxima con barra o Prensa a 140kg.',
+        lina: 'Carga moderada con foco en la postura recta y descenso controlado con mancuerna, o Prensa cuidando rodillas.'
       }
     },
     {
       id: 'D1-2',
       category: 'Tracción Horizontal (Espalda)',
-      name: 'Remo en Suspensión TRX o Remo Inclinado (Bent Row)',
-      description: 'Tracción bilateral para desarrollar fuerza en la espalda alta y mejorar la estabilidad escapular.',
+      name: 'Remo Inclinado con Barra / Mancuerna o Remo en Máquina',
+      description: 'Tracción bilateral usando barra con discos o mancuernas para desarrollar espalda alta. Alternativa: Máquina selectorizada de remo sentado (pulley/placas).',
       sets: '3-4',
       reps: '10-12',
-      sharedEquipment: 'Estación de TRX / Barra y Discos',
+      sharedEquipment: 'TRX / Barra y Discos / Mancuernas / Máquina de Remo de Placas',
       videoUrl: 'https://www.youtube.com/watch?v=IEky4NL3LLQ',
       videoUrlAlternative: 'https://www.youtube.com/watch?v=6gvmcqr226U',
       progressionNotes: {
-        michael: 'Remo inclinado con barra libre pesada para fuerza bruta.',
-        lina: 'Remo en TRX ajustando la inclinación corporal para controlar la resistencia.'
+        michael: 'Remo inclinado pesado con barra y discos o máquina convergente de palancas.',
+        lina: 'Remo en TRX o Máquina de placas buscando retracción escapular estricta.'
       }
     },
     {
       id: 'D1-3',
       category: 'Fuerza Unilateral (Estabilidad)',
-      name: 'Zancadas Unilaterales / Sentadilla Búlgara (Split Squats)',
-      description: 'Trabajo a una sola pierna para corregir desequilibrios musculares, potenciar la estabilidad y fuerza de glúteos.',
+      name: 'Split Squat con Mancuerna / Barra o Prensa Unilateral',
+      description: 'Trabajo unilateral sosteniendo mancuernas o barra en los hombros para estabilidad y fuerza. Alternativa: Prensa horizontal a una sola pierna.',
       sets: '2-3',
       reps: '8-10 por lado',
-      sharedEquipment: 'Banco Plano & Mancuernas',
+      sharedEquipment: 'Banco Plano / Mancuernas / Barra con Discos / Prensa Horizontal de Placas',
       videoUrl: 'https://www.youtube.com/watch?v=Wcmg-3iHwjQ',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=9_Oq_h77lU8',
       progressionNotes: {
-        michael: 'Sentadilla Búlgara pesada con mancuernas a los costados.',
-        lina: 'Split Squat con peso libre progresando la profundidad (ROM) al suelo.'
+        michael: 'Sentadilla Búlgara con mancuernas pesadas o prensa unilateral explosiva.',
+        lina: 'Split Squat con peso libre progresando en rango de movimiento, o prensa horizontal.'
       }
     },
     {
       id: 'D1-4',
       category: 'Empuje Vertical (Hombros)',
-      name: 'Press de Hombro por Encima de la Cabeza (Overhead Press)',
-      description: 'Empuje vertical estricto para esculpir hombros (deltoides) y fortalecer los tríceps.',
+      name: 'Press de Hombro con Barra / Mancuernas o Prensa de Hombro',
+      description: 'Empuje vertical estricto con barra libre pesada de pie o mancuernas sentado. Alternativa: Máquina de placas selectorizada de empuje vertical.',
       sets: '2-3',
       reps: '10-12',
-      sharedEquipment: 'Mancuernas / Barra de Peso Libre',
+      sharedEquipment: 'Barra y Discos / Mancuernas / Máquina de Hombros selectorizada',
       videoUrl: 'https://www.youtube.com/watch?v=22gQUcvcW1o',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=t1836N_0jBg',
       progressionNotes: {
-        michael: 'Press Militar de pie con barra olímpica, core activado.',
-        lina: 'Press de hombro con mancuernas sentada para máximo aislamiento deltoides.'
+        michael: 'Press Militar de pie libre con barra olímpica, o máquina cargada pesada.',
+        lina: 'Press de hombro con mancuernas sentada, o máquina selectorizada para máxima estabilidad.'
       }
     },
     {
       id: 'D1-5',
       category: 'Aislamiento Posterior (Isquios)',
-      name: 'Curl de Isquiotibiales en Pelota de Estabilidad (Stability Ball Leg Curl)',
-      description: 'Flexión de rodilla suspendida en pelota de estabilidad. Fortalece isquios, glúteos y el control del core.',
+      name: 'Curl de Isquios en Fitball o Camilla Sentado',
+      description: 'Flexión de rodilla y activación de isquiotibiales en pelota de estabilidad. Alternativa: Camilla selectorizada de Leg Curl Sentado de placas.',
       sets: '2-3',
       reps: '10-12',
-      sharedEquipment: 'Fitball / Colchoneta',
+      sharedEquipment: 'Pelota de Estabilidad / Colchoneta / Camilla Leg Curl Sentado de Placas',
       videoUrl: 'https://www.youtube.com/watch?v=spowfx8sOKM',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=F488K0p3Zk4',
       progressionNotes: {
-        michael: 'Eleva la cadera al máximo y realiza una pausa isométrica de 2s al contraer.',
-        lina: 'Controla el retorno lento de la pelota para maximizar la fase excéntrica.'
+        michael: 'Elevación de cadera máxima con Fitball o curl sentado en camilla pesada.',
+        lina: 'Control del retorno lento y contracción sostenida en la máquina de placas.'
       }
     },
     {
       id: 'D1-6',
       category: 'Aislamiento Superior (Tríceps)',
-      name: 'Extensiones de Tríceps (Triceps Extensions)',
-      description: 'Aislamiento específico para la cabeza larga del tríceps, mejorando la fuerza de empuje y definición.',
+      name: 'Copa de Tríceps con Mancuerna / Barra o Polea de Cables',
+      description: 'Aislamiento para la cabeza larga del tríceps usando mancuerna pesada a dos manos o barra. Alternativa: Extensión de tríceps en polea alta con cuerda.',
       sets: '2-3',
       reps: '10-12',
-      sharedEquipment: 'Mancuerna Única / Estación de Poleas',
+      sharedEquipment: 'Mancuernas / Barra Romana / Estación de Poleas con Cuerda',
       videoUrl: 'https://www.youtube.com/watch?v=LXkCrxn3caQ',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=2-LAMcpzODU',
       progressionNotes: {
-        michael: 'Extensiones tras nuca pesadas o fondos estrictos.',
-        lina: 'Extensiones con polea de cuerda buscando contracción máxima abajo.'
+        michael: 'Extensiones pesadas con mancuerna o barra, o jalón de tríceps en polea al fallo.',
+        lina: 'Extensiones con polea buscando aislamiento estricto y codos fijos.'
       }
     },
     {
       id: 'D1-7',
       category: 'Estabilidad Core / Anti-Rotación',
-      name: 'Arrastre de Kettlebell en Plancha Alta (Tall Plank KB Drags)',
-      description: 'Plancha alta isométrica mientras arrastras lateralmente una kettlebell por debajo del cuerpo. Rígido control del core anti-rotación.',
+      name: 'Arrastre de Kettlebell en Plancha o Core de Placas',
+      description: 'Plancha alta anti-rotación arrastrando peso. Alternativa: Plancha estática tocando hombros o kettlebell pesada.',
       sets: '2-3',
       reps: '8-10 por lado',
-      sharedEquipment: 'Colchoneta & Kettlebell / Mancuerna',
+      sharedEquipment: 'Colchoneta / Kettlebells de Peso Libre',
       videoUrl: 'https://www.youtube.com/watch?v=6bBaM_ot1pE',
       progressionNotes: {
-        michael: 'Usa una kettlebell de 16-24 kg, evitando cualquier balanceo de cadera.',
-        lina: 'Usa carga ligera enfocada en mantener la línea del cuerpo perfectamente paralela al suelo.'
+        michael: 'Arrastre lateral con Kettlebell de 16-24 kg, estabilizando cadera.',
+        lina: 'Mantener la plancha firme controlando la respiración sin rotación lumbar.'
       }
     },
     {
       id: 'D1-8',
       category: 'Cadena Posterior / Correctivo',
-      name: 'Supermans (Extensión Lumbar)',
-      description: 'Elevación simultánea de brazos y piernas en prono. Excelente corrector postural para fortalecer la espalda baja y glúteos.',
+      name: 'Supermans o Extensor Lumbar en Máquina',
+      description: 'Elevación boca abajo de torso y piernas en colchoneta. Excelente corrector postural general para espalda baja. Alternativa: Extensor lumbar en banco a 45° o máquina selectorizada lumbar de placas.',
       sets: '2-3',
       reps: '10-12',
-      sharedEquipment: 'Colchoneta',
+      sharedEquipment: 'Colchoneta / Banco de Extensión Lumbar / Máquina Lumbar de Placas',
       videoUrl: 'https://www.youtube.com/watch?v=dKCTIFR1sCc',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=LqUuFEv4bM4',
       progressionNotes: {
-        michael: 'Sostén la contracción arriba por 3 segundos en cada repetición.',
-        lina: 'Movimiento fluido y controlado coordinando con la respiración.'
+        michael: 'Extensión isométrica controlada en suelo, o máquina controlando la contracción de glúteos.',
+        lina: 'Movimiento respiratorio controlado en suelo o banco.'
       }
     }
   ],
@@ -118,115 +124,120 @@ export const workoutPlan = {
     {
       id: 'D2-1',
       category: 'Empuje Horizontal (Pecho)',
-      name: 'Press de Banca Plano (Bench Press)',
-      description: 'El clásico levantamiento de empuje horizontal para desarrollar fuerza en pecho, hombro anterior y tríceps.',
+      name: 'Press de Banca Plano con Barra / Mancuernas o Máquina de Pecho',
+      description: 'Levantamiento de fuerza para pectoral con barra olímpica libre o mancuernas. Alternativa: Máquina de Chest Press de placas selectorizada.',
       sets: '3-4',
       reps: '10-12',
-      sharedEquipment: 'Banco Plano & Barra / Mancuernas',
+      sharedEquipment: 'Banco Plano con Barra y Discos / Mancuernas / Máquina de Chest Press',
       videoUrl: 'https://www.youtube.com/watch?v=hm_TrCkhJgo',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=4T19Mv2k3g0',
       progressionNotes: {
-        michael: 'Press de banca con barra olímpica buscando sobrecarga progresiva de peso.',
-        lina: 'Press plano con mancuernas para mayor rango de movimiento y seguridad articular.'
+        michael: 'Press de banca clásico con barra olímpica libre, o máquina convergente de placas pesada.',
+        lina: 'Press plano con mancuernas, o máquina de placas para cuidar hombros.'
       }
     },
     {
       id: 'D2-2',
       category: 'Fuerza Unilateral (Tren Inferior)',
-      name: 'Zancadas Inversas con Mancuernas (Reverse Lunges)',
-      description: 'Zancada hacia atrás que reduce el impacto en las rodillas mientras activa intensamente glúteos e isquiotibiales.',
+      name: 'Zancadas Inversas con Mancuernas / Barra o Sentadilla Smith (Multipower)',
+      description: 'Zancada hacia atrás con barra libre o mancuernas. Alternativa: Zancadas o sentadilla guiada en máquina Multipower.',
       sets: '3-4',
       reps: '8-10 por lado',
-      sharedEquipment: 'Zona de Pesas Libres',
+      sharedEquipment: 'Mancuernas / Barra y Discos / Máquina Multipower (Smith)',
       videoUrl: 'https://www.youtube.com/watch?v=xrPteyQLGAo',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=h2n56-zJ-Dk',
       progressionNotes: {
-        michael: 'Zancadas inversas pesadas alternando piernas de forma fluida.',
-        lina: 'Zancadas enfocadas en el empuje desde el talón delantero para activar glúteos.'
+        michael: 'Zancadas inversas con mancuernas o barra, o prensa unilateral enfocada en cuádriceps.',
+        lina: 'Zancadas inversas libres o búlgara guiada en Multipower para máxima estabilidad.'
       }
     },
     {
       id: 'D2-3',
       category: 'Tracción Posterior / Postural',
-      name: 'Aperturas Inversas / Pájaros (Reverse Flyes)',
-      description: 'Aislamiento del deltoides posterior e interescapulares, vital para balancear empujes pesados y mejorar la postura.',
+      name: 'Pájaros con Mancuerna o Pec Deck Invertido',
+      description: 'Aislamiento de deltoides posterior usando mancuernas. Alternativa: Máquina selectorizada de aperturas inversas (Pec Deck).',
       sets: '2-3',
       reps: '10-12',
-      sharedEquipment: 'Mancuernas Ligeras',
+      sharedEquipment: 'Mancuernas Ligeras / Máquina de Aperturas / Pec Deck',
       videoUrl: 'https://www.youtube.com/watch?v=hf7jnF45N_I',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=qRSo6F2oWf8',
       progressionNotes: {
-        michael: 'Vuelos posteriores controlando el descenso sin balanceos.',
-        lina: 'Pájaros sentados con el torso inclinado, apretando escápulas 1s al final.'
+        michael: 'Pájaros inclinados con mancuernas, o pec deck invertido contrayendo espalda alta.',
+        lina: 'Aperturas inversas en máquina selectorizada de placas aislando deltoides posterior.'
       }
     },
     {
       id: 'D2-4',
       category: 'Cadena Posterior / Glúteos',
-      name: 'Hip Thrusts o Puentes de Glúteo (Bridges)',
-      description: 'Extensión de cadera con apoyo escapular para aislar y desarrollar la fuerza del glúteo mayor.',
+      name: 'Hip Thrust Libre con Barra / Discos o Hip Thrust en Máquina',
+      description: 'Extensión de cadera para glúteos con barra libre y banco. Alternativa: Máquina selectorizada de Hip Thrust o Multipower.',
       sets: '2-3',
       reps: '10-12',
-      sharedEquipment: 'Banco & Barra o Colchoneta',
+      sharedEquipment: 'Barra, Discos y Banco / Máquina de Hip Thrust',
       videoUrl: 'https://www.youtube.com/watch?v=76t0z3Tdx6Q',
       videoUrlAlternative: 'https://www.youtube.com/watch?v=FJNPGhF1R-Y',
       progressionNotes: {
-        michael: 'Hip Thrust con barra cargada pesada y bloqueo arriba de 1s.',
-        lina: 'Hip Thrust con mancuerna o disco centrado en la conexión mente-músculo.'
+        michael: 'Hip thrust libre pesado con barra olímpica, o máquina de carga de discos.',
+        lina: 'Hip thrust en máquina guiada selectorizada enfocándose en la contracción apical.'
       }
     },
     {
       id: 'D2-5',
       category: 'Fuerza Lateral (Tren Inferior)',
-      name: 'Sentadillas Laterales / Cosacas (Lateral Squats)',
-      description: 'Desplazamientos laterales profundos que mejoran la flexibilidad activa, movilidad de cadera y fuerza de aductores.',
+      name: 'Sentadilla Cosaca con Mancuerna o Máquina Aductora',
+      description: 'Desplazamiento lateral profundo con mancuerna o peso corporal. Alternativa: Máquina aductora de placas selectorizada.',
       sets: '2-3',
       reps: '8-10 por lado',
-      sharedEquipment: 'Zona Libre (Cuerpo Corporal o KB)',
+      sharedEquipment: 'Espacio Libre / Mancuernas / Máquina Aductora',
       videoUrl: 'https://www.youtube.com/watch?v=0lLIWWSmMm4',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=9vjN2z2uL10',
       progressionNotes: {
-        michael: 'Sentadillas cosacas sosteniendo una kettlebell ligera en el pecho (Goblet style).',
-        lina: 'Sentadillas laterales fluidas con peso corporal, buscando ganar profundidad semana a semana.'
+        michael: 'Sentadillas cosacas sosteniendo una kettlebell o mancuerna en copa.',
+        lina: 'Sentadillas cosacas libres asistidas, ganando flexibilidad lateral.'
       }
     },
     {
       id: 'D2-6',
       category: 'Aislamiento Hombros (Lateral)',
-      name: 'Elevaciones Laterales (Lateral Raises)',
-      description: 'El ejercicio clave para desarrollar la porción media del deltoides y conseguir amplitud en el tren superior.',
+      name: 'Elevación Lateral con Mancuerna o Elevación en Polea',
+      description: 'Amplitud de deltoides lateral con mancuernas. Alternativa: Elevación con polea baja y cable.',
       sets: '2-3',
       reps: '10-12',
-      sharedEquipment: 'Mancuernas Ligeras',
+      sharedEquipment: 'Mancuernas / Estación de Cables / Polea Baja',
       videoUrl: 'https://www.youtube.com/watch?v=XPPfnSEATJA',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=PPrzYcLOyME',
       progressionNotes: {
-        michael: 'Elevaciones estrictas sin impulso. Baja lento en 3 segundos.',
-        lina: 'Doble progresión: domina las 12 reps con forma impecable antes de subir el peso.'
+        michael: 'Laterales pesados con mancuernas, o polea con cable cruzado para tensión continua.',
+        lina: 'Laterales con mancuernas ligeras a altas repeticiones o polea suave.'
       }
     },
     {
       id: 'D2-7',
       category: 'Core / Rotación',
-      name: 'Rotaciones con Banda (Banded) o en Polea (Cable Rotations)',
-      description: 'Rotación horizontal de torso contra resistencia. Ejercicio excelente de potencia rotacional y fuerza de oblicuos.',
+      name: 'Rotación con Banda Elástica o Rotación en Polea de Cables',
+      description: 'Rotación de torso contra resistencia usando banda elástica. Alternativa: Rotación en polea media de cables.',
       sets: '2-3',
       reps: '8-10 por lado',
-      sharedEquipment: 'Estación de Poleas o Banda Elástica',
+      sharedEquipment: 'Estación de Cables / Poleas / Banda Elástica',
       videoUrl: 'https://www.youtube.com/watch?v=L5J3juj8PYg',
       videoUrlAlternative: 'https://www.youtube.com/watch?v=58GS24huLx4',
       progressionNotes: {
-        michael: 'Rotación explosiva en polea media con retorno ultra controlado.',
-        lina: 'Rotación con banda elástica, sintiendo la contracción isométrica del oblicuo.'
+        michael: 'Rotación de tronco explosiva en polea media, resistiendo la excéntrica.',
+        lina: 'Rotación con banda de resistencia enfocada en oblicuo interno/externo.'
       }
     },
     {
       id: 'D2-8',
       category: 'Fuerza Isométrica Core',
-      name: 'Plancha Frontal Isométrica (Front Plank)',
-      description: 'Bloqueo abdominal estático para desarrollar resistencia y rigidez en la faja lumbopélvica.',
+      name: 'Plancha Frontal o Plancha Lateral',
+      description: 'Bloqueo abdominal para rigidez lumbar y del core.',
       sets: '2-3',
       reps: '20-30 seg',
       sharedEquipment: 'Colchoneta',
       videoUrl: 'https://www.youtube.com/watch?v=rCk2uctmMwc',
       progressionNotes: {
-        michael: 'Plancha activa contrayendo glúteos, cuádriceps y empujando activamente el suelo.',
-        lina: 'Mantén respiración diafragmática calmada manteniendo una línea neutra perfecta.'
+        michael: 'Plancha activa contrayendo core, glúteos y empujando el suelo.',
+        lina: 'Plancha en antebrazos controlando respiración diafragmática.'
       }
     }
   ],
@@ -234,83 +245,88 @@ export const workoutPlan = {
     {
       id: 'D3-1',
       category: 'Patrón Bisagra (Cadena Posterior)',
-      name: 'Peso Muerto Convencional o Rumano (Deadlifts)',
-      description: 'El ejercicio definitivo de tracción de cadena posterior. Desarrolla fuerza bruta en glúteos, isquios, espalda baja y agarre.',
+      name: 'Peso Muerto con Barra / Discos o Hiperextensiones en Banco',
+      description: 'Peso muerto convencional pesado usando barra libre y discos. Alternativa: Extensión lumbar en banco de 45° con disco o Multipower.',
       sets: '3-4',
       reps: '10-12',
-      sharedEquipment: 'Plataforma / Barra y Discos',
+      sharedEquipment: 'Plataforma de Discos / Barra / Banco de Hiperextensión 45°',
       videoUrl: 'https://www.youtube.com/watch?v=rw4E6qodyyk',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=pHCrvs_c5a8',
       progressionNotes: {
-        michael: 'Peso Muerto convencional desde el suelo con barra olímpica pesada (RIR 2).',
-        lina: 'Peso Muerto Rumano (RDL) enfocándose en llevar la cadera atrás y sentir estiramiento en isquios.'
+        michael: 'Peso Muerto convencional libre desde el suelo pesado buscando el fallo.',
+        lina: 'Peso muerto rumano con mancuernas, o banco de hiperextensiones a 45°.'
       }
     },
     {
       id: 'D3-2',
       category: 'Tracción Vertical (Espalda)',
-      name: 'Jalón al Pecho (Lat Pulldowns) o Dominadas (Pullups)',
-      description: 'Tracción vertical para desarrollar amplitud dorsal, fuerza de agarre y salud escapular.',
+      name: 'Dominadas Libres / Asistidas o Jalón al Pecho en Polea',
+      description: 'Tracción vertical suspendida usando el propio peso. Alternativa: Jalón al pecho selectorizado de placas en polea alta.',
       sets: '3-4',
       reps: '10-12',
-      sharedEquipment: 'Polea Alta de Jalón / Barra de Dominadas',
+      sharedEquipment: 'Barra de Dominadas / Máquina de Jalón de Placas',
       videoUrl: 'https://www.youtube.com/watch?v=JGeRYIZdojU',
       videoUrlAlternative: 'https://www.youtube.com/watch?v=LWSSa1SPges',
       progressionNotes: {
-        michael: 'Dominadas estrictas libres o lastradas. Rango completo (colgado total a barbilla arriba).',
-        lina: 'Jalón al pecho en polea inclinando levemente el torso y llevando los codos a los bolsillos.'
+        michael: 'Dominadas libres o lastradas, o jalón al pecho en máquina pesada.',
+        lina: 'Jalón al pecho selectorizado abriendo bien el pecho y bajando codos.'
       }
     },
     {
       id: 'D3-3',
       category: 'Fuerza Unilateral (Tren Inferior)',
-      name: 'Subidas al Cajón con Mancuernas (Step Ups)',
-      description: 'Empuje unilateral en cajón para aislar los cuadríceps y glúteos, reforzando la rodilla y el tobillo.',
+      name: 'Subidas al Cajón con Mancuerna o Sentadilla/Zancada en Multipower',
+      description: 'Empuje unilateral subiendo a cajón con mancuernas. Alternativa: Zancadas o sentadilla guiada en máquina Multipower.',
       sets: '2-3',
       reps: '8-10 por lado',
-      sharedEquipment: 'Cajón Pliométrico & Mancuernas',
+      sharedEquipment: 'Cajón Pliométrico / Mancuernas / Máquina Multipower (Smith)',
       videoUrl: 'https://www.youtube.com/watch?v=DxUNi119Qzs',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=h2n56-zJ-Dk',
       progressionNotes: {
-        michael: 'Subidas explosivas a cajón de 60cm controlando la bajada en 3s sin dejarse caer.',
-        lina: 'Subidas controladas a cajón de 45cm asistiendo el empuje únicamente con la pierna de apoyo elevada.'
+        michael: 'Subidas al cajón pesadas controlando excéntrica, o zancadas Multipower.',
+        lina: 'Subidas a cajón asistidas buscando empuje plantar del cuadrícep.'
       }
     },
     {
       id: 'D3-4',
       category: 'Empuje Inclinado (Pecho/Hombros)',
-      name: 'Press de Banca Inclinado (Incline Bench Press)',
-      description: 'Empuje en ángulo inclinado para desarrollar la porción clavicular del pectoral (pecho superior) y tríceps.',
+      name: 'Press Inclinado con Barra / Mancuernas o Prensa Pecho Inclinada',
+      description: 'Empuje inclinado para pectoral superior usando barra libre o mancuernas. Alternativa: Máquina selectorizada inclinada de empuje.',
       sets: '2-3',
       reps: '10-12',
-      sharedEquipment: 'Banco Inclinado & Barra / Mancuernas',
+      sharedEquipment: 'Mancuernas / Banco Inclinado con Barra / Máquina de Press Inclinado',
       videoUrl: 'https://www.youtube.com/watch?v=Fv5EYoJfRt4',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=e_k95xYFas8',
       progressionNotes: {
-        michael: 'Press inclinado con barra buscando máxima fuerza e hipertrofia.',
-        lina: 'Press inclinado con mancuernas para cuidar la articulación del hombro y elegir estabilidad.'
+        michael: 'Press inclinado con barra olímpica libre o máquina selectorizada pesada.',
+        lina: 'Press inclinado con mancuernas o máquina de placas cuidando rango articular.'
       }
     },
     {
       id: 'D3-5',
       category: 'Fuerza Unilateral Cruzada (Glúteos)',
-      name: 'Zancadas Cruzadas / Reverencia (Curtsy Lunges)',
-      description: 'Zancada cruzada hacia atrás en ángulo diagonal. Activación masiva del glúteo medio y estabilizadores laterales.',
+      name: 'Zancadas Cruzadas con Mancuernas o Patada de Glúteo en Polea',
+      description: 'Zancada cruzada atrás con mancuernas para glúteo medio. Alternativa: Extensión de cadera en polea baja con cable.',
       sets: '2-3',
       reps: '8-10 por lado',
-      sharedEquipment: 'Zona Libre & Mancuernas',
+      sharedEquipment: 'Zona de Mancuernas / Estación de Polea Baja',
       videoUrl: 'https://www.youtube.com/watch?v=XoglWOLQJVA',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=845vjC6k1fU',
       progressionNotes: {
-        michael: 'Zancadas cruzadas dinámicas pesadas sosteniendo mancuernas a los costados.',
-        lina: 'Zancadas de reverencia suave vigilando que la rodilla delantera no sufra valgo.'
+        michael: 'Zancadas cruzadas dinámicas de pie con mancuernas medias.',
+        lina: 'Zancadas curtsy controladas con peso corporal, buscando glúteo medio.'
       }
     },
     {
       id: 'D3-6',
       category: 'Aislamiento Superior (Bíceps)',
-      name: 'Curl de Bíceps con Mancuernas (Biceps Curls)',
-      description: 'Ejercicio de aislamiento para flexores de codo, aumentando la fuerza del bíceps braquial.',
+      name: 'Curl de Bíceps con Mancuernas / Barra o Curl en Máquina',
+      description: 'Flexión de codo usando mancuernas o barra libre con discos. Alternativa: Curl de bíceps en polea baja o máquina de placas selectorizada.',
       sets: '2-3',
       reps: '10-12',
-      sharedEquipment: 'Mancuernas en Banco o De Pie',
+      sharedEquipment: 'Mancuernas / Barra Z y Discos / Camilla de Bíceps o Máquina selectorizada',
       videoUrl: 'https://www.youtube.com/watch?v=SB41wiGbkaw',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=AsAdzylgsc0',
       progressionNotes: {
         michael: 'Curl supino de pie controlando la fase excéntrica completa sin balancear el torso.',
         lina: 'Curl martillo o supino con mancuernas en banco inclinado para estiramiento óptimo.'
@@ -333,12 +349,13 @@ export const workoutPlan = {
     {
       id: 'D3-8',
       category: 'Resistencia Core Dinámica',
-      name: 'Abdominales Tuck Up (Tuck Ups)',
-      description: 'Flexión de cadera y abdomen simultánea sentándose en los isquiones. Gran activación global del recto abdominal.',
+      name: 'Abdominales Tuck Up o Máquina Crunch Abdominal',
+      description: 'Flexión simultánea de cadera y abdomen en colchoneta. Alternativa: Máquina de abdominales selectorizada crunch de placas.',
       sets: '2-3',
       reps: '10-12',
-      sharedEquipment: 'Colchoneta',
+      sharedEquipment: 'Colchoneta / Máquina Ab Crunch de Placas',
       videoUrl: 'https://www.youtube.com/watch?v=_ytHhpMgFTI',
+      videoUrlAlternative: 'https://www.youtube.com/watch?v=M97q7B-4QzY',
       progressionNotes: {
         michael: 'Realiza el Tuck Up de forma explosiva al cerrar y frena la extensión del cuerpo suspendido.',
         lina: 'Movimiento fluido controlando que la lumbar no se arquee dolorosamente en la extensión.'
@@ -438,12 +455,12 @@ export function seedMockDataForTestUser() {
           // Reps slightly decline in later sets due to fatigue
           const repsNoise = s === 1 ? 0 : s === 2 ? -1 : -2;
           const reps = Math.max(8, targetReps + repsNoise + (Math.random() > 0.7 ? 1 : 0));
-          const rir = Math.max(0, 4 - s); // Dynamic sports-science fatigue: Set 1 = RIR 3, Set 2 = RIR 2, Set 3 = RIR 1, Set 4 = RIR 0
+          const alFallo = s === numSets; // Scientific approach: the final set of each exercise is pushed to failure!
           sets.push({
             setNum: s,
             weight: weight,
             reps: reps,
-            rir: rir,
+            alFallo: alFallo,
             completed: true
           });
         }

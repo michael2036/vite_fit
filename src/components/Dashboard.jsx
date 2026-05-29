@@ -924,7 +924,12 @@ export default function Dashboard({
                                                         {session.exercises?.filter(ex => ex.sets && ex.sets.some(s => s.completed)).map((ex, exIdx) => (
                                                             <div key={exIdx} className="py-3 first:pt-1 last:pb-1">
                                                                 <div className="flex items-baseline justify-between mb-1.5">
-                                                                    <h5 className="text-[14px] font-bold text-white">{ex.exerciseName}</h5>
+                                                                    <h5 className="text-[14px] font-bold text-white flex items-center gap-1.5">
+                                                                        {ex.exerciseName}
+                                                                        {ex.selectedOption === 'alternative' && (
+                                                                            <span className="text-[9px] bg-ios-pink/20 text-ios-pink font-extrabold px-1.5 py-0.5 rounded-full select-none uppercase tracking-wide">Máquina</span>
+                                                                        )}
+                                                                    </h5>
                                                                     <span className="text-[11px] text-gray-400">{ex.category}</span>
                                                                 </div>
                                                                 
@@ -936,8 +941,8 @@ export default function Dashboard({
                                                                             <span className="text-xs font-bold text-gray-200">{s.weight}kg</span>
                                                                             <span className="text-[10px] text-gray-500 font-bold">×</span>
                                                                             <span className="text-xs font-bold text-gray-200">{s.reps}r</span>
-                                                                            {s.rir !== undefined && (
-                                                                                <span className="text-[9px] bg-purple-500/20 text-purple-400 font-bold px-1 rounded select-none">RIR {s.rir}</span>
+                                                                            {s.alFallo && (
+                                                                                <span className="text-[9px] bg-red-500/20 text-red-400 font-bold px-1.5 rounded select-none uppercase tracking-wider">Fallo</span>
                                                                             )}
                                                                         </div>
                                                                     ))}
@@ -1120,7 +1125,12 @@ export default function Dashboard({
                                         return (
                                             <div key={exIdx} className="bg-ios-card p-4 rounded-2xl border border-white/5 space-y-3">
                                                 <div className="flex justify-between items-baseline border-b border-white/10 pb-1.5">
-                                                    <h4 className="text-[14px] font-extrabold text-white">{ex.exerciseName}</h4>
+                                                    <h4 className="text-[14px] font-extrabold text-white flex items-center gap-1.5">
+                                                        {ex.exerciseName}
+                                                        {ex.selectedOption === 'alternative' && (
+                                                            <span className="text-[9px] bg-ios-pink/20 text-ios-pink font-extrabold px-1.5 py-0.5 rounded-full select-none uppercase tracking-wide">Máquina</span>
+                                                        )}
+                                                    </h4>
                                                     <span className="text-[11px] text-gray-400">{ex.category}</span>
                                                 </div>
 
@@ -1154,20 +1164,15 @@ export default function Dashboard({
                                                                     />
                                                                 </div>
 
-                                                                {/* RIR input */}
-                                                                <div className="col-span-4 flex items-center bg-[#2C2C2E] rounded-lg px-2 py-1">
-                                                                    <span className="text-[10px] text-gray-500 font-bold mr-1 select-none">RIR</span>
-                                                                    <select 
-                                                                        value={set.rir !== undefined ? set.rir : 2}
-                                                                        onChange={(e) => handleUpdateEditExerciseSet(exIdx, setIdx, 'rir', parseInt(e.target.value))}
-                                                                        className="w-full bg-transparent border-0 p-0 text-center font-bold text-white text-[13px] focus:ring-0 focus:outline-none cursor-pointer"
-                                                                    >
-                                                                        <option value={0}>0</option>
-                                                                        <option value={1}>1</option>
-                                                                        <option value={2}>2</option>
-                                                                        <option value={3}>3</option>
-                                                                        <option value={4}>4+</option>
-                                                                    </select>
+                                                                {/* Fallo input */}
+                                                                <div className="col-span-4 flex items-center bg-[#2C2C2E] rounded-lg px-2.5 py-1 justify-between select-none">
+                                                                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Fallo</span>
+                                                                    <input 
+                                                                        type="checkbox"
+                                                                        checked={!!set.alFallo}
+                                                                        onChange={(e) => handleUpdateEditExerciseSet(exIdx, setIdx, 'alFallo', e.target.checked)}
+                                                                        className="w-4 h-4 rounded border-gray-600 bg-black text-red-500 focus:ring-red-500 focus:ring-offset-0 focus:outline-none cursor-pointer"
+                                                                    />
                                                                 </div>
                                                             </div>
                                                         );
