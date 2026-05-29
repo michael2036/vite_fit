@@ -9,7 +9,7 @@ export const workoutPlan = {
       reps: '10-12',
       sharedEquipment: 'Rack de Barra y Discos / Mancuernas / Prensa de Piernas de Placas',
       videoUrl: 'https://www.youtube.com/watch?v=f-Vf2yRRqOg',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=yZc7fM4E2OQ',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Carga pesada enfocado en profundidad máxima con barra o Prensa a 140kg.',
         lina: 'Carga moderada con foco en la postura recta y descenso controlado con mancuerna, o Prensa cuidando rodillas.'
@@ -25,6 +25,7 @@ export const workoutPlan = {
       sharedEquipment: 'TRX / Barra y Discos / Mancuernas / Máquina de Remo de Placas',
       videoUrl: 'https://www.youtube.com/watch?v=IEky4NL3LLQ',
       videoUrlAlternative: 'https://www.youtube.com/watch?v=6gvmcqr226U',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Remo inclinado pesado con barra y discos o máquina convergente de palancas.',
         lina: 'Remo en TRX o Máquina de placas buscando retracción escapular estricta.'
@@ -39,7 +40,7 @@ export const workoutPlan = {
       reps: '8-10 por lado',
       sharedEquipment: 'Banco Plano / Mancuernas / Barra con Discos / Prensa Horizontal de Placas',
       videoUrl: 'https://www.youtube.com/watch?v=Wcmg-3iHwjQ',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=9_Oq_h77lU8',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Sentadilla Búlgara con mancuernas pesadas o prensa unilateral explosiva.',
         lina: 'Split Squat con peso libre progresando en rango de movimiento, o prensa horizontal.'
@@ -54,7 +55,7 @@ export const workoutPlan = {
       reps: '10-12',
       sharedEquipment: 'Barra y Discos / Mancuernas / Máquina de Hombros selectorizada',
       videoUrl: 'https://www.youtube.com/watch?v=22gQUcvcW1o',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=t1836N_0jBg',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Press Militar de pie libre con barra olímpica, o máquina cargada pesada.',
         lina: 'Press de hombro con mancuernas sentada, o máquina selectorizada para máxima estabilidad.'
@@ -69,7 +70,7 @@ export const workoutPlan = {
       reps: '10-12',
       sharedEquipment: 'Pelota de Estabilidad / Colchoneta / Camilla Leg Curl Sentado de Placas',
       videoUrl: 'https://www.youtube.com/watch?v=spowfx8sOKM',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=F488K0p3Zk4',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Elevación de cadera máxima con Fitball o curl sentado en camilla pesada.',
         lina: 'Control del retorno lento y contracción sostenida en la máquina de placas.'
@@ -85,6 +86,7 @@ export const workoutPlan = {
       sharedEquipment: 'Mancuernas / Barra Romana / Estación de Poleas con Cuerda',
       videoUrl: 'https://www.youtube.com/watch?v=LXkCrxn3caQ',
       videoUrlAlternative: 'https://www.youtube.com/watch?v=2-LAMcpzODU',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Extensiones pesadas con mancuerna o barra, o jalón de tríceps en polea al fallo.',
         lina: 'Extensiones con polea buscando aislamiento estricto y codos fijos.'
@@ -113,7 +115,7 @@ export const workoutPlan = {
       reps: '10-12',
       sharedEquipment: 'Colchoneta / Banco de Extensión Lumbar / Máquina Lumbar de Placas',
       videoUrl: 'https://www.youtube.com/watch?v=dKCTIFR1sCc',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=LqUuFEv4bM4',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Extensión isométrica controlada en suelo, o máquina controlando la contracción de glúteos.',
         lina: 'Movimiento respiratorio controlado en suelo o banco.'
@@ -130,7 +132,7 @@ export const workoutPlan = {
       reps: '10-12',
       sharedEquipment: 'Banco Plano con Barra y Discos / Mancuernas / Máquina de Chest Press',
       videoUrl: 'https://www.youtube.com/watch?v=hm_TrCkhJgo',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=4T19Mv2k3g0',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Press de banca clásico con barra olímpica libre, o máquina convergente de placas pesada.',
         lina: 'Press plano con mancuernas, o máquina de placas para cuidar hombros.'
@@ -145,7 +147,7 @@ export const workoutPlan = {
       reps: '8-10 por lado',
       sharedEquipment: 'Mancuernas / Barra y Discos / Máquina Multipower (Smith)',
       videoUrl: 'https://www.youtube.com/watch?v=xrPteyQLGAo',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=h2n56-zJ-Dk',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Zancadas inversas con mancuernas o barra, o prensa unilateral enfocada en cuádriceps.',
         lina: 'Zancadas inversas libres o búlgara guiada en Multipower para máxima estabilidad.'
@@ -160,7 +162,7 @@ export const workoutPlan = {
       reps: '10-12',
       sharedEquipment: 'Mancuernas Ligeras / Máquina de Aperturas / Pec Deck',
       videoUrl: 'https://www.youtube.com/watch?v=hf7jnF45N_I',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=qRSo6F2oWf8',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Pájaros inclinados con mancuernas, o pec deck invertido contrayendo espalda alta.',
         lina: 'Aperturas inversas en máquina selectorizada de placas aislando deltoides posterior.'
@@ -176,6 +178,7 @@ export const workoutPlan = {
       sharedEquipment: 'Barra, Discos y Banco / Máquina de Hip Thrust',
       videoUrl: 'https://www.youtube.com/watch?v=76t0z3Tdx6Q',
       videoUrlAlternative: 'https://www.youtube.com/watch?v=FJNPGhF1R-Y',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Hip thrust libre pesado con barra olímpica, o máquina de carga de discos.',
         lina: 'Hip thrust en máquina guiada selectorizada enfocándose en la contracción apical.'
@@ -190,7 +193,7 @@ export const workoutPlan = {
       reps: '8-10 por lado',
       sharedEquipment: 'Espacio Libre / Mancuernas / Máquina Aductora',
       videoUrl: 'https://www.youtube.com/watch?v=0lLIWWSmMm4',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=9vjN2z2uL10',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Sentadillas cosacas sosteniendo una kettlebell o mancuerna en copa.',
         lina: 'Sentadillas cosacas libres asistidas, ganando flexibilidad lateral.'
@@ -205,7 +208,7 @@ export const workoutPlan = {
       reps: '10-12',
       sharedEquipment: 'Mancuernas / Estación de Cables / Polea Baja',
       videoUrl: 'https://www.youtube.com/watch?v=XPPfnSEATJA',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=PPrzYcLOyME',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Laterales pesados con mancuernas, o polea con cable cruzado para tensión continua.',
         lina: 'Laterales con mancuernas ligeras a altas repeticiones o polea suave.'
@@ -221,6 +224,7 @@ export const workoutPlan = {
       sharedEquipment: 'Estación de Cables / Poleas / Banda Elástica',
       videoUrl: 'https://www.youtube.com/watch?v=L5J3juj8PYg',
       videoUrlAlternative: 'https://www.youtube.com/watch?v=58GS24huLx4',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Rotación de tronco explosiva en polea media, resistiendo la excéntrica.',
         lina: 'Rotación con banda de resistencia enfocada en oblicuo interno/externo.'
@@ -251,7 +255,7 @@ export const workoutPlan = {
       reps: '10-12',
       sharedEquipment: 'Plataforma de Discos / Barra / Banco de Hiperextensión 45°',
       videoUrl: 'https://www.youtube.com/watch?v=rw4E6qodyyk',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=pHCrvs_c5a8',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Peso Muerto convencional libre desde el suelo pesado buscando el fallo.',
         lina: 'Peso muerto rumano con mancuernas, o banco de hiperextensiones a 45°.'
@@ -267,6 +271,7 @@ export const workoutPlan = {
       sharedEquipment: 'Barra de Dominadas / Máquina de Jalón de Placas',
       videoUrl: 'https://www.youtube.com/watch?v=JGeRYIZdojU',
       videoUrlAlternative: 'https://www.youtube.com/watch?v=LWSSa1SPges',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Dominadas libres o lastradas, o jalón al pecho en máquina pesada.',
         lina: 'Jalón al pecho selectorizado abriendo bien el pecho y bajando codos.'
@@ -281,7 +286,7 @@ export const workoutPlan = {
       reps: '8-10 por lado',
       sharedEquipment: 'Cajón Pliométrico / Mancuernas / Máquina Multipower (Smith)',
       videoUrl: 'https://www.youtube.com/watch?v=DxUNi119Qzs',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=h2n56-zJ-Dk',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Subidas al cajón pesadas controlando excéntrica, o zancadas Multipower.',
         lina: 'Subidas a cajón asistidas buscando empuje plantar del cuadrícep.'
@@ -296,7 +301,7 @@ export const workoutPlan = {
       reps: '10-12',
       sharedEquipment: 'Mancuernas / Banco Inclinado con Barra / Máquina de Press Inclinado',
       videoUrl: 'https://www.youtube.com/watch?v=Fv5EYoJfRt4',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=e_k95xYFas8',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Press inclinado con barra olímpica libre o máquina selectorizada pesada.',
         lina: 'Press inclinado con mancuernas o máquina de placas cuidando rango articular.'
@@ -311,7 +316,7 @@ export const workoutPlan = {
       reps: '8-10 por lado',
       sharedEquipment: 'Zona de Mancuernas / Estación de Polea Baja',
       videoUrl: 'https://www.youtube.com/watch?v=XoglWOLQJVA',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=845vjC6k1fU',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Zancadas cruzadas dinámicas de pie con mancuernas medias.',
         lina: 'Zancadas curtsy controladas con peso corporal, buscando glúteo medio.'
@@ -326,7 +331,7 @@ export const workoutPlan = {
       reps: '10-12',
       sharedEquipment: 'Mancuernas / Barra Z y Discos / Camilla de Bíceps o Máquina selectorizada',
       videoUrl: 'https://www.youtube.com/watch?v=SB41wiGbkaw',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=AsAdzylgsc0',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Curl supino de pie controlando la fase excéntrica completa sin balancear el torso.',
         lina: 'Curl martillo o supino con mancuernas en banco inclinado para estiramiento óptimo.'
@@ -355,7 +360,7 @@ export const workoutPlan = {
       reps: '10-12',
       sharedEquipment: 'Colchoneta / Máquina Ab Crunch de Placas',
       videoUrl: 'https://www.youtube.com/watch?v=_ytHhpMgFTI',
-      videoUrlAlternative: 'https://www.youtube.com/watch?v=M97q7B-4QzY',
+      hasAlternative: true,
       progressionNotes: {
         michael: 'Realiza el Tuck Up de forma explosiva al cerrar y frena la extensión del cuerpo suspendido.',
         lina: 'Movimiento fluido controlando que la lumbar no se arquee dolorosamente en la extensión.'

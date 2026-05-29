@@ -405,7 +405,7 @@ export default function TrainingMode({
                 </div>
 
                 {/* Direct Video Tutorials (Embedded) */}
-                {currentEx.videoUrlAlternative && (
+                {currentEx.hasAlternative && (
                     <div className="flex justify-center gap-2 mb-3 max-w-lg mx-auto" role="tablist">
                         <button
                             onClick={() => setSelectedOptions(prev => ({ ...prev, [currentEx.id]: 'primary' }))}
