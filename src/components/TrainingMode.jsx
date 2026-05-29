@@ -4,6 +4,7 @@ import { workoutPlan } from '../data/workoutData';
 import { calculateWorkoutScore } from '../utils/scoreCalculator';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { useDrag } from '@use-gesture/react';
+import { useLanguage } from '../context/LanguageContext';
 
 const getYoutubeEmbedUrl = (url) => {
     if (!url) return null;
@@ -14,13 +15,49 @@ const getYoutubeEmbedUrl = (url) => {
         : null;
 };
 
+const categoryKeyMap = {
+    'Preparación Fisiológica': 'cat_prep',
+    'Patrón Sentadilla (Tren Inferior)': 'cat_squat',
+    'Tracción Horizontal (Espalda)': 'cat_horiz_pull',
+    'Fuerza Unilateral (Estabilidad)': 'cat_unilateral_strength',
+    'Empuje Vertical (Hombros)': 'cat_vert_push',
+    'Aislamiento Posterior (Isquios)': 'cat_isolation_posterior',
+    'Aislamiento Superior (Tríceps)': 'cat_isolation_upper',
+    'Estabilidad Core / Anti-Rotación': 'cat_core_stability',
+    'Cadena Posterior / Correctivo': 'cat_posterior_corrective',
+    'Empuje Horizontal (Pecho)': 'cat_horiz_push',
+    'Fuerza Unilateral (Tren Inferior)': 'cat_unilateral_strength',
+    'Tracción Posterior / Postural': 'cat_posterior_corrective',
+    'Cadena Posterior / Glúteos': 'cat_posterior_glutes',
+    'Fuerza Lateral (Tren Inferior)': 'cat_lateral_strength',
+    'Aislamiento Hombros (Lateral)': 'cat_shoulder_isolation',
+    'Core / Rotación': 'cat_core_rotation',
+    'Fuerza Isométrica Core': 'cat_core_isometric',
+    'Patrón Bisagra (Cadena Posterior)': 'cat_hinge',
+    'Tracción Vertical (Espalda)': 'cat_vert_pull',
+    'Empuje Inclinado (Pecho/Hombros)': 'cat_inclined_push',
+    'Fuerza Unilateral Cruzada (Glúteos)': 'cat_unilateral_cross',
+    'Aislamiento Superior (Bíceps)': 'cat_biceps_isolation',
+    'Core / Anti-Rotación Estática': 'cat_core_static',
+    'Resistencia Core Dinámica': 'cat_core_dynamic'
+};
+
+const getCategoryTranslation = (category, t) => {
+    const key = categoryKeyMap[category];
+    if (key) {
+        return t(key);
+    }
+    return category;
+};
+
 export default function TrainingMode({ 
     setAppState, activeUser, selectedDay, timer, currentExIndex, setCurrentExIndex, 
     endSession, earlyExit, formatTime, autoRegulationFactor = 1.0, wellnessAssessment = null
 }) {
+    const { language, t } = useLanguage();
     const routine = workoutPlan[selectedDay];
     const currentEx = routine[currentExIndex];
-    const dayNames = { 'D1': 'Titán', 'D2': 'Encélado', 'D3': 'Mimas' };
+    const dayNames = { 'D1': t('day_1_title'), 'D2': t('day_2_title'), 'D3': t('day_3_title') };
     const progress = Math.round(((currentExIndex + 1) / routine.length) * 100);
 
     const [selectedOptions, setSelectedOptions] = useState({});
@@ -123,38 +160,38 @@ export default function TrainingMode({
 
     const getOptionLabels = () => {
         // Warmups
-        if (currentEx.id === 'D1-WU') return { primary: 'Cinta / Elíptica', alternative: 'Bicicleta Estática / Bandas' };
-        if (currentEx.id === 'D2-WU') return { primary: 'Cinta / Elíptica', alternative: 'Bicicleta Estática / Bandas' };
-        if (currentEx.id === 'D3-WU') return { primary: 'Cinta / Elíptica', alternative: 'Bicicleta Estática / Bandas' };
+        if (currentEx.id === 'D1-WU') return { primary: t('opt_cinta_eliptica'), alternative: t('opt_bicicleta_bandas') };
+        if (currentEx.id === 'D2-WU') return { primary: t('opt_cinta_eliptica'), alternative: t('opt_bicicleta_bandas') };
+        if (currentEx.id === 'D3-WU') return { primary: t('opt_cinta_eliptica'), alternative: t('opt_bicicleta_bandas') };
 
         // D1
-        if (currentEx.id === 'D1-1') return { primary: 'Sentadilla Copa/Barra', alternative: 'Prensa de Piernas' };
-        if (currentEx.id === 'D1-2') return { primary: 'TRX / Remo Barra', alternative: 'Remo en Máquina' };
-        if (currentEx.id === 'D1-3') return { primary: 'Split Squat Manc.', alternative: 'Prensa Unilateral' };
-        if (currentEx.id === 'D1-4') return { primary: 'Press Hombro Barra/Manc.', alternative: 'Prensa de Hombro' };
-        if (currentEx.id === 'D1-5') return { primary: 'Curl Fitball', alternative: 'Leg Curl Sentado' };
-        if (currentEx.id === 'D1-6') return { primary: 'Mancuerna Nuca / Barra', alternative: 'Extensión de Tríceps Polea' };
-        if (currentEx.id === 'D1-8') return { primary: 'Supermans', alternative: 'Extensión Lumbar Máquina' };
+        if (currentEx.id === 'D1-1') return { primary: t('opt_sentadilla_copa'), alternative: t('opt_prensa_piernas') };
+        if (currentEx.id === 'D1-2') return { primary: t('opt_trx_remo'), alternative: t('opt_remo_maquina') };
+        if (currentEx.id === 'D1-3') return { primary: t('opt_split_squat'), alternative: t('opt_prensa_unilateral') };
+        if (currentEx.id === 'D1-4') return { primary: t('opt_press_hombro'), alternative: t('opt_prensa_hombro') };
+        if (currentEx.id === 'D1-5') return { primary: t('opt_curl_fitball'), alternative: t('opt_leg_curl') };
+        if (currentEx.id === 'D1-6') return { primary: t('opt_mancuerna_nuca'), alternative: t('opt_triceps_polea') };
+        if (currentEx.id === 'D1-8') return { primary: t('opt_supermans'), alternative: t('opt_extension_lumbar') };
 
         // D2
-        if (currentEx.id === 'D2-1') return { primary: 'Press Banca Barra/Manc.', alternative: 'Prensa de Pecho' };
-        if (currentEx.id === 'D2-2') return { primary: 'Zancada Libre Manc./Barra', alternative: 'Sentadilla Multipower' };
-        if (currentEx.id === 'D2-3') return { primary: 'Pájaros Mancuerna', alternative: 'Pec Deck Invertido' };
-        if (currentEx.id === 'D2-4') return { primary: 'Hip Thrust Barra/Discos', alternative: 'Hip Thrust en Máquina' };
-        if (currentEx.id === 'D2-5') return { primary: 'Cosaca Mancuerna', alternative: 'Máquina Aductora' };
-        if (currentEx.id === 'D2-6') return { primary: 'Lateral Mancuernas', alternative: 'Elevación Lateral Polea' };
-        if (currentEx.id === 'D2-7') return { primary: 'Rotación Banda', alternative: 'Rotación en Polea' };
+        if (currentEx.id === 'D2-1') return { primary: t('opt_press_banca'), alternative: t('opt_prensa_pecho') };
+        if (currentEx.id === 'D2-2') return { primary: t('opt_zancada_libre'), alternative: t('opt_sentadilla_multipower') };
+        if (currentEx.id === 'D2-3') return { primary: t('opt_pajaros_mancuerna'), alternative: t('opt_pec_deck_invertido') };
+        if (currentEx.id === 'D2-4') return { primary: t('opt_hip_thrust'), alternative: t('opt_hip_thrust_maquina') };
+        if (currentEx.id === 'D2-5') return { primary: t('opt_cosaca'), alternative: t('opt_maquina_aductora') };
+        if (currentEx.id === 'D2-6') return { primary: t('opt_lateral_mancuernas'), alternative: t('opt_lateral_polea') };
+        if (currentEx.id === 'D2-7') return { primary: t('opt_rotacion_banda'), alternative: t('opt_rotacion_polea') };
 
         // D3
-        if (currentEx.id === 'D3-1') return { primary: 'Peso Muerto Barra/Discos', alternative: 'Hiperextensión 45°' };
-        if (currentEx.id === 'D3-2') return { primary: 'Dominadas', alternative: 'Jalón Pecho Polea' };
-        if (currentEx.id === 'D3-3') return { primary: 'Subida Cajón Manc.', alternative: 'Zancadas Multipower' };
-        if (currentEx.id === 'D3-4') return { primary: 'Press Inclinado Barra/Manc.', alternative: 'Prensa Pecho Inclinada' };
-        if (currentEx.id === 'D3-5') return { primary: 'Curtsy Lunge Manc.', alternative: 'Patada Glúteo Polea' };
-        if (currentEx.id === 'D3-6') return { primary: 'Curl Mancuernas/Barra', alternative: 'Máquina de Bíceps' };
-        if (currentEx.id === 'D3-8') return { primary: 'Tuck Ups Abdomen', alternative: 'Máquina Crunch Abdominal' };
+        if (currentEx.id === 'D3-1') return { primary: t('opt_peso_muerto'), alternative: t('opt_hiperextension_45') };
+        if (currentEx.id === 'D3-2') return { primary: t('opt_dominadas'), alternative: t('opt_jalon_pecho') };
+        if (currentEx.id === 'D3-3') return { primary: t('opt_subida_cajon'), alternative: t('opt_zancadas_multipower') };
+        if (currentEx.id === 'D3-4') return { primary: t('opt_press_inclinado'), alternative: t('opt_prensa_inclinada') };
+        if (currentEx.id === 'D3-5') return { primary: t('opt_curtsy_lunge'), alternative: t('opt_patada_gluteo') };
+        if (currentEx.id === 'D3-6') return { primary: t('opt_curl_mancuernas'), alternative: t('opt_maquina_biceps') };
+        if (currentEx.id === 'D3-8') return { primary: t('opt_tuck_ups'), alternative: t('opt_crunch_abdominal') };
 
-        return { primary: 'Peso Libre (Barra/Manc.)', alternative: 'Máquina / Polea' };
+        return { primary: t('opt_freeweight'), alternative: t('opt_machine_cable') };
     };
 
     const labels = getOptionLabels();
@@ -350,13 +387,31 @@ export default function TrainingMode({
         endSession();
     };
 
+    const userSuffix = activeUser === 'Michael' ? 'm' : activeUser === 'Lina' ? 'l' : 'm';
+    const localizedNotes = t(currentEx.id + '_notes_' + userSuffix) || (currentEx.progressionNotes && currentEx.progressionNotes[activeUser]);
+
+    const getAutoregText = () => {
+        const sleepStr = wellnessAssessment?.sleep === 'poor' ? t('sleep_poor') : wellnessAssessment?.sleep === 'normal' ? t('sleep_normal') : t('sleep_excellent');
+        const cnsStr = wellnessAssessment?.cns === 'exhausted' ? t('cns_exhausted') : wellnessAssessment?.cns === 'tired' ? t('cns_tired') : t('cns_fresh');
+        const soreStr = wellnessAssessment?.soreness === 'very_sore' ? t('muscle_very_sore') : wellnessAssessment?.soreness === 'sore' ? t('muscle_sore') : t('muscle_recovered');
+        const pct = Math.round((1 - autoRegulationFactor) * 100);
+        
+        if (language === 'en') {
+            return `Due to your recovery today (${sleepStr}, ${cnsStr}, and ${soreStr}), it is suggested to reduce your previous loads by ${pct}%. The smart suggestions below have already been recalculated.`;
+        } else if (language === 'de') {
+            return `Aufgrund deiner heutigen Erholung (${sleepStr}, ${cnsStr} und ${soreStr}) wird empfohlen, deine vorherigen Lasten um ${pct}% zu reduzieren. Die intelligenten Vorschläge unten wurden bereits neu berechnet.`;
+        } else {
+            return `Debido a tu descanso de hoy (${sleepStr}, ${cnsStr}, y ${soreStr}), se sugiere reducir tus cargas anteriores un ${pct}%. Las sugerencias inteligentes abajo ya han sido recalculadas.`;
+        }
+    };
+
     return (
         <motion.div 
             {...bind()}
             initial={{ y: '100%', x: 0 }}
             animate={controls}
             exit={{ y: '100%', transition: { duration: 0.3 } }}
-            className="fixed inset-0 bg-ios-bg z-50 text-white font-sans flex flex-col safe-area-pt touch-pan-y overflow-hidden"
+            className="absolute inset-0 bg-ios-bg z-50 text-white font-sans flex flex-col safe-area-pt touch-pan-y overflow-hidden"
             style={{ touchAction: 'pan-y' }}
         >
             {/* iOS Modal Handle Bar */}
@@ -370,7 +425,7 @@ export default function TrainingMode({
                     aria-label="End Session and return to Home"
                 >
                     <ChevronLeft size={24} className="-ml-2"/>
-                    Fin
+                    {t('cancel')}
                 </button>
                 <div className="flex flex-col items-center">
                     <span className="text-[12px] font-semibold tracking-wider text-gray-400 uppercase">{dayNames[selectedDay]}</span>
@@ -387,296 +442,303 @@ export default function TrainingMode({
             </div>
 
             {/* Main Content Scroll Container */}
-            <main className="flex-1 overflow-y-auto no-scrollbar pb-32 px-4 mt-4 relative">
-                
-                {/* Exercise Description and Header */}
-                <div className="text-center mb-4 max-w-lg mx-auto">
-                    <p className="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">
-                        {currentExIndex + 1} DE {routine.length}
-                    </p>
-                    <h2 className="text-[25px] font-extrabold leading-tight mb-1 text-white">{currentEx.name}</h2>
-                    <p className="text-[14px] text-ios-blue font-semibold mb-1">{currentEx.category}</p>
-                    <p className="text-[13px] text-gray-400 mb-3">Equipamiento: {currentEx.sharedEquipment}</p>
+            <main className="flex-1 overflow-y-auto no-scrollbar pb-32 px-4 mt-4 relative max-w-6xl mx-auto w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                     
-                    {/* Progression Personalised Note scoped specifically to Michael / Lina */}
-                    {currentEx.progressionNotes && currentEx.progressionNotes[activeUser] && (
-                        <div className="bg-ios-card/40 border border-white/5 rounded-xl p-3 mb-3 text-left max-w-lg mx-auto">
-                            <span className="text-[11px] font-bold text-ios-blue uppercase tracking-wider block mb-0.5">Sugerencia Técnica ({activeUser})</span>
-                            <span className="text-[13px] text-gray-300 leading-tight">{currentEx.progressionNotes[activeUser]}</span>
-                        </div>
-                    )}
-                    
-                    <p className="text-[14px] text-gray-300 leading-relaxed px-2">{currentEx.description}</p>
-                </div>
-
-                {/* Direct Video Tutorials (Embedded) */}
-                {currentEx.hasAlternative && (
-                    <div className="flex justify-center gap-2 mb-3 max-w-lg mx-auto" role="tablist">
-                        <button
-                            onClick={() => setSelectedOptions(prev => ({ ...prev, [currentEx.id]: 'primary' }))}
-                            role="tab"
-                            aria-selected={activeOption === 'primary'}
-                            className={`px-4 py-1 rounded-full text-[11px] font-bold transition-all ${
-                                activeOption === 'primary' 
-                                    ? 'bg-ios-blue text-white shadow-sm' 
-                                    : 'bg-[#2C2C2E] text-gray-400 hover:text-white'
-                            }`}
-                        >
-                            {labels.primary}
-                        </button>
-                        <button
-                            onClick={() => setSelectedOptions(prev => ({ ...prev, [currentEx.id]: 'alternative' }))}
-                            role="tab"
-                            aria-selected={activeOption === 'alternative'}
-                            className={`px-4 py-1 rounded-full text-[11px] font-bold transition-all ${
-                                activeOption === 'alternative' 
-                                    ? 'bg-ios-pink text-white shadow-sm' 
-                                    : 'bg-[#2C2C2E] text-gray-400 hover:text-white'
-                            }`}
-                        >
-                            {labels.alternative}
-                        </button>
-                    </div>
-                )}
-
-                {embedUrl ? (
-                    <div className="w-full aspect-video rounded-[20px] overflow-hidden mb-4 bg-black border border-white/10 relative shadow-inner max-w-lg mx-auto">
-                        <iframe
-                            src={embedUrl}
-                            title={currentEx.name}
-                            className="w-full h-full border-0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                        />
-                    </div>
-                ) : (
-                    <div className="w-full aspect-video rounded-[20px] overflow-hidden mb-4 bg-[#1C1C1E]/50 border border-white/10 flex flex-col items-center justify-center p-6 text-center max-w-lg mx-auto">
-                        <span className="text-[32px] mb-2 select-none">📱</span>
-                        <span className="text-[14px] font-bold text-white mb-1">Demostración en Video</span>
-                        <p className="text-[12px] text-gray-400 mb-4 px-4 leading-snug">
-                            Mira una demostración rápida y explicativa en formato vertical directamente en YouTube Shorts.
-                        </p>
-                        <a 
-                            href={`https://www.youtube.com/results?search_query=${encodeURIComponent((activeOption === 'primary' ? currentEx.name : (labels.alternative || currentEx.name)) + ' shorts')}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-5 py-2 bg-[#FF0000] hover:bg-[#CC0000] text-white font-bold text-xs rounded-full transition-all flex items-center gap-1.5 shadow-lg shadow-red-500/20 active:scale-95 text-decoration-none"
-                        >
-                            Buscar en YouTube Shorts
-                        </a>
-                    </div>
-                )}
-
-                {/* -------------------- DYNAMIC SPORTS-SCIENCE AUTOREGULATION ALERT BANNER -------------------- */}
-                {autoRegulationFactor < 1.0 && (
-                    <div className="max-w-lg mx-auto bg-purple-500/10 border border-purple-500/25 rounded-[20px] p-4 mb-4 text-[13px] leading-normal flex items-start gap-3 shadow-lg shadow-purple-500/5 animate-in fade-in slide-in-from-bottom duration-300">
-                        <span className="text-[18px] select-none">📉</span>
-                        <div>
-                            <span className="font-extrabold text-purple-400 block mb-0.5">Autorregulación Fisiológica Activa ({Math.round(autoRegulationFactor * 100)}%)</span>
-                            <span className="text-gray-300">
-                                Debido a tu descanso de hoy ({wellnessAssessment?.sleep === 'poor' ? 'Sueño deficiente' : 'Sueño regular'}, {wellnessAssessment?.cns === 'exhausted' ? 'SNC agotado (BJJ)' : wellnessAssessment?.cns === 'tired' ? 'SNC fatigado' : 'SNC listo'}, y {wellnessAssessment?.soreness === 'very_sore' ? 'agujetas severas' : wellnessAssessment?.soreness === 'sore' ? 'agujetas leves' : 'musculatura recuperada'}), se sugiere reducir tus cargas anteriores un <strong>{Math.round((1 - autoRegulationFactor) * 100)}%</strong>. Las sugerencias inteligentes abajo ya han sido recalculadas.
-                            </span>
-                        </div>
-                    </div>
-                )}
-
-                {/* -------------------- SETS & REPS LOGGING INTERFACE -------------------- */}
-                <div className="max-w-lg mx-auto bg-ios-card rounded-[22px] overflow-hidden p-4 shadow-xl border border-white/5 mb-6">
-                    <div className="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
-                        <span className="text-[15px] font-bold text-white flex items-center gap-1.5">
-                            Historial y Registro
-                        </span>
-                        <div className="flex gap-2">
-                            <button 
-                                onClick={addSet}
-                                className="px-2.5 py-1 bg-[#2C2C2E] text-white rounded-lg text-xs font-bold flex items-center gap-1 active:scale-95 transition-transform"
-                            >
-                                <Plus size={14}/> Serie
-                            </button>
-                            <button 
-                                onClick={removeSet}
-                                className="px-2.5 py-1 bg-[#2C2C2E] text-red-400 rounded-lg text-xs font-bold flex items-center gap-1 active:scale-95 transition-transform"
-                            >
-                                <Minus size={14}/> Serie
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Table Headers */}
-                    {currentEx.measurementType === 'time' ? (
-                        <div className="grid grid-cols-12 gap-1 text-[11px] font-bold text-gray-500 uppercase pb-2 px-1">
-                            <div className="col-span-1 text-center">Ser</div>
-                            <div className="col-span-2 text-center">Prev</div>
-                            <div className="col-span-5 text-center">Duración</div>
-                            <div className="col-span-2 text-center">Fallo</div>
-                            <div className="col-span-2 text-center">Log</div>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-12 gap-1 text-[11px] font-bold text-gray-500 uppercase pb-2 px-1">
-                            <div className="col-span-1 text-center">Ser</div>
-                            <div className="col-span-2 text-center">Prev</div>
-                            <div className="col-span-3 text-center">Peso (kg)</div>
-                            <div className="col-span-2 text-center">Reps</div>
-                            <div className="col-span-2 text-center">Fallo</div>
-                            <div className="col-span-2 text-center">Log</div>
-                        </div>
-                    )}
-
-                    {/* Table Rows */}
-                    <div className="space-y-2">
-                        {activeSets.map((set, idx) => {
-                            const prevLog = getPreviousLog(currentEx.id);
-                            const prevSet = prevLog?.sets?.[idx];
+                    {/* Left Column - Info & Video */}
+                    <div className="space-y-4">
+                        {/* Exercise Description and Header */}
+                        <div className="text-center md:text-left mb-4 max-w-lg md:max-w-none mx-auto md:mx-0">
+                            <p className="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">
+                                {currentExIndex + 1} {t('train_of')} {routine.length}
+                            </p>
+                            <h2 className="text-[25px] font-extrabold leading-tight mb-1 text-white">{t(currentEx.id + '_name') || currentEx.name}</h2>
+                            <p className="text-[14px] text-ios-blue font-semibold mb-1">{getCategoryTranslation(currentEx.category, t)}</p>
+                            <p className="text-[13px] text-gray-400 mb-3">{t('train_equipment') || 'Equipamiento'}: {currentEx.sharedEquipment}</p>
                             
-                            const formatTimeVal = (sec) => {
-                                if (sec >= 60) return `${Math.floor(sec / 60)}m`;
-                                return `${sec}s`;
-                            };
+                            {/* Progression Personalised Note scoped specifically to Michael / Lina */}
+                            {localizedNotes && (
+                                <div className="bg-ios-card/40 border border-white/5 rounded-xl p-3 mb-3 text-left max-w-lg md:max-w-none mx-auto md:mx-0">
+                                    <span className="text-[11px] font-bold text-ios-blue uppercase tracking-wider block mb-0.5">{t('train_tech_suggestion') || 'Sugerencia Técnica'} ({activeUser})</span>
+                                    <span className="text-[13px] text-gray-300 leading-tight">{localizedNotes}</span>
+                                </div>
+                            )}
+                            
+                            <p className="text-[14px] text-gray-300 leading-relaxed px-2 md:px-0 text-center md:text-left">{t(currentEx.id + '_desc') || currentEx.description}</p>
+                        </div>
 
-                            // Displays original absolute weights or time in Previo history tag
-                            const prevSuggestionText = prevSet 
-                                ? (currentEx.measurementType === 'time' ? formatTimeVal(prevSet.reps) : `${prevSet.weight}k × ${prevSet.reps}`) 
-                                : '—';
-
-                            return (
-                                <div 
-                                    key={idx} 
-                                    className={`grid grid-cols-12 gap-1 items-center py-2 px-1 rounded-xl transition-colors ${
-                                        set.completed ? 'bg-ios-green/10 border border-ios-green/20' : 'bg-[#2C2C2E]/40 border border-transparent'
+                        {/* Direct Video Tutorials (Embedded) */}
+                        {currentEx.hasAlternative && (
+                            <div className="flex justify-center md:justify-start gap-2 mb-3 max-w-lg md:max-w-none mx-auto md:mx-0" role="tablist">
+                                <button
+                                    onClick={() => setSelectedOptions(prev => ({ ...prev, [currentEx.id]: 'primary' }))}
+                                    role="tab"
+                                    aria-selected={activeOption === 'primary'}
+                                    className={`px-4 py-1 rounded-full text-[11px] font-bold transition-all ${
+                                        activeOption === 'primary' 
+                                            ? 'bg-ios-blue text-white shadow-sm' 
+                                            : 'bg-[#2C2C2E] text-gray-400 hover:text-white'
                                     }`}
                                 >
-                                    {/* Set Number */}
-                                    <div className="col-span-1 text-center">
-                                        <span className={`w-5 h-5 rounded-full text-[10px] font-extrabold flex items-center justify-center mx-auto ${
-                                            set.completed ? 'bg-ios-green text-white' : 'bg-[#2C2C2E] text-gray-300'
-                                        }`}>
-                                            {set.setNum}
-                                        </span>
-                                    </div>
+                                    {labels.primary}
+                                </button>
+                                <button
+                                    onClick={() => setSelectedOptions(prev => ({ ...prev, [currentEx.id]: 'alternative' }))}
+                                    role="tab"
+                                    aria-selected={activeOption === 'alternative'}
+                                    className={`px-4 py-1 rounded-full text-[11px] font-bold transition-all ${
+                                        activeOption === 'alternative' 
+                                            ? 'bg-ios-pink text-white shadow-sm' 
+                                            : 'bg-[#2C2C2E] text-gray-400 hover:text-white'
+                                    }`}
+                                >
+                                    {labels.alternative}
+                                </button>
+                            </div>
+                        )}
 
-                                    {/* Previous Target Suggestion (Smart Inputs) */}
-                                    <div className="col-span-2 text-center text-[10px] font-bold text-gray-400 tracking-tight leading-none select-none">
-                                        {prevSuggestionText}
-                                    </div>
-
-                                    {currentEx.measurementType === 'time' ? (
-                                        /* Time Duration Input Box with Quick Add/Sub buttons */
-                                        <div className="col-span-5 flex items-center justify-center gap-1.5">
-                                            <button 
-                                                onClick={() => {
-                                                    const step = currentEx.id.includes('WU') ? 60 : 5;
-                                                    updateSetField(idx, 'reps', Math.max(0, (Number(set.reps) || 0) - step));
-                                                    updateSetField(idx, 'weight', 0);
-                                                }}
-                                                disabled={set.completed}
-                                                className="px-1.5 py-0.5 bg-[#2C2C2E] rounded text-[10px] font-bold text-gray-400 active:scale-90 disabled:opacity-30 select-none shrink-0"
-                                            >
-                                                -{currentEx.id.includes('WU') ? '1m' : '5s'}
-                                            </button>
-                                            <input 
-                                                type="number"
-                                                value={set.reps === 0 ? '' : set.reps}
-                                                placeholder={prevSet ? prevSet.reps : (currentEx.id.includes('WU') ? "600" : "30")}
-                                                disabled={set.completed}
-                                                onChange={(e) => {
-                                                    updateSetField(idx, 'reps', parseInt(e.target.value) || 0);
-                                                    updateSetField(idx, 'weight', 0);
-                                                }}
-                                                className="w-14 h-7 bg-[#2C2C2E] text-center text-[13px] font-bold rounded-md border-0 focus:ring-1 focus:ring-ios-blue text-white p-0 disabled:opacity-60 font-mono"
-                                            />
-                                            <span className="text-[10px] font-bold text-gray-500 select-none">s</span>
-                                            <button 
-                                                onClick={() => {
-                                                    const step = currentEx.id.includes('WU') ? 60 : 5;
-                                                    updateSetField(idx, 'reps', (Number(set.reps) || 0) + step);
-                                                    updateSetField(idx, 'weight', 0);
-                                                }}
-                                                disabled={set.completed}
-                                                className="px-1.5 py-0.5 bg-[#2C2C2E] rounded text-[10px] font-bold text-gray-400 active:scale-90 disabled:opacity-30 select-none shrink-0"
-                                            >
-                                                +{currentEx.id.includes('WU') ? '1m' : '5s'}
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            {/* Weight Input Box with Quick Add/Sub buttons */}
-                                            <div className="col-span-3 flex items-center justify-center gap-0.5">
-                                                <button 
-                                                    onClick={() => updateSetField(idx, 'weight', Math.max(0, (Number(set.weight) || 0) - 2.5))}
-                                                    disabled={set.completed}
-                                                    className="w-4 h-4 bg-[#2C2C2E] rounded flex items-center justify-center text-[10px] font-bold text-gray-400 active:scale-90 disabled:opacity-30"
-                                                >
-                                                    -
-                                                </button>
-                                                <input 
-                                                    type="number"
-                                                    step="0.5"
-                                                    value={set.weight === 0 ? '' : set.weight}
-                                                    placeholder={prevSet ? prevSet.weight : "0"}
-                                                    disabled={set.completed}
-                                                    onChange={(e) => updateSetField(idx, 'weight', parseFloat(e.target.value) || 0)}
-                                                    className="w-10 h-7 bg-[#2C2C2E] text-center text-[13px] font-bold rounded-md border-0 focus:ring-1 focus:ring-ios-blue text-white p-0 disabled:opacity-60 font-mono"
-                                                />
-                                                <button 
-                                                    onClick={() => updateSetField(idx, 'weight', (Number(set.weight) || 0) + 2.5)}
-                                                    disabled={set.completed}
-                                                    className="w-4 h-4 bg-[#2C2C2E] rounded flex items-center justify-center text-[10px] font-bold text-gray-400 active:scale-90 disabled:opacity-30"
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
-
-                                            {/* Reps Input */}
-                                            <div className="col-span-2 flex items-center justify-center gap-0.5">
-                                                <input 
-                                                    type="number"
-                                                    value={set.reps === 0 ? '' : set.reps}
-                                                    placeholder={prevSet ? prevSet.reps : "10"}
-                                                    disabled={set.completed}
-                                                    onChange={(e) => updateSetField(idx, 'reps', parseInt(e.target.value) || 0)}
-                                                    className="w-8 h-7 bg-[#2C2C2E] text-center text-[13px] font-bold rounded-md border-0 focus:ring-1 focus:ring-ios-blue text-white p-0 disabled:opacity-60 font-mono"
-                                                />
-                                            </div>
-                                        </>
-                                    )}
-
-                                    {/* Fallo Checkbox Indicator (iOS style Failure check) */}
-                                    <div className="col-span-2 flex items-center justify-center px-0.5">
-                                        <button
-                                            onClick={() => updateSetField(idx, 'alFallo', !set.alFallo)}
-                                            disabled={set.completed}
-                                            className={`w-6 h-6 rounded border transition-all active:scale-90 flex items-center justify-center ${
-                                                set.alFallo 
-                                                    ? 'bg-red-500 border-red-500 text-white shadow-sm shadow-red-500/30' 
-                                                    : 'border-white/20 text-transparent bg-[#1C1C1E]'
-                                            }`}
-                                            title="Fallo muscular"
-                                        >
-                                            <span className="text-[10px] font-extrabold select-none leading-none">F</span>
-                                        </button>
-                                    </div>
-
-                                    {/* Completed Circle Toggle */}
-                                    <div className="col-span-2 text-center">
-                                        <button
-                                            onClick={() => handleSetToggle(idx)}
-                                            className={`w-7 h-7 rounded-full mx-auto flex items-center justify-center border transition-all active:scale-90 ${
-                                                set.completed 
-                                                    ? 'bg-ios-green border-ios-green text-white shadow-sm shadow-ios-green/30' 
-                                                    : 'border-white/20 text-transparent bg-[#1C1C1E]'
-                                            }`}
-                                        >
-                                            <Check size={14} strokeWidth={3.5} />
-                                        </button>
-                                    </div>
-                                </div>
-                            );
-                        })}
+                        {embedUrl ? (
+                            <div className="w-full aspect-video rounded-[20px] overflow-hidden mb-4 bg-black border border-white/10 relative shadow-inner max-w-lg md:max-w-none mx-auto md:mx-0">
+                                <iframe
+                                    src={embedUrl}
+                                    title={t(currentEx.id + '_name') || currentEx.name}
+                                    className="w-full h-full border-0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowFullScreen
+                                />
+                            </div>
+                        ) : (
+                            <div className="w-full aspect-video rounded-[20px] overflow-hidden mb-4 bg-[#1C1C1E]/50 border border-white/10 flex flex-col items-center justify-center p-6 text-center max-w-lg md:max-w-none mx-auto md:mx-0">
+                                <span className="text-[32px] mb-2 select-none">📱</span>
+                                <span className="text-[14px] font-bold text-white mb-1">{t('train_video_tutorial') || 'Demostración en Video'}</span>
+                                <p className="text-[12px] text-gray-400 mb-4 px-4 leading-snug">
+                                    {t('train_view_shorts_desc') || 'Mira una demostración rápida y explicativa en formato vertical directamente en YouTube Shorts.'}
+                                </p>
+                                <a 
+                                    href={`https://www.youtube.com/results?search_query=${encodeURIComponent((activeOption === 'primary' ? (t(currentEx.id + '_name') || currentEx.name) : (labels.alternative || t(currentEx.id + '_name') || currentEx.name)) + ' shorts')}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="px-5 py-2 bg-[#FF0000] hover:bg-[#CC0000] text-white font-bold text-xs rounded-full transition-all flex items-center gap-1.5 shadow-lg shadow-red-500/20 active:scale-95 text-decoration-none"
+                                >
+                                    {t('train_search_shorts') || 'Buscar en YouTube Shorts'}
+                                </a>
+                            </div>
+                        )}
                     </div>
+
+                    {/* Right Column - Alert & Logs */}
+                    <div className="space-y-4 w-full">
+                        {/* -------------------- DYNAMIC SPORTS-SCIENCE AUTOREGULATION ALERT BANNER -------------------- */}
+                        {autoRegulationFactor < 1.0 && (
+                            <div className="max-w-lg md:max-w-none mx-auto md:mx-0 bg-purple-500/10 border border-purple-500/25 rounded-[20px] p-4 mb-4 text-[13px] leading-normal flex items-start gap-3 shadow-lg shadow-purple-500/5 animate-in fade-in slide-in-from-bottom duration-300">
+                                <span className="text-[18px] select-none">📉</span>
+                                <div>
+                                    <span className="font-extrabold text-purple-400 block mb-0.5">{t('autoreg_active') || 'Autorregulación Activa'} ({Math.round(autoRegulationFactor * 100)}%)</span>
+                                    <span className="text-gray-300">
+                                        {getAutoregText()}
+                                    </span>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* -------------------- SETS & REPS LOGGING INTERFACE -------------------- */}
+                        <div className="max-w-lg md:max-w-none mx-auto md:mx-0 bg-ios-card rounded-[22px] overflow-hidden p-4 shadow-xl border border-white/5 mb-6">
+                            <div className="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
+                                <span className="text-[15px] font-bold text-white flex items-center gap-1.5">
+                                    {t('train_history_log') || 'Historial y Registro'}
+                                </span>
+                                <div className="flex gap-2">
+                                    <button 
+                                        onClick={addSet}
+                                        className="px-2.5 py-1 bg-[#2C2C2E] text-white rounded-lg text-xs font-bold flex items-center gap-1 active:scale-95 transition-transform"
+                                    >
+                                        <Plus size={14}/> {t('train_set')}
+                                    </button>
+                                    <button 
+                                        onClick={removeSet}
+                                        className="px-2.5 py-1 bg-[#2C2C2E] text-red-400 rounded-lg text-xs font-bold flex items-center gap-1 active:scale-95 transition-transform"
+                                    >
+                                        <Minus size={14}/> {t('train_set')}
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Table Headers */}
+                            {currentEx.measurementType === 'time' ? (
+                                <div className="grid grid-cols-12 gap-1 text-[11px] font-bold text-gray-500 uppercase pb-2 px-1">
+                                    <div className="col-span-1 text-center">{language === 'es' ? 'Ser' : 'Set'}</div>
+                                    <div className="col-span-2 text-center">{language === 'es' ? 'Prev' : language === 'de' ? 'Vorh' : 'Prev'}</div>
+                                    <div className="col-span-5 text-center">{t('train_time_duration')}</div>
+                                    <div className="col-span-2 text-center">{t('train_failure')}</div>
+                                    <div className="col-span-2 text-center">{language === 'de' ? 'Prot' : 'Log'}</div>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-12 gap-1 text-[11px] font-bold text-gray-500 uppercase pb-2 px-1">
+                                    <div className="col-span-1 text-center">{language === 'es' ? 'Ser' : 'Set'}</div>
+                                    <div className="col-span-2 text-center">{language === 'es' ? 'Prev' : language === 'de' ? 'Vorh' : 'Prev'}</div>
+                                    <div className="col-span-3 text-center">{t('train_weight_kg')}</div>
+                                    <div className="col-span-2 text-center">{t('train_reps')}</div>
+                                    <div className="col-span-2 text-center">{t('train_failure')}</div>
+                                    <div className="col-span-2 text-center">{language === 'de' ? 'Prot' : 'Log'}</div>
+                                </div>
+                            )}
+
+                            {/* Table Rows */}
+                            <div className="space-y-2">
+                                {activeSets.map((set, idx) => {
+                                    const prevLog = getPreviousLog(currentEx.id);
+                                    const prevSet = prevLog?.sets?.[idx];
+                                    
+                                    const formatTimeVal = (sec) => {
+                                        if (sec >= 60) return `${Math.floor(sec / 60)}m`;
+                                        return `${sec}s`;
+                                    };
+
+                                    // Displays original absolute weights or time in Previo history tag
+                                    const prevSuggestionText = prevSet 
+                                        ? (currentEx.measurementType === 'time' ? formatTimeVal(prevSet.reps) : `${prevSet.weight}k × ${prevSet.reps}`) 
+                                        : '—';
+
+                                    return (
+                                        <div 
+                                            key={idx} 
+                                            className={`grid grid-cols-12 gap-1 items-center py-2 px-1 rounded-xl transition-colors ${
+                                                set.completed ? 'bg-ios-green/10 border border-ios-green/20' : 'bg-[#2C2C2E]/40 border border-transparent'
+                                            }`}
+                                        >
+                                            {/* Set Number */}
+                                            <div className="col-span-1 text-center">
+                                                <span className={`w-5 h-5 rounded-full text-[10px] font-extrabold flex items-center justify-center mx-auto ${
+                                                    set.completed ? 'bg-ios-green text-white' : 'bg-[#2C2C2E] text-gray-300'
+                                                }`}>
+                                                    {set.setNum}
+                                                </span>
+                                            </div>
+
+                                            {/* Previous Target Suggestion (Smart Inputs) */}
+                                            <div className="col-span-2 text-center text-[10px] font-bold text-gray-400 tracking-tight leading-none select-none">
+                                                {prevSuggestionText}
+                                            </div>
+
+                                            {currentEx.measurementType === 'time' ? (
+                                                /* Time Duration Input Box with Quick Add/Sub buttons */
+                                                <div className="col-span-5 flex items-center justify-center gap-1.5">
+                                                    <button 
+                                                        onClick={() => {
+                                                            const step = currentEx.id.includes('WU') ? 60 : 5;
+                                                            updateSetField(idx, 'reps', Math.max(0, (Number(set.reps) || 0) - step));
+                                                            updateSetField(idx, 'weight', 0);
+                                                        }}
+                                                        disabled={set.completed}
+                                                        className="px-1.5 py-0.5 bg-[#2C2C2E] rounded text-[10px] font-bold text-gray-400 active:scale-90 disabled:opacity-30 select-none shrink-0"
+                                                    >
+                                                        -{currentEx.id.includes('WU') ? '1m' : '5s'}
+                                                    </button>
+                                                    <input 
+                                                        type="number"
+                                                        value={set.reps === 0 ? '' : set.reps}
+                                                        placeholder={prevSet ? prevSet.reps : (currentEx.id.includes('WU') ? "600" : "30")}
+                                                        disabled={set.completed}
+                                                        onChange={(e) => {
+                                                            updateSetField(idx, 'reps', parseInt(e.target.value) || 0);
+                                                            updateSetField(idx, 'weight', 0);
+                                                        }}
+                                                        className="w-14 h-7 bg-[#2C2C2E] text-center text-[13px] font-bold rounded-md border-0 focus:ring-1 focus:ring-ios-blue text-white p-0 disabled:opacity-60 font-mono"
+                                                    />
+                                                    <span className="text-[10px] font-bold text-gray-500 select-none">s</span>
+                                                    <button 
+                                                        onClick={() => {
+                                                            const step = currentEx.id.includes('WU') ? 60 : 5;
+                                                            updateSetField(idx, 'reps', (Number(set.reps) || 0) + step);
+                                                            updateSetField(idx, 'weight', 0);
+                                                        }}
+                                                        disabled={set.completed}
+                                                        className="px-1.5 py-0.5 bg-[#2C2C2E] rounded text-[10px] font-bold text-gray-400 active:scale-90 disabled:opacity-30 select-none shrink-0"
+                                                    >
+                                                        +{currentEx.id.includes('WU') ? '1m' : '5s'}
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    {/* Weight Input Box with Quick Add/Sub buttons */}
+                                                    <div className="col-span-3 flex items-center justify-center gap-0.5">
+                                                        <button 
+                                                            onClick={() => updateSetField(idx, 'weight', Math.max(0, (Number(set.weight) || 0) - 2.5))}
+                                                            disabled={set.completed}
+                                                            className="w-4 h-4 bg-[#2C2C2E] rounded flex items-center justify-center text-[10px] font-bold text-gray-400 active:scale-90 disabled:opacity-30"
+                                                        >
+                                                            -
+                                                        </button>
+                                                        <input 
+                                                            type="number"
+                                                            step="0.5"
+                                                            value={set.weight === 0 ? '' : set.weight}
+                                                            placeholder={prevSet ? prevSet.weight : "0"}
+                                                            disabled={set.completed}
+                                                            onChange={(e) => updateSetField(idx, 'weight', parseFloat(e.target.value) || 0)}
+                                                            className="w-10 h-7 bg-[#2C2C2E] text-center text-[13px] font-bold rounded-md border-0 focus:ring-1 focus:ring-ios-blue text-white p-0 disabled:opacity-60 font-mono"
+                                                        />
+                                                        <button 
+                                                            onClick={() => updateSetField(idx, 'weight', (Number(set.weight) || 0) + 2.5)}
+                                                            disabled={set.completed}
+                                                            className="w-4 h-4 bg-[#2C2C2E] rounded flex items-center justify-center text-[10px] font-bold text-gray-400 active:scale-90 disabled:opacity-30"
+                                                        >
+                                                            +
+                                                        </button>
+                                                    </div>
+
+                                                    {/* Reps Input */}
+                                                    <div className="col-span-2 flex items-center justify-center gap-0.5">
+                                                        <input 
+                                                            type="number"
+                                                            value={set.reps === 0 ? '' : set.reps}
+                                                            placeholder={prevSet ? prevSet.reps : "10"}
+                                                            disabled={set.completed}
+                                                            onChange={(e) => updateSetField(idx, 'reps', parseInt(e.target.value) || 0)}
+                                                            className="w-8 h-7 bg-[#2C2C2E] text-center text-[13px] font-bold rounded-md border-0 focus:ring-1 focus:ring-ios-blue text-white p-0 disabled:opacity-60 font-mono"
+                                                        />
+                                                    </div>
+                                                </>
+                                            )}
+
+                                            {/* Fallo Checkbox Indicator (iOS style Failure check) */}
+                                            <div className="col-span-2 flex items-center justify-center px-0.5">
+                                                <button
+                                                    onClick={() => updateSetField(idx, 'alFallo', !set.alFallo)}
+                                                    disabled={set.completed}
+                                                    className={`w-6 h-6 rounded border transition-all active:scale-90 flex items-center justify-center ${
+                                                        set.alFallo 
+                                                            ? 'bg-red-500 border-red-500 text-white shadow-sm shadow-red-500/30' 
+                                                            : 'border-white/20 text-transparent bg-[#1C1C1E]'
+                                                    }`}
+                                                    title={t('train_to_failure')}
+                                                >
+                                                    <span className="text-[10px] font-extrabold select-none leading-none">F</span>
+                                                </button>
+                                            </div>
+
+                                            {/* Completed Circle Toggle */}
+                                            <div className="col-span-2 text-center">
+                                                <button
+                                                    onClick={() => handleSetToggle(idx)}
+                                                    className={`w-7 h-7 rounded-full mx-auto flex items-center justify-center border transition-all active:scale-90 ${
+                                                        set.completed 
+                                                            ? 'bg-ios-green border-ios-green text-white shadow-sm shadow-ios-green/30' 
+                                                            : 'border-white/20 text-transparent bg-[#1C1C1E]'
+                                                    }`}
+                                                >
+                                                    <Check size={14} strokeWidth={3.5} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </main>
-
-
 
             {/* Bottom Nav Bar - iOS Sticky ToolBar */}
             <footer className="shrink-0 bg-[#1C1C1E]/90 backdrop-blur-xl border-t border-white/10 px-4 pt-3 pb-8 safe-area-pb z-40 relative">
@@ -695,14 +757,14 @@ export default function TrainingMode({
                             onClick={handleFinish}
                             className="flex-1 py-3.5 bg-ios-green text-white rounded-[20px] font-bold text-[17px] active:scale-[0.98] transition-transform text-center shadow-lg shadow-ios-green/20"
                         >
-                            Finalizar Sesión
+                            {t('train_finish')}
                         </button>
                     ) : (
                         <button
                             onClick={handleNext}
                             className="flex-1 py-3.5 bg-ios-blue text-white rounded-[20px] font-bold text-[17px] active:scale-[0.98] transition-transform flex justify-center items-center gap-2 shadow-lg shadow-ios-blue/20"
                         >
-                            Siguiente Ejercicio
+                            {t('train_next')}
                         </button>
                     )}
 

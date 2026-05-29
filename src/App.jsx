@@ -6,8 +6,18 @@ import Dashboard from './components/Dashboard';
 import TrainingMode from './components/TrainingMode';
 import EndSplash from './components/EndSplash';
 import { seedMockDataForTestUser } from './data/workoutData';
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
 
 export default function App() {
+    return (
+        <LanguageProvider>
+            <AppContent />
+        </LanguageProvider>
+    );
+}
+
+function AppContent() {
+    const { t } = useLanguage();
     const [isAppReady, setIsAppReady] = useState(false);
     const [appState, setAppState] = useState('login'); // Starts on the Login welcome screen
 
@@ -170,14 +180,19 @@ export default function App() {
     };
 
     return (
-        <div className="bg-ios-bg min-h-screen selection:bg-ios-blue/30 w-full overflow-hidden relative">
-            <AnimatePresence mode="wait">
+        <div className="bg-[#050505] min-h-screen selection:bg-ios-blue/30 w-full md:py-8 md:px-4 flex items-center justify-center relative overflow-hidden">
+            {/* Soft Ambient Background Glows on desktop */}
+            <div className="absolute top-10 left-10 w-[40%] h-[40%] bg-ios-blue/5 blur-[120px] rounded-full hidden md:block pointer-events-none"></div>
+            <div className="absolute bottom-10 right-10 w-[40%] h-[40%] bg-ios-pink/5 blur-[120px] rounded-full hidden md:block pointer-events-none"></div>
+
+            <div className="w-full min-h-screen md:min-h-0 md:h-[88vh] md:max-w-2xl lg:max-w-4xl xl:max-w-5xl bg-ios-bg md:rounded-[36px] md:shadow-2xl md:border md:border-white/10 md:overflow-hidden relative flex flex-col">
+                <AnimatePresence mode="wait">
                 {!isAppReady ? (
                     <SplashScreen key="splash" setAppReady={setIsAppReady} />
                 ) : (
                     <motion.div 
                         key="app-content"
-                        className="w-full min-h-screen relative flex flex-col"
+                        className="w-full min-h-screen md:min-h-0 md:h-full relative flex flex-col"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.3 }}
@@ -251,7 +266,7 @@ export default function App() {
             <AnimatePresence>
                 {showWellnessCheck && (
                     <motion.div 
-                        className="fixed inset-0 bg-black/90 backdrop-blur-md z-[200] flex flex-col justify-end safe-area-pb"
+                        className="absolute inset-0 bg-black/90 backdrop-blur-md z-[200] flex flex-col justify-end safe-area-pb"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -265,24 +280,24 @@ export default function App() {
                         >
                             {/* Header */}
                             <div className="text-center space-y-1 relative">
-                                <h3 className="text-[20px] font-extrabold text-white">Chequeo de Bienestar</h3>
-                                <p className="text-[13px] text-gray-400 font-medium">Autorregulación fisiológica diaria antes de cargar peso</p>
+                                <h3 className="text-[20px] font-extrabold text-white">{t('wellness_title')}</h3>
+                                <p className="text-[13px] text-gray-400 font-medium">{t('wellness_subtitle')}</p>
                                 <button 
                                     onClick={() => setShowWellnessCheck(false)}
                                     className="absolute right-0 top-0 text-gray-400 active:text-white"
                                 >
-                                    <span className="text-sm font-semibold text-ios-pink">Cancelar</span>
+                                    <span className="text-sm font-semibold text-ios-pink">{t('cancel')}</span>
                                 </button>
                             </div>
 
                             {/* 1. Sleep Selectors */}
                             <div className="space-y-2">
-                                <label className="text-[11px] font-extrabold text-gray-500 uppercase tracking-widest px-1 block">Calidad de Sueño</label>
+                                <label className="text-[11px] font-extrabold text-gray-500 uppercase tracking-widest px-1 block">{t('sleep_quality')}</label>
                                 <div className="grid grid-cols-3 gap-2">
                                     {[
-                                        { key: 'excellent', label: 'Excelente', desc: '7-8h profundo' },
-                                        { key: 'normal', label: 'Regular', desc: 'Sueño leve' },
-                                        { key: 'poor', label: 'Insuficiente', desc: '<6h / cansado' }
+                                        { key: 'excellent', label: t('sleep_excellent'), desc: t('sleep_excellent_desc') },
+                                        { key: 'normal', label: t('sleep_normal'), desc: t('sleep_normal_desc') },
+                                        { key: 'poor', label: t('sleep_poor'), desc: t('sleep_poor_desc') }
                                     ].map((opt) => (
                                         <button
                                             key={opt.key}
@@ -302,12 +317,12 @@ export default function App() {
 
                             {/* 2. CNS Fatigue Selector */}
                             <div className="space-y-2">
-                                <label className="text-[11px] font-extrabold text-gray-500 uppercase tracking-widest px-1 block">Fatiga del SNC / Estrés (Michael BJJ Check)</label>
+                                <label className="text-[11px] font-extrabold text-gray-500 uppercase tracking-widest px-1 block">{t('cns_fatigue')}</label>
                                 <div className="grid grid-cols-3 gap-2">
                                     {[
-                                        { key: 'fresh', label: 'Fresco / Listo', desc: 'Energía alta' },
-                                        { key: 'tired', label: 'Fatiga Leve', desc: 'Entreno previo' },
-                                        { key: 'exhausted', label: 'Agotado', desc: 'Sparring duro' }
+                                        { key: 'fresh', label: t('cns_fresh'), desc: t('cns_fresh_desc') },
+                                        { key: 'tired', label: t('cns_tired'), desc: t('cns_tired_desc') },
+                                        { key: 'exhausted', label: t('cns_exhausted'), desc: t('cns_exhausted_desc') }
                                     ].map((opt) => (
                                         <button
                                             key={opt.key}
@@ -327,12 +342,12 @@ export default function App() {
 
                             {/* 3. Muscle DOMS Soreness Selector */}
                             <div className="space-y-2">
-                                <label className="text-[11px] font-extrabold text-gray-500 uppercase tracking-widest px-1 block">Dolor Muscular (DOMS)</label>
+                                <label className="text-[11px] font-extrabold text-gray-500 uppercase tracking-widest px-1 block">{t('muscle_doms')}</label>
                                 <div className="grid grid-cols-3 gap-2">
                                     {[
-                                        { key: 'recovered', label: 'Recuperado', desc: 'Sin molestias' },
-                                        { key: 'sore', label: 'Agujetas', desc: 'Tensión leve' },
-                                        { key: 'very_sore', label: 'Muy Dolorido', desc: 'Fibras rotas' }
+                                        { key: 'recovered', label: t('muscle_recovered'), desc: t('muscle_recovered_desc') },
+                                        { key: 'sore', label: t('muscle_sore'), desc: t('muscle_sore_desc') },
+                                        { key: 'very_sore', label: t('muscle_very_sore'), desc: t('muscle_very_sore_desc') }
                                     ].map((opt) => (
                                         <button
                                             key={opt.key}
@@ -359,7 +374,7 @@ export default function App() {
                                 <div className="bg-ios-pink/10 border border-ios-pink/25 rounded-2xl p-3 text-[12px] text-ios-pink leading-normal flex items-start gap-2">
                                     <span>⚠️</span>
                                     <span>
-                                        <strong>Autorregulación Activa:</strong> Sufrirás una reducción sugerida del 10% al 25% en tus cargas sugeridas (Smart Inputs) hoy para proteger la resíntesis de PCr y prevenir sobreentrenamiento del SNC.
+                                        <strong>{t('autoreg_active')}</strong> {t('autoreg_warning')}
                                     </span>
                                 </div>
                             )}
@@ -369,12 +384,13 @@ export default function App() {
                                 onClick={confirmWellnessAndStart}
                                 className="w-full py-4 bg-ios-blue text-white font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-98 transition-transform shadow-lg shadow-ios-blue/20"
                             >
-                                Confirmar y Entrenar Ahora
+                                {t('confirm_and_train')}
                             </button>
                         </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
+            </div>
         </div>
     );
 }

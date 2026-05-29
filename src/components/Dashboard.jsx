@@ -1,11 +1,49 @@
 import React, { useState, useMemo } from 'react';
 import { Dumbbell, Activity, Calendar, Play, BookOpen, LogOut, ChevronDown, ChevronUp, Clock, Award, TrendingUp, Settings, Trash2, Edit, Save, X, ArrowLeft } from 'lucide-react';
-import { workoutPlan, expertTips } from '../data/workoutData';
+import { workoutPlan } from '../data/workoutData';
 import { calculateWorkoutScore } from '../utils/scoreCalculator';
+import { useLanguage } from '../context/LanguageContext';
+
+const categoryKeyMap = {
+    'Preparación Fisiológica': 'cat_prep',
+    'Patrón Sentadilla (Tren Inferior)': 'cat_squat',
+    'Tracción Horizontal (Espalda)': 'cat_horiz_pull',
+    'Fuerza Unilateral (Estabilidad)': 'cat_unilateral_strength',
+    'Empuje Vertical (Hombros)': 'cat_vert_push',
+    'Aislamiento Posterior (Isquios)': 'cat_isolation_posterior',
+    'Aislamiento Superior (Tríceps)': 'cat_isolation_upper',
+    'Estabilidad Core / Anti-Rotación': 'cat_core_stability',
+    'Cadena Posterior / Correctivo': 'cat_posterior_corrective',
+    'Empuje Horizontal (Pecho)': 'cat_horiz_push',
+    'Fuerza Unilateral (Tren Inferior)': 'cat_unilateral_strength',
+    'Tracción Posterior / Postural': 'cat_posterior_corrective',
+    'Cadena Posterior / Glúteos': 'cat_posterior_glutes',
+    'Fuerza Lateral (Tren Inferior)': 'cat_lateral_strength',
+    'Aislamiento Hombros (Lateral)': 'cat_shoulder_isolation',
+    'Core / Rotación': 'cat_core_rotation',
+    'Fuerza Isométrica Core': 'cat_core_isometric',
+    'Patrón Bisagra (Cadena Posterior)': 'cat_hinge',
+    'Tracción Vertical (Espalda)': 'cat_vert_pull',
+    'Empuje Inclinado (Pecho/Hombros)': 'cat_inclined_push',
+    'Fuerza Unilateral Cruzada (Glúteos)': 'cat_unilateral_cross',
+    'Aislamiento Superior (Bíceps)': 'cat_biceps_isolation',
+    'Core / Anti-Rotación Estática': 'cat_core_static',
+    'Resistencia Core Dinámica': 'cat_core_dynamic'
+};
 
 export default function Dashboard({ 
     setAppState, startTraining, activeUser, setActiveUser, selectedDay, setSelectedDay, activeTab, setActiveTab 
 }) {
+    const { language, changeLanguage, t } = useLanguage();
+
+    const getCategoryTranslation = (category) => {
+        const key = categoryKeyMap[category];
+        if (key) {
+            const val = t(key);
+            if (val !== key) return val;
+        }
+        return category;
+    };
     // Dropdown selection for exercise analytics
     const [selectedExId, setSelectedExId] = useState('D1-1');
     // History log item expansion
@@ -132,7 +170,7 @@ export default function Dashboard({
     const userNames = {
         michael: 'Michael',
         lina: 'Lina',
-        test: 'Usuario Demo'
+        test: t('profile_test_title')
     };
 
     // Load logs for the active user from localStorage
@@ -270,7 +308,10 @@ export default function Dashboard({
                 });
                 
                 history.push({
-                    date: new Date(session.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' }),
+                    date: new Date(session.date).toLocaleDateString(
+                        language === 'es' ? 'es-ES' : language === 'de' ? 'de-DE' : 'en-US', 
+                        { month: 'short', day: 'numeric' }
+                    ),
                     maxWeight,
                     volume,
                     score: session.score || 0
@@ -278,7 +319,7 @@ export default function Dashboard({
             }
         });
         return history;
-    }, [logs, selectedExId]);
+    }, [logs, selectedExId, language]);
 
     // Overall scoring trend data (last 15 sessions, chronological)
     const scoreTrendData = useMemo(() => {
@@ -286,10 +327,13 @@ export default function Dashboard({
             .slice(0, 15)
             .reverse()
             .map(session => ({
-                date: new Date(session.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' }),
+                date: new Date(session.date).toLocaleDateString(
+                    language === 'es' ? 'es-ES' : language === 'de' ? 'de-DE' : 'en-US', 
+                    { month: 'short', day: 'numeric' }
+                ),
                 score: session.score || 0
             }));
-    }, [logs]);
+    }, [logs, language]);
 
     const handleLogout = () => {
         if (navigator.vibrate) navigator.vibrate(30);
@@ -305,7 +349,7 @@ export default function Dashboard({
             return (
                 <div className="h-44 flex flex-col items-center justify-center text-gray-500 bg-[#2C2C2E]/30 rounded-2xl border border-white/5">
                     <Dumbbell size={32} className="opacity-30 mb-2"/>
-                    <span className="text-xs">Sin registros de este ejercicio</span>
+                    <span className="text-xs">{t('no_logs_exercise')}</span>
                 </div>
             );
         }
@@ -351,7 +395,7 @@ export default function Dashboard({
         return (
             <div className="bg-ios-card rounded-2xl p-4 border border-white/5 shadow-lg relative">
                 <h4 className="text-[14px] font-bold text-gray-400 mb-3 flex items-center gap-1.5 uppercase tracking-wider">
-                    Peso Máximo (kg)
+                    {t('stats_max_weight')}
                 </h4>
                 <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto overflow-visible">
                     {/* Horizontal grid lines */}
@@ -453,7 +497,7 @@ export default function Dashboard({
         return (
             <div className="bg-ios-card rounded-2xl p-4 border border-white/5 shadow-lg">
                 <h4 className="text-[14px] font-bold text-gray-400 mb-3 flex items-center gap-1.5 uppercase tracking-wider">
-                    Volumen Total por Sesión (kg × reps)
+                    {t('stats_session_volume')}
                 </h4>
                 <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto overflow-visible">
                     {/* Grid lines */}
@@ -540,9 +584,9 @@ export default function Dashboard({
             <div className="bg-ios-card rounded-2xl p-4 border border-white/5 shadow-lg">
                 <div className="flex items-center justify-between mb-3">
                     <h4 className="text-[14px] font-bold text-gray-400 flex items-center gap-1.5 uppercase tracking-wider">
-                        Tendencia de Puntuación (Score KPI)
+                        {t('stats_score_trend')}
                     </h4>
-                    <span className="text-[12px] bg-ios-green/10 text-ios-green px-2 py-0.5 rounded-full font-bold">Últimos 15 días</span>
+                    <span className="text-[12px] bg-ios-green/10 text-ios-green px-2 py-0.5 rounded-full font-bold">{t('last_15_days')}</span>
                 </div>
                 <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto overflow-visible">
                     {/* Score grids */}
@@ -592,19 +636,24 @@ export default function Dashboard({
         );
     };
 
-    // Tips Filtered by User
-    const filteredTipsList = useMemo(() => {
-        return expertTips.slice(0, 3);
-    }, []);
+    // localized expert tips
+    const localizedTips = useMemo(() => {
+        return [
+            { icon: 'Activity', title: t('tip_1_title'), description: t('tip_1_desc') },
+            { icon: 'CheckCircle', title: t('tip_2_title'), description: t('tip_2_desc') },
+            { icon: 'Activity', title: t('tip_3_title'), description: t('tip_3_desc') },
+            { icon: 'CheckCircle', title: t('tip_4_title'), description: t('tip_4_desc') }
+        ].slice(0, 3);
+    }, [t]);
 
     return (
         <div className="absolute inset-0 bg-ios-bg text-white font-sans flex flex-col overflow-hidden">
             
             {/* iOS Styled Header */}
             <header className="px-4 pb-2 shrink-0 z-40 bg-ios-bg/95 backdrop-blur-xl border-b border-white/10 safe-area-pt pt-2 flex items-end justify-between">
-                <div className="max-w-lg mx-auto w-full flex justify-between items-end h-12">
+                <div className="max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto w-full flex justify-between items-end h-12">
                     <div className="flex flex-col items-start justify-end">
-                        <h1 className="text-[32px] leading-none font-extrabold tracking-tight">Hola, {userNames[activeUser]}</h1>
+                        <h1 className="text-[32px] leading-none font-extrabold tracking-tight">{t('hello')}, {userNames[activeUser]}</h1>
                     </div>
                     
                     {/* Header Actions */}
@@ -612,7 +661,7 @@ export default function Dashboard({
                         <button 
                             onClick={() => { triggerHaptic(25); setIsSettingsOpen(true); }}
                             className="text-gray-400 active:text-white hover:text-white transition-colors p-1"
-                            title="Configuración"
+                            title={t('tab_settings')}
                         >
                             <Settings size={22} />
                         </button>
@@ -620,18 +669,18 @@ export default function Dashboard({
                             onClick={handleLogout}
                             className="text-ios-pink font-semibold flex items-center gap-1 active:opacity-75 text-[15px]"
                         >
-                            <LogOut size={16} /> Salir
+                            <LogOut size={16} /> {t('logout')}
                         </button>
                     </div>
                 </div>
             </header>
 
             {/* Main Content Area */}
-            <main className="px-4 pt-4 max-w-lg mx-auto w-full flex-1 overflow-y-auto pb-32 no-scrollbar relative">
+            <main className="px-4 pt-4 max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto w-full flex-1 overflow-y-auto pb-32 no-scrollbar relative">
                 
                 {/* iOS Tab Selector Segmented Control */}
                 <div className="mb-6">
-                    <nav className="bg-[#1C1C1E] p-1 rounded-xl flex text-sm shadow-inner" role="tablist">
+                    <nav className="bg-[#1C1C1E] p-1 rounded-xl flex text-sm shadow-inner max-w-md mx-auto" role="tablist">
                         <button 
                             onClick={() => { triggerHaptic(20); setActiveTab('routine'); }}
                             role="tab"
@@ -640,7 +689,7 @@ export default function Dashboard({
                                 activeTab === 'routine' ? 'bg-[#3A3A3C] text-white shadow-md' : 'text-gray-400'
                             }`}
                         >
-                            Entrenar
+                            {t('tab_routine')}
                         </button>
                         <button 
                             onClick={() => { triggerHaptic(20); setActiveTab('analytics'); }}
@@ -650,7 +699,7 @@ export default function Dashboard({
                                 activeTab === 'analytics' ? 'bg-[#3A3A3C] text-white shadow-md' : 'text-gray-400'
                             }`}
                         >
-                            Estadísticas
+                            {t('tab_stats')}
                         </button>
                         <button 
                             onClick={() => { triggerHaptic(20); setActiveTab('tips'); }}
@@ -660,90 +709,102 @@ export default function Dashboard({
                                 activeTab === 'tips' ? 'bg-[#3A3A3C] text-white shadow-md' : 'text-gray-400'
                             }`}
                         >
-                            Consejos
+                            {t('tab_tips')}
                         </button>
                     </nav>
                 </div>
 
                 {/* -------------------- TAB 1: WORKOUT ROUTINES -------------------- */}
                 {activeTab === 'routine' && (
-                    <div className="space-y-6 animate-in fade-in duration-300">
-                        {/* Day Selector */}
-                        <div className="grid grid-cols-3 gap-2.5" role="radiogroup" aria-label="Rutinas">
-                            {['D1', 'D2', 'D3'].map((day) => {
-                                const dayTitles = { 'D1': 'Titán', 'D2': 'Encélado', 'D3': 'Mimas' };
-                                const daySubtitles = { 'D1': 'Fuerza & Core', 'D2': 'Tensión Mecánica', 'D3': 'Bisagra & Poder' };
-                                const isSelected = selectedDay === day;
-                                
-                                return (
-                                    <button
-                                        key={day}
-                                        onClick={() => { triggerHaptic(25); setSelectedDay(day); }}
-                                        role="radio"
-                                        aria-checked={isSelected}
-                                        className={`p-3.5 rounded-[20px] flex flex-col items-start transition-all relative overflow-hidden border ${
-                                            isSelected 
-                                                ? `bg-ios-card/90 ${userTheme.border} ${userTheme.glow} shadow-xl ring-1 ring-opacity-30` 
-                                                : 'bg-ios-card/45 border-transparent opacity-65'
-                                        }`}
-                                    >
-                                        {/* Colored Glow line on selected */}
-                                        {isSelected && (
-                                            <div className={`absolute top-0 left-0 w-full h-[3px] ${userTheme.bg}`}></div>
-                                        )}
-                                        <span className={`text-[10px] font-extrabold uppercase tracking-wider ${isSelected ? userTheme.primary : 'text-gray-500'}`}>
-                                            {day === 'D1' ? 'Día 1' : day === 'D2' ? 'Día 2' : 'Día 3'}
-                                        </span>
-                                        <span className="text-[15px] font-bold text-white mt-1 text-left leading-tight">{dayTitles[day]}</span>
-                                        <span className="text-[11px] text-gray-400 text-left mt-0.5 leading-snug">{daySubtitles[day]}</span>
-                                    </button>
-                                );
-                            })}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start animate-in fade-in duration-300">
+                        {/* Day Selector Column */}
+                        <div className="lg:col-span-4 space-y-4 w-full">
+                            <div className="grid grid-cols-3 lg:grid-cols-1 gap-2.5" role="radiogroup" aria-label="Rutinas">
+                                {['D1', 'D2', 'D3'].map((day) => {
+                                    const dayTitles = { 
+                                        'D1': t('day_1_title'), 
+                                        'D2': t('day_2_title'), 
+                                        'D3': t('day_3_title') 
+                                    };
+                                    const daySubtitles = { 
+                                        'D1': t('day_1_subtitle'), 
+                                        'D2': t('day_2_subtitle'), 
+                                        'D3': t('day_3_subtitle') 
+                                    };
+                                    const isSelected = selectedDay === day;
+                                    
+                                    return (
+                                        <button
+                                            key={day}
+                                            onClick={() => { triggerHaptic(25); setSelectedDay(day); }}
+                                            role="radio"
+                                            aria-checked={isSelected}
+                                            className={`p-3.5 rounded-[20px] flex flex-col items-start transition-all relative overflow-hidden border w-full ${
+                                                isSelected 
+                                                    ? `bg-ios-card/90 ${userTheme.border} ${userTheme.glow} shadow-xl ring-1 ring-opacity-30` 
+                                                    : 'bg-ios-card/45 border-transparent opacity-65'
+                                            }`}
+                                        >
+                                            {/* Colored Glow line on selected */}
+                                            {isSelected && (
+                                                <div className={`absolute top-0 left-0 w-full h-[3px] ${userTheme.bg}`}></div>
+                                            )}
+                                            <span className={`text-[10px] font-extrabold uppercase tracking-wider ${isSelected ? userTheme.primary : 'text-gray-500'}`}>
+                                                {day === 'D1' ? t('day_1') : day === 'D2' ? t('day_2') : t('day_3')}
+                                            </span>
+                                            <span className="text-[15px] font-bold text-white mt-1 text-left leading-tight">{dayTitles[day]}</span>
+                                            <span className="text-[11px] text-gray-400 text-left mt-0.5 leading-snug">{daySubtitles[day]}</span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
                         </div>
 
                         {/* Exercises List Block */}
-                        <div className="bg-ios-card/70 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-xl">
-                            <div className="p-4 bg-[#2C2C2E]/40 border-b border-white/10 flex items-center justify-between">
-                                <span className="text-sm font-extrabold uppercase tracking-widest text-gray-400">
-                                    Secuencia de Ejercicios
-                                </span>
-                                <span className="text-xs bg-[#2C2C2E] px-2 py-0.5 rounded-full font-bold text-gray-300">
-                                    {workoutPlan[selectedDay]?.length || 0} Total
-                                </span>
-                            </div>
-                            
-                            <div className="divide-y divide-white/5">
-                                {workoutPlan[selectedDay]?.map((ex, i) => (
-                                    <div key={ex.id} className="p-4 flex items-center justify-between hover:bg-white/5 transition-colors">
-                                        <div className="flex items-center gap-3">
-                                            <span className="w-6 h-6 rounded-full bg-[#2C2C2E] text-gray-300 text-[11px] font-extrabold flex items-center justify-center shrink-0">
-                                                {i + 1}
-                                            </span>
-                                            <div>
-                                                <h4 className="text-[15px] font-bold text-white leading-tight">{ex.name}</h4>
-                                                <p className="text-[12px] text-gray-400 mt-0.5">{ex.category}</p>
+                        <div className="lg:col-span-8 space-y-6 w-full">
+                            <div className="bg-ios-card/70 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-xl">
+                                <div className="p-4 bg-[#2C2C2E]/40 border-b border-white/10 flex items-center justify-between">
+                                    <span className="text-sm font-extrabold uppercase tracking-widest text-gray-400">
+                                        {t('stats_ex_details')}
+                                    </span>
+                                    <span className="text-xs bg-[#2C2C2E] px-2 py-0.5 rounded-full font-bold text-gray-300">
+                                        {workoutPlan[selectedDay]?.length || 0} {t('total')}
+                                    </span>
+                                </div>
+                                
+                                <div className="divide-y divide-white/5">
+                                    {workoutPlan[selectedDay]?.map((ex, i) => (
+                                        <div key={ex.id} className="p-4 flex items-center justify-between hover:bg-white/5 transition-colors">
+                                            <div className="flex items-center gap-3">
+                                                <span className="w-6 h-6 rounded-full bg-[#2C2C2E] text-gray-300 text-[11px] font-extrabold flex items-center justify-center shrink-0">
+                                                    {i + 1}
+                                                </span>
+                                                <div>
+                                                    <h4 className="text-[15px] font-bold text-white leading-tight">{t(ex.id + '_name')}</h4>
+                                                    <p className="text-[12px] text-gray-400 mt-0.5">{getCategoryTranslation(ex.category)}</p>
+                                                </div>
+                                            </div>
+                                            <div className="text-right">
+                                                <span className="text-[13px] font-bold text-gray-300 block">{ex.sets} sets</span>
+                                                <span className="text-[11px] text-gray-500">{ex.reps} reps</span>
                                             </div>
                                         </div>
-                                        <div className="text-right">
-                                            <span className="text-[13px] font-bold text-gray-300 block">{ex.sets} sets</span>
-                                            <span className="text-[11px] text-gray-500">{ex.reps} reps</span>
-                                        </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
                         </div>
 
                         {/* Space placeholder */}
-                        <div className="h-6"></div>
+                        <div className="h-6 lg:hidden"></div>
 
                         {/* Sticky Bottom Training Launch Trigger */}
                         <div className="fixed bottom-0 left-0 right-0 p-4 bg-ios-bg/90 backdrop-blur-xl border-t border-white/10 safe-area-pb z-40">
-                            <div className="max-w-lg mx-auto">
+                            <div className="max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto">
                                 <button
                                     onClick={startTraining}
                                     className={`w-full py-4 ${userTheme.bg} text-white rounded-[22px] font-bold text-[17px] active:scale-[0.98] transition-all flex justify-center items-center gap-2 shadow-lg ${userTheme.glow}`}
                                 >
-                                    <Play size={20} fill="currentColor" /> Iniciar Sesión de Hoy
+                                    <Play size={20} fill="currentColor" /> {t('start_training')}
                                 </button>
                             </div>
                         </div>
@@ -757,236 +818,246 @@ export default function Dashboard({
                         {/* Consolidated KPI Summary Card */}
                         <div className="bg-gradient-to-tr from-ios-card to-[#2C2C2E]/60 rounded-[24px] p-5 border border-white/10 shadow-xl flex items-center justify-between">
                             <div className="space-y-1">
-                                <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest block">Rendimiento</span>
+                                <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest block">{t('stats_performance')}</span>
                                 <div className="flex items-center gap-1.5">
                                     <Award className={userTheme.primary} size={22} />
                                     <h3 className="text-3xl font-extrabold tracking-tight">
                                         {summaryMetrics.lastScore} <span className="text-sm font-semibold text-gray-500">/100</span>
                                     </h3>
                                 </div>
-                                <span className="text-[12px] text-gray-400 block mt-0.5">Última Puntuación Registrada</span>
+                                <span className="text-[12px] text-gray-400 block mt-0.5">{t('last_score_recorded')}</span>
                             </div>
                             <div className="text-right space-y-1">
-                                <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest block">Volumen Total</span>
+                                <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest block">{t('stats_total_volume')}</span>
                                 <div className="flex items-center justify-end gap-1">
                                     <TrendingUp className="text-ios-green" size={16} />
                                     <span className="text-xl font-bold text-white">{summaryMetrics.lastTonnage} kg</span>
                                 </div>
-                                <span className="text-[12px] text-gray-400 block mt-0.5">{summaryMetrics.totalWorkouts} Entrenamientos</span>
+                                <span className="text-[12px] text-gray-400 block mt-0.5">{summaryMetrics.totalWorkouts} {t('workouts')}</span>
                             </div>
                         </div>
 
-                        {/* Overall Day Scoring Chart */}
-                        {renderScoreTrendChart()}
+                        {/* Split grid on desktop */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start w-full">
+                            {/* Left Column: Charts */}
+                            <div className="space-y-6 w-full">
+                                {/* Overall Day Scoring Chart */}
+                                {renderScoreTrendChart()}
 
-                        {/* Exercise Selection Dropdown */}
-                        <div className="space-y-2">
-                            <label htmlFor="analytics-exercise-select" className="text-xs font-bold uppercase tracking-wider text-gray-400 px-1 block">
-                                Analizar Ejercicio Específico
-                            </label>
-                            <div className="relative">
-                                <select 
-                                    id="analytics-exercise-select"
-                                    value={selectedExId} 
-                                    onChange={(e) => { triggerHaptic(20); setSelectedExId(e.target.value); }}
-                                    className="w-full p-4 pr-10 bg-ios-card rounded-2xl border border-white/5 text-[15px] font-bold appearance-none text-white focus:outline-none focus:ring-1 focus:ring-ios-blue shadow-lg"
-                                >
-                                    {allExercisesList.map(ex => (
-                                        <option key={ex.id} value={ex.id}>
-                                            {ex.id} • {ex.name} ({ex.category})
-                                        </option>
-                                    ))}
-                                </select>
-                                <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                            </div>
-                        </div>
-
-                        {/* Dynamic SVG Charts */}
-                        {renderMaxWeightChart()}
-                        {renderVolumeChart()}
-
-                        {/* -------------------- ADVANCED SPORTS SCIENCE METRICS CARD -------------------- */}
-                        <div className="bg-ios-card rounded-[24px] p-5 border border-white/5 shadow-xl space-y-4">
-                            <div className="flex items-center gap-2 border-b border-white/10 pb-2.5">
-                                <Activity className={userTheme.primary} size={20} />
-                                <h4 className="text-[15px] font-bold text-white uppercase tracking-wider">
-                                    Fisiología & Métricas Avanzadas
-                                </h4>
-                            </div>
-
-                            <div className="grid grid-cols-3 gap-3">
-                                {/* Overload Streak */}
-                                <div className="bg-[#2C2C2E]/40 border border-white/5 rounded-2xl p-3 text-center flex flex-col justify-between items-center h-[120px] hover:bg-[#2C2C2E]/60 transition-colors">
-                                    <div className="w-8 h-8 rounded-lg bg-orange-500/15 text-orange-400 flex items-center justify-center mb-1">
-                                        <TrendingUp size={18} />
+                                {/* Exercise Selection Dropdown */}
+                                <div className="space-y-2">
+                                    <label htmlFor="analytics-exercise-select" className="text-xs font-bold uppercase tracking-wider text-gray-400 px-1 block">
+                                        {t('analyze_specific_exercise')}
+                                    </label>
+                                    <div className="relative">
+                                        <select 
+                                            id="analytics-exercise-select"
+                                            value={selectedExId} 
+                                            onChange={(e) => { triggerHaptic(20); setSelectedExId(e.target.value); }}
+                                            className="w-full p-4 pr-10 bg-ios-card rounded-2xl border border-white/5 text-[15px] font-bold appearance-none text-white focus:outline-none focus:ring-1 focus:ring-ios-blue shadow-lg"
+                                        >
+                                            {allExercisesList.map(ex => (
+                                                <option key={ex.id} value={ex.id}>
+                                                    {ex.id} • {t(ex.id + '_name')} ({getCategoryTranslation(ex.category)})
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                                     </div>
-                                    <div className="space-y-0.5">
-                                        <span className="text-[20px] font-black text-white">{scientificMetrics.overloadStreak}</span>
-                                        <span className="text-[9px] font-extrabold text-orange-400 uppercase tracking-widest block">Racha</span>
-                                    </div>
-                                    <span className="text-[9px] text-gray-500 font-semibold leading-none mt-1">Cargas Superadas</span>
                                 </div>
 
-                                {/* GLUT4 Translocation */}
-                                <div className="bg-[#2C2C2E]/40 border border-white/5 rounded-2xl p-3 text-center flex flex-col justify-between items-center h-[120px] hover:bg-[#2C2C2E]/60 transition-colors">
-                                    <div className={`w-8 h-8 rounded-lg ${activeUser === 'lina' ? 'bg-ios-pink/15 text-ios-pink' : 'bg-ios-blue/15 text-ios-blue'} flex items-center justify-center mb-1`}>
-                                        <Activity size={18} />
-                                    </div>
-                                    <div className="space-y-0.5">
-                                        <span className="text-[20px] font-black text-white">{scientificMetrics.glut4Index}%</span>
-                                        <span className="text-[9px] font-extrabold text-gray-400 uppercase tracking-widest block leading-none mt-0.5">Reclutamiento</span>
-                                    </div>
-                                    <span className="text-[9px] text-gray-500 font-semibold leading-none mt-1">Vías GLUT4</span>
-                                </div>
-
-                                {/* CNS Reserve state */}
-                                <div className="bg-[#2C2C2E]/40 border border-white/5 rounded-2xl p-3 text-center flex flex-col justify-between items-center h-[120px] hover:bg-[#2C2C2E]/60 transition-colors">
-                                    <div className="w-8 h-8 rounded-lg bg-purple-500/15 text-purple-400 flex items-center justify-center mb-1">
-                                        <Award size={18} />
-                                    </div>
-                                    <div className="space-y-0.5">
-                                        <span className="text-[20px] font-black text-white">{scientificMetrics.cnsRecovery}%</span>
-                                        <span className="text-[9px] font-extrabold text-purple-400 uppercase tracking-widest block">Estado SNC</span>
-                                    </div>
-                                    <span className="text-[9px] text-gray-500 font-semibold leading-none mt-1">Reserva Nerviosa</span>
-                                </div>
+                                {/* Dynamic SVG Charts */}
+                                {renderMaxWeightChart()}
+                                {renderVolumeChart()}
                             </div>
 
-                            {/* Scientific Commentary based on activeUser */}
-                            <div className="bg-[#2C2C2E]/30 rounded-xl p-3 border border-white/5 text-left text-[12px] leading-relaxed text-gray-400 flex flex-col gap-1">
-                                <span className={`text-[10px] font-extrabold ${userTheme.primary} uppercase tracking-wider block`}>
-                                    Diagnóstico Científico Deportivo
-                                </span>
-                                {activeUser === 'test' && (
-                                    <span>
-                                        El perfil demo exhibe una excelente adherencia progresiva del 100% sobre 12 semanas. La racha acumulada demuestra un reclutamiento efectivo de unidades motoras (principio de Henneman). El SNC se encuentra en un estado de reserva favorable debido a una densidad de pacing equilibrada.
-                                    </span>
-                                )}
-                                {activeUser === 'michael' && (
-                                    <span>
-                                        Michael: Mantén vigilado tu Estado del SNC. Tras sparring intenso de BJJ, si tu nivel de reserva nerviosa cae por por debajo del 75%, reduce la intensidad en el Día 3 (Mimas) o añade 15s extra a tus descansos para prevenir fatiga simpática persistente.
-                                    </span>
-                                )}
-                                {activeUser === 'lina' && (
-                                    <span>
-                                        Lina: Tu activación GLUT4 estima el vaciado del glucógeno y la sensibilidad a la insulina post-esfuerzo. Al superar el 70% de activación muscular, maximizas el aclaramiento de glucosa independiente de insulina por hasta 24 horas, estabilizando tu homeostasis energética.
-                                    </span>
-                                )}
-                            </div>
-                        </div>
+                            {/* Right Column: Physiology and Logs */}
+                            <div className="space-y-6 w-full">
+                                {/* -------------------- ADVANCED SPORTS SCIENCE METRICS CARD -------------------- */}
+                                <div className="bg-ios-card rounded-[24px] p-5 border border-white/5 shadow-xl space-y-4">
+                                    <div className="flex items-center gap-2 border-b border-white/10 pb-2.5">
+                                        <Activity className={userTheme.primary} size={20} />
+                                        <h4 className="text-[15px] font-bold text-white uppercase tracking-wider">
+                                            {t('advanced_physiology_metrics')}
+                                        </h4>
+                                    </div>
 
-                        {/* -------------------- INTERACTIVE EXPANDABLE WORKOUT LOGS -------------------- */}
-                        <div className="space-y-3">
-                            <div className="flex items-center gap-2 px-1 text-gray-400">
-                                <Calendar size={16} />
-                                <span className="text-xs font-bold uppercase tracking-wider">Historial de Entrenamientos</span>
-                            </div>
+                                    <div className="grid grid-cols-3 gap-3">
+                                        {/* Overload Streak */}
+                                        <div className="bg-[#2C2C2E]/40 border border-white/5 rounded-2xl p-3 text-center flex flex-col justify-between items-center h-[120px] hover:bg-[#2C2C2E]/60 transition-colors">
+                                            <div className="w-8 h-8 rounded-lg bg-orange-500/15 text-orange-400 flex items-center justify-center mb-1">
+                                                <TrendingUp size={18} />
+                                            </div>
+                                            <div className="space-y-0.5">
+                                                <span className="text-[20px] font-black text-white">{scientificMetrics.overloadStreak}</span>
+                                                <span className="text-[9px] font-extrabold text-orange-400 uppercase tracking-widest block">{t('streak')}</span>
+                                            </div>
+                                            <span className="text-[9px] text-gray-500 font-semibold leading-none mt-1">{t('loads_exceeded')}</span>
+                                        </div>
 
-                            {logs.length === 0 ? (
-                                <div className="p-8 text-center text-gray-500 bg-ios-card/30 rounded-2xl border border-white/5">
-                                    Aún no has registrado entrenamientos. ¡Comienza hoy!
+                                        {/* GLUT4 Translocation */}
+                                        <div className="bg-[#2C2C2E]/40 border border-white/5 rounded-2xl p-3 text-center flex flex-col justify-between items-center h-[120px] hover:bg-[#2C2C2E]/60 transition-colors">
+                                            <div className={`w-8 h-8 rounded-lg ${activeUser === 'lina' ? 'bg-ios-pink/15 text-ios-pink' : 'bg-ios-blue/15 text-ios-blue'} flex items-center justify-center mb-1`}>
+                                                <Activity size={18} />
+                                            </div>
+                                            <div className="space-y-0.5">
+                                                <span className="text-[20px] font-black text-white">{scientificMetrics.glut4Index}%</span>
+                                                <span className="text-[9px] font-extrabold text-gray-400 uppercase tracking-widest block leading-none mt-0.5">{t('recruitment')}</span>
+                                            </div>
+                                            <span className="text-[9px] text-gray-500 font-semibold leading-none mt-1">{t('glut4_pathways')}</span>
+                                        </div>
+
+                                        {/* CNS Reserve state */}
+                                        <div className="bg-[#2C2C2E]/40 border border-white/5 rounded-2xl p-3 text-center flex flex-col justify-between items-center h-[120px] hover:bg-[#2C2C2E]/60 transition-colors">
+                                            <div className="w-8 h-8 rounded-lg bg-purple-500/15 text-purple-400 flex items-center justify-center mb-1">
+                                                <Award size={18} />
+                                            </div>
+                                            <div className="space-y-0.5">
+                                                <span className="text-[20px] font-black text-white">{scientificMetrics.cnsRecovery}%</span>
+                                                <span className="text-[9px] font-extrabold text-purple-400 uppercase tracking-widest block">{t('cns_state')}</span>
+                                            </div>
+                                            <span className="text-[9px] text-gray-500 font-semibold leading-none mt-1">{t('nervous_reserve')}</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Scientific Commentary based on activeUser */}
+                                    <div className="bg-[#2C2C2E]/30 rounded-xl p-3 border border-white/5 text-left text-[12px] leading-relaxed text-gray-400 flex flex-col gap-1">
+                                        <span className={`text-[10px] font-extrabold ${userTheme.primary} uppercase tracking-wider block`}>
+                                            {t('sports_science_diagnosis')}
+                                        </span>
+                                        {activeUser === 'test' && (
+                                            <span>
+                                                {t('commentary_test')}
+                                            </span>
+                                        )}
+                                        {activeUser === 'michael' && (
+                                            <span>
+                                                {t('commentary_michael')}
+                                            </span>
+                                        )}
+                                        {activeUser === 'lina' && (
+                                            <span>
+                                                {t('commentary_lina')}
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
-                            ) : (
-                                <div className="space-y-2.5">
-                                    {logs.map((session) => {
-                                        const isExpanded = expandedLogId === session.id;
-                                        const dateLabel = new Date(session.date).toLocaleDateString('es-ES', { 
-                                            weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' 
-                                        });
 
-                                        return (
-                                            <div 
-                                                key={session.id} 
-                                                className="bg-ios-card/85 rounded-[22px] border border-white/5 overflow-hidden transition-all duration-200"
-                                            >
-                                                {/* Header Row (Tappable to expand) */}
-                                                <button
-                                                    onClick={() => { triggerHaptic(20); setExpandedLogId(isExpanded ? null : session.id); }}
-                                                    className="w-full p-4 flex items-center justify-between text-left active:bg-white/5"
-                                                >
-                                                    <div className="space-y-1">
-                                                        <div className="flex items-center gap-2">
-                                                            <span className={`w-2 h-2 rounded-full ${
-                                                                session.day === 'D1' ? 'bg-ios-blue' : session.day === 'D2' ? 'bg-ios-pink' : 'bg-purple-400'
-                                                            }`}></span>
-                                                            <span className="text-[16px] font-extrabold text-white">
-                                                                Día {session.day === 'D1' ? '1' : session.day === 'D2' ? '2' : '3'} — {session.dayName}
-                                                            </span>
-                                                        </div>
-                                                        <span className="text-[12px] text-gray-400 block font-medium capitalize">{dateLabel}</span>
-                                                    </div>
+                                {/* -------------------- INTERACTIVE EXPANDABLE WORKOUT LOGS -------------------- */}
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-2 px-1 text-gray-400">
+                                        <Calendar size={16} />
+                                        <span className="text-xs font-bold uppercase tracking-wider">{t('stats_history')}</span>
+                                    </div>
 
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="text-right">
-                                                            <span className="text-xs font-extrabold text-ios-green block">Score: {session.score}</span>
-                                                            <span className="text-[11px] text-gray-400 flex items-center gap-1 mt-0.5 justify-end">
-                                                                <Clock size={11}/> {Math.round(session.duration / 60)} min
-                                                            </span>
-                                                        </div>
-                                                        {isExpanded ? <ChevronUp size={18} className="text-gray-400"/> : <ChevronDown size={18} className="text-gray-400"/>}
-                                                    </div>
-                                                </button>
+                                    {logs.length === 0 ? (
+                                        <div className="p-8 text-center text-gray-500 bg-ios-card/30 rounded-2xl border border-white/5">
+                                            {t('no_workouts_logged')}
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-2.5">
+                                            {logs.map((session) => {
+                                                const isExpanded = expandedLogId === session.id;
+                                                const dateLabel = new Date(session.date).toLocaleDateString(
+                                                    language === 'es' ? 'es-ES' : language === 'de' ? 'de-DE' : 'en-US', 
+                                                    { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }
+                                                );
 
-                                                {/* Expanded Set Details */}
-                                                {isExpanded && (
-                                                    <div className="px-4 pb-4 pt-1 border-t border-white/5 bg-[#2C2C2E]/25 divide-y divide-white/5">
-                                                        {session.exercises?.filter(ex => ex.sets && ex.sets.some(s => s.completed)).map((ex, exIdx) => (
-                                                            <div key={exIdx} className="py-3 first:pt-1 last:pb-1">
-                                                                <div className="flex items-baseline justify-between mb-1.5">
-                                                                    <h5 className="text-[14px] font-bold text-white flex items-center gap-1.5">
-                                                                        {ex.exerciseName}
-                                                                        {ex.selectedOption === 'alternative' && (
-                                                                            <span className="text-[9px] bg-ios-pink/20 text-ios-pink font-extrabold px-1.5 py-0.5 rounded-full select-none uppercase tracking-wide">Máquina</span>
-                                                                        )}
-                                                                    </h5>
-                                                                    <span className="text-[11px] text-gray-400">{ex.category}</span>
+                                                return (
+                                                    <div 
+                                                        key={session.id} 
+                                                        className="bg-ios-card/85 rounded-[22px] border border-white/5 overflow-hidden transition-all duration-200"
+                                                    >
+                                                        {/* Header Row */}
+                                                        <button
+                                                            onClick={() => { triggerHaptic(20); setExpandedLogId(isExpanded ? null : session.id); }}
+                                                            className="w-full p-4 flex items-center justify-between text-left active:bg-white/5"
+                                                        >
+                                                            <div className="space-y-1">
+                                                                <div className="flex items-center gap-2">
+                                                                    <span className={`w-2 h-2 rounded-full ${
+                                                                        session.day === 'D1' ? 'bg-ios-blue' : session.day === 'D2' ? 'bg-ios-pink' : 'bg-purple-400'
+                                                                    }`}></span>
+                                                                    <span className="text-[16px] font-extrabold text-white">
+                                                                        {session.day === 'D1' ? t('day_1') : session.day === 'D2' ? t('day_2') : t('day_3')} — {language === 'es' ? session.dayName : session.day === 'D1' ? t('day_1_title') : session.day === 'D2' ? t('day_2_title') : t('day_3_title')}
+                                                                    </span>
                                                                 </div>
-                                                                
-                                                                {/* Sets and Weights List */}
-                                                                <div className="flex flex-wrap gap-2">
-                                                                    {ex.sets?.filter(s => s.completed).map((s, sIdx) => {
-                                                                        const isTime = isTimeEx(ex.exerciseId);
-                                                                        const formattedTime = s.reps >= 60 ? `${Math.floor(s.reps / 60)}m ${s.reps % 60}s` : `${s.reps}s`;
-                                                                        return (
-                                                                            <div key={sIdx} className="px-2.5 py-1 bg-[#2C2C2E]/60 border border-white/5 rounded-lg flex items-center gap-1.5">
-                                                                                <span className="text-[10px] text-gray-500 font-extrabold">S{s.setNum}</span>
-                                                                                {isTime ? (
-                                                                                    <span className="text-xs font-bold text-gray-200">{formattedTime}</span>
-                                                                                ) : (
-                                                                                    <>
-                                                                                        <span className="text-xs font-bold text-gray-200">{s.weight}kg</span>
-                                                                                        <span className="text-[10px] text-gray-500 font-bold">×</span>
-                                                                                        <span className="text-xs font-bold text-gray-200">{s.reps}r</span>
-                                                                                    </>
+                                                                <span className="text-[12px] text-gray-400 block font-medium capitalize">{dateLabel}</span>
+                                                            </div>
+
+                                                            <div className="flex items-center gap-3">
+                                                                <div className="text-right">
+                                                                    <span className="text-xs font-extrabold text-ios-green block">Score: {session.score}</span>
+                                                                    <span className="text-[11px] text-gray-400 flex items-center gap-1 mt-0.5 justify-end">
+                                                                        <Clock size={11}/> {Math.round(session.duration / 60)} min
+                                                                    </span>
+                                                                </div>
+                                                                {isExpanded ? <ChevronUp size={18} className="text-gray-400"/> : <ChevronDown size={18} className="text-gray-400"/>}
+                                                            </div>
+                                                        </button>
+
+                                                        {/* Expanded Set Details */}
+                                                        {isExpanded && (
+                                                            <div className="px-4 pb-4 pt-1 border-t border-white/5 bg-[#2C2C2E]/25 divide-y divide-white/5">
+                                                                {session.exercises?.filter(ex => ex.sets && ex.sets.some(s => s.completed)).map((ex, exIdx) => (
+                                                                    <div key={exIdx} className="py-3 first:pt-1 last:pb-1">
+                                                                        <div className="flex items-baseline justify-between mb-1.5">
+                                                                            <h5 className="text-[14px] font-bold text-white flex items-center gap-1.5">
+                                                                                {t(ex.exerciseId + '_name')}
+                                                                                {ex.selectedOption === 'alternative' && (
+                                                                                    <span className="text-[9px] bg-ios-pink/20 text-ios-pink font-extrabold px-1.5 py-0.5 rounded-full select-none uppercase tracking-wide">{t('stats_machine')}</span>
                                                                                 )}
-                                                                                {s.alFallo && (
-                                                                                    <span className="text-[9px] bg-red-500/20 text-red-400 font-bold px-1.5 rounded select-none uppercase tracking-wider">Fallo</span>
+                                                                            </h5>
+                                                                            <span className="text-[11px] text-gray-400">{getCategoryTranslation(ex.category)}</span>
+                                                                        </div>
+                                                                        
+                                                                        {/* Sets and Weights List */}
+                                                                        <div className="flex flex-wrap gap-2">
+                                                                            {ex.sets?.filter(s => s.completed).map((s, sIdx) => {
+                                                                                const isTime = isTimeEx(ex.exerciseId);
+                                                                                const formattedTime = s.reps >= 60 ? `${Math.floor(s.reps / 60)}m ${s.reps % 60}s` : `${s.reps}s`;
+                                                                                return (
+                                                                                    <div key={sIdx} className="px-2.5 py-1 bg-[#2C2C2E]/60 border border-white/5 rounded-lg flex items-center gap-1.5">
+                                                                                        <span className="text-[10px] text-gray-500 font-extrabold">S{s.setNum}</span>
+                                                                                        {isTime ? (
+                                                                                            <span className="text-xs font-bold text-gray-200">{formattedTime}</span>
+                                                                                        ) : (
+                                                                                            <>
+                                                                                                <span className="text-xs font-bold text-gray-200">{s.weight}kg</span>
+                                                                                                <span className="text-[10px] text-gray-500 font-bold">×</span>
+                                                                                                <span className="text-xs font-bold text-gray-200">{s.reps}r</span>
+                                                                                            </>
+                                                                                        )}
+                                                                                        {s.alFallo && (
+                                                                                            <span className="text-[9px] bg-red-500/20 text-red-400 font-bold px-1.5 rounded select-none uppercase tracking-wider">{t('train_failure')}</span>
+                                                                                        )}
+                                                                                    </div>
+                                                                                );
+                                                                            })}
+                                                                        </div>
+
+                                                                        {/* Timers */}
+                                                                        {(ex.duration > 0 || ex.restDuration > 0) && (
+                                                                            <div className="flex gap-4 mt-2 text-[10px] text-gray-500 font-bold uppercase tracking-wider">
+                                                                                {ex.duration > 0 && (
+                                                                                    <span>{t('stats_duration')}: {Math.floor(ex.duration / 60)}m {ex.duration % 60}s</span>
+                                                                                )}
+                                                                                {ex.restDuration > 0 && (
+                                                                                    <span className="text-ios-blue">{t('stats_rest')}: {Math.floor(ex.restDuration / 60)}m {ex.restDuration % 60}s</span>
                                                                                 )}
                                                                             </div>
-                                                                        );
-                                                                    })}
-                                                                </div>
-
-                                                                {/* Individual exercise timers */}
-                                                                {(ex.duration > 0 || ex.restDuration > 0) && (
-                                                                    <div className="flex gap-4 mt-2 text-[10px] text-gray-500 font-bold uppercase tracking-wider">
-                                                                        {ex.duration > 0 && (
-                                                                            <span>Activo: {Math.floor(ex.duration / 60)}m {ex.duration % 60}s</span>
-                                                                        )}
-                                                                        {ex.restDuration > 0 && (
-                                                                            <span className="text-ios-blue">Descanso: {Math.floor(ex.restDuration / 60)}m {ex.restDuration % 60}s</span>
                                                                         )}
                                                                     </div>
-                                                                )}
+                                                                ))}
                                                             </div>
-                                                        ))}
+                                                        )}
                                                     </div>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
+                                                );
+                                            })}
+                                        </div>
+                                    )}
                                 </div>
-                            )}
+                            </div>
                         </div>
                     </div>
                 )}
@@ -997,21 +1068,21 @@ export default function Dashboard({
                         <div className="bg-ios-card/75 backdrop-blur-xl p-5 rounded-[22px] border border-white/5 shadow-xl">
                             <h2 className="text-[18px] font-extrabold text-white mb-2 flex items-center gap-2">
                                 <Activity size={20} className={userTheme.primary}/>
-                                Respaldado por la Ciencia
+                                {t('science_backed')}
                             </h2>
                             <p className="text-[13px] text-gray-400 leading-relaxed">
-                                Este programa de entrenamiento está estructurado en base a variables fisiológicas clave para la hipertrofia progresiva, control técnico exhaustivo y la estabilización general de la fuerza mediante adaptaciones del core.
+                                {t('science_backed_desc')}
                             </p>
                         </div>
                         
                         <div className="space-y-3">
                             <div className="flex items-center gap-2 px-1 text-gray-400">
                                 <BookOpen size={16} />
-                                <span className="text-xs font-bold uppercase tracking-wider">Consejos de Expertos</span>
+                                <span className="text-xs font-bold uppercase tracking-wider">{t('expert_tips')}</span>
                             </div>
                             
-                            <div className="grid gap-3.5">
-                                {filteredTipsList.map((tip, i) => (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                                {localizedTips.map((tip, i) => (
                                     <div key={i} className="bg-ios-card/50 backdrop-blur-xl p-5 rounded-[20px] border border-white/5 flex gap-3.5 shadow-lg">
                                         <div className="mt-0.5 text-ios-blue shrink-0">
                                             <Dumbbell size={20} />
@@ -1029,6 +1100,7 @@ export default function Dashboard({
             </main>
 
             {/* -------------------- SETTINGS & CONFIGURATION OVERLAY MODAL -------------------- */}
+            {/* -------------------- SETTINGS & CONFIGURATION OVERLAY MODAL -------------------- */}
             {isSettingsOpen && (
                 <div className="fixed inset-0 bg-black/90 backdrop-blur-xl z-[150] flex flex-col safe-area-pt safe-area-pb text-white">
                     {/* Modal Header */}
@@ -1037,10 +1109,10 @@ export default function Dashboard({
                             onClick={() => { triggerHaptic(20); if (editingSession) setEditingSession(null); else setIsSettingsOpen(false); }}
                             className="text-ios-blue flex items-center gap-1 active:opacity-70 text-[16px] font-medium"
                         >
-                            {editingSession ? <><ArrowLeft size={20}/> Atrás</> : 'Cerrar'}
+                            {editingSession ? <><ArrowLeft size={20}/> {t('back')}</> : t('cancel')}
                         </button>
                         <h2 className="text-[17px] font-extrabold text-white uppercase tracking-wider">
-                            {editingSession ? 'Editar Entrenamiento' : 'Configuración'}
+                            {editingSession ? t('stats_edit_title') : t('tab_settings')}
                         </h2>
                         <div className="w-12"></div> {/* Spacer */}
                     </header>
@@ -1051,21 +1123,48 @@ export default function Dashboard({
                         {/* 1. VIEW 1: LOGS & HISTORY LIST TO EDIT/DELETE */}
                         {!editingSession ? (
                             <div className="space-y-5">
+                                {/* Language Selection Card */}
+                                <div className="bg-ios-card p-4 rounded-2xl border border-white/5 space-y-3 shadow-lg">
+                                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                                        <span className="text-[14px] font-bold text-white">{t('language_setting') || 'Idioma de la Aplicación'}</span>
+                                        <span className="text-[10px] bg-ios-blue/20 text-ios-blue font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">i18n</span>
+                                    </div>
+                                    <div className="grid grid-cols-3 gap-2 bg-[#2C2C2E]/60 p-1 rounded-xl">
+                                        {[
+                                            { code: 'es', name: 'Español' },
+                                            { code: 'en', name: 'English' },
+                                            { code: 'de', name: 'Deutsch' }
+                                        ].map((lang) => (
+                                            <button
+                                                key={lang.code}
+                                                onClick={() => { triggerHaptic(20); changeLanguage(lang.code); }}
+                                                className={`py-2 rounded-lg text-xs font-bold transition-all ${
+                                                    language === lang.code
+                                                        ? 'bg-ios-blue text-white shadow-md'
+                                                        : 'text-gray-400 hover:text-white'
+                                                }`}
+                                            >
+                                                {lang.name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
                                 <div className="space-y-1">
-                                    <h3 className="text-[18px] font-extrabold text-white">Administrar Entrenamientos</h3>
-                                    <p className="text-[13px] text-gray-400">Edita o elimina registros específicos de tu historial local.</p>
+                                    <h3 className="text-[18px] font-extrabold text-white">{t('settings_manage_workouts')}</h3>
+                                    <p className="text-[13px] text-gray-400">{t('settings_manage_desc')}</p>
                                 </div>
 
                                 {activeUser === 'michael' && (
                                     <div className="bg-ios-card p-4 rounded-2xl border border-white/5 space-y-4 shadow-lg">
                                         <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                                            <span className="text-[14px] font-bold text-white">Opciones de Desarrollador</span>
+                                            <span className="text-[14px] font-bold text-white">{t('dev_options')}</span>
                                             <span className="text-[10px] bg-ios-blue/20 text-ios-blue font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">Admin</span>
                                         </div>
                                         <div className="flex items-center justify-between">
                                             <div className="space-y-0.5">
-                                                <span className="text-[13px] font-bold text-white block">Mostrar Usuario Demo</span>
-                                                <span className="text-[11px] text-gray-400 block leading-tight">Activa la tarjeta del Usuario de Pruebas en el Onboarding.</span>
+                                                <span className="text-[13px] font-bold text-white block">{t('show_demo_user')}</span>
+                                                <span className="text-[11px] text-gray-400 block leading-tight">{t('settings_dev_desc')}</span>
                                             </div>
                                             <button 
                                                 onClick={() => {
@@ -1088,7 +1187,7 @@ export default function Dashboard({
 
                                 {logs.length === 0 ? (
                                     <div className="p-8 text-center text-gray-500 bg-ios-card/30 rounded-2xl border border-white/5">
-                                        No hay entrenamientos para administrar.
+                                        {t('settings_no_workouts')}
                                     </div>
                                 ) : (
                                     <div className="space-y-3">
@@ -1099,10 +1198,10 @@ export default function Dashboard({
                                             >
                                                 <div className="space-y-1">
                                                     <span className="text-[14px] font-bold text-white block">
-                                                        Día {session.day === 'D1' ? '1' : session.day === 'D2' ? '2' : '3'} — {session.dayName}
+                                                        {session.day === 'D1' ? t('day_1') : session.day === 'D2' ? t('day_2') : t('day_3')} — {session.day === 'D1' ? t('day_1_title') : session.day === 'D2' ? t('day_2_title') : t('day_3_title')}
                                                     </span>
                                                     <span className="text-[12px] text-gray-400 block font-medium">
-                                                        {new Date(session.date).toLocaleDateString('es-ES', { 
+                                                        {new Date(session.date).toLocaleDateString(language === 'en' ? 'en-US' : language === 'de' ? 'de-DE' : 'es-ES', { 
                                                             month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' 
                                                         })}
                                                     </span>
@@ -1116,7 +1215,7 @@ export default function Dashboard({
                                                     <button
                                                         onClick={() => handleStartEditSession(session)}
                                                         className="w-10 h-10 rounded-xl bg-ios-blue/15 text-ios-blue flex items-center justify-center active:scale-90 transition-transform"
-                                                        title="Editar"
+                                                        title={t('stats_edit')}
                                                     >
                                                         <Edit size={18} />
                                                     </button>
@@ -1124,7 +1223,7 @@ export default function Dashboard({
                                                     <button
                                                         onClick={() => handleDeleteSession(session.id)}
                                                         className="w-10 h-10 rounded-xl bg-ios-pink/15 text-ios-pink flex items-center justify-center active:scale-90 transition-transform"
-                                                        title="Borrar"
+                                                        title={t('stats_delete')}
                                                     >
                                                         <Trash2 size={18} />
                                                     </button>
@@ -1138,11 +1237,11 @@ export default function Dashboard({
                             /* 2. VIEW 2: ACTIVE SESSION INLINE EDITOR */
                             <div className="space-y-6">
                                 <div className="space-y-4 bg-ios-card p-4 rounded-2xl border border-white/5">
-                                    <h3 className="text-[15px] font-extrabold text-white border-b border-white/10 pb-2">Datos de la Sesión</h3>
+                                    <h3 className="text-[15px] font-extrabold text-white border-b border-white/10 pb-2">{t('settings_session_data')}</h3>
                                     
                                     {/* Date editor */}
                                     <div className="space-y-1.5">
-                                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block">Fecha y Hora</label>
+                                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block">{t('stats_date_time')}</label>
                                         <input 
                                             type="datetime-local" 
                                             value={editDate}
@@ -1153,7 +1252,7 @@ export default function Dashboard({
 
                                     {/* Duration editor */}
                                     <div className="space-y-1.5">
-                                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block">Duración (minutos)</label>
+                                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block">{t('settings_duration_min')}</label>
                                         <input 
                                             type="number" 
                                             value={editDuration}
@@ -1165,7 +1264,7 @@ export default function Dashboard({
 
                                 {/* Exercises and Sets Editor List */}
                                 <div className="space-y-4">
-                                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1">Ejercicios y Series</h3>
+                                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1">{t('settings_ex_sets')}</h3>
 
                                     {editExercises.map((ex, exIdx) => {
                                         const completedSets = ex.sets?.filter(s => s.completed) || [];
@@ -1175,12 +1274,12 @@ export default function Dashboard({
                                             <div key={exIdx} className="bg-ios-card p-4 rounded-2xl border border-white/5 space-y-3">
                                                 <div className="flex justify-between items-baseline border-b border-white/10 pb-1.5">
                                                     <h4 className="text-[14px] font-extrabold text-white flex items-center gap-1.5">
-                                                        {ex.exerciseName}
+                                                        {t(ex.exerciseId + '_name') || ex.exerciseName}
                                                         {ex.selectedOption === 'alternative' && (
-                                                            <span className="text-[9px] bg-ios-pink/20 text-ios-pink font-extrabold px-1.5 py-0.5 rounded-full select-none uppercase tracking-wide">Máquina</span>
+                                                            <span className="text-[9px] bg-ios-pink/20 text-ios-pink font-extrabold px-1.5 py-0.5 rounded-full select-none uppercase tracking-wide">{t('train_machine')}</span>
                                                         )}
                                                     </h4>
-                                                    <span className="text-[11px] text-gray-400">{ex.category}</span>
+                                                    <span className="text-[11px] text-gray-400">{getCategoryTranslation(ex.category)}</span>
                                                 </div>
 
                                                 <div className="space-y-2.5">
@@ -1189,12 +1288,12 @@ export default function Dashboard({
                                                         const isTime = isTimeEx(ex.exerciseId);
                                                         return (
                                                             <div key={setIdx} className="grid grid-cols-12 gap-2 items-center text-[13px]">
-                                                                <span className="col-span-2 text-gray-500 font-extrabold">Set {set.setNum}</span>
+                                                                <span className="col-span-2 text-gray-500 font-extrabold">{t('train_set')} {set.setNum}</span>
                                                                 
                                                                 {isTime ? (
                                                                     /* Time input (takes 6 columns) */
                                                                     <div className="col-span-6 flex items-center bg-[#2C2C2E] rounded-lg px-2.5 py-1 justify-between">
-                                                                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Duración (seg)</span>
+                                                                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">{t('duration_seconds')}</span>
                                                                         <input 
                                                                             type="number"
                                                                             value={set.reps}
@@ -1234,7 +1333,7 @@ export default function Dashboard({
 
                                                                 {/* Fallo input */}
                                                                 <div className="col-span-4 flex items-center bg-[#2C2C2E] rounded-lg px-2.5 py-1 justify-between select-none">
-                                                                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Fallo</span>
+                                                                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">{t('train_failure')}</span>
                                                                     <input 
                                                                         type="checkbox"
                                                                         checked={!!set.alFallo}
@@ -1256,7 +1355,7 @@ export default function Dashboard({
                                     onClick={handleSaveEditedSession}
                                     className="w-full py-4 bg-ios-green text-white font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-98 transition-transform shadow-lg shadow-ios-green/20"
                                 >
-                                    <Save size={20}/> Guardar Cambios
+                                    <Save size={20}/> {t('stats_save_changes')}
                                 </button>
                             </div>
                         )}

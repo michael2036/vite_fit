@@ -1,8 +1,10 @@
 import React from 'react';
 import { User, UserRound, Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Onboarding({ setAppState, setActiveUser, triggerSeeding }) {
+    const { t } = useLanguage();
     
     const showTestUser = React.useMemo(() => {
         try {
@@ -31,7 +33,7 @@ export default function Onboarding({ setAppState, setActiveUser, triggerSeeding 
     };
 
     return (
-        <div className="min-h-screen bg-ios-bg text-white flex flex-col items-center justify-center p-6 relative overflow-hidden safe-area-pt safe-area-pb">
+        <div className="min-h-full bg-ios-bg text-white flex flex-col items-center justify-center p-6 relative overflow-hidden safe-area-pt safe-area-pb">
             {/* Soft Ambient Background Glows */}
             <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-ios-blue/10 blur-[120px] rounded-full pointer-events-none"></div>
             <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-ios-pink/10 blur-[120px] rounded-full pointer-events-none"></div>
@@ -52,16 +54,16 @@ export default function Onboarding({ setAppState, setActiveUser, triggerSeeding 
                     />
                 </div>
                 <h1 className="text-[32px] font-bold text-white tracking-tight mb-2">
-                    Bienvenido a CoupleFit
+                    {t('welcome_title')}
                 </h1>
                 <p className="text-[16px] text-gray-400 font-medium px-4">
-                    Selecciona tu perfil de entrenamiento para iniciar
+                    {t('welcome_subtitle')}
                 </p>
             </motion.div>
 
             {/* Glassmorphic User Profile Options */}
             <motion.div 
-                className="w-full max-w-md space-y-4 z-10 mb-8 px-2"
+                className="w-full max-w-md md:max-w-2xl grid grid-cols-1 md:grid-cols-2 gap-4 z-10 mb-8 px-2"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }}
@@ -78,9 +80,9 @@ export default function Onboarding({ setAppState, setActiveUser, triggerSeeding 
                     <div className="flex-1">
                         <div className="flex items-center gap-2">
                             <h3 className="text-[18px] font-bold text-white leading-tight">Michael</h3>
-                            <span className="text-[10px] bg-ios-blue/25 text-ios-blue font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">Fuerza</span>
+                            <span className="text-[10px] bg-ios-blue/25 text-ios-blue font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">{t('profile_strength')}</span>
                         </div>
-                        <p className="text-[13px] text-gray-400 mt-1">Sparring, BJJ y desarrollo de fuerza explosiva</p>
+                        <p className="text-[13px] text-gray-400 mt-1">{t('profile_michael_desc')}</p>
                     </div>
                 </button>
 
@@ -96,9 +98,9 @@ export default function Onboarding({ setAppState, setActiveUser, triggerSeeding 
                     <div className="flex-1">
                         <div className="flex items-center gap-2">
                             <h3 className="text-[18px] font-bold text-white leading-tight">Lina</h3>
-                            <span className="text-[10px] bg-ios-pink/25 text-ios-pink font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">Postura</span>
+                            <span className="text-[10px] bg-ios-pink/25 text-ios-pink font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">{t('profile_posture')}</span>
                         </div>
-                        <p className="text-[13px] text-gray-400 mt-1">Flexibilidad activa, control técnico y tempo</p>
+                        <p className="text-[13px] text-gray-400 mt-1">{t('profile_lina_desc')}</p>
                     </div>
                 </button>
 
@@ -106,7 +108,7 @@ export default function Onboarding({ setAppState, setActiveUser, triggerSeeding 
                 {showTestUser && (
                     <button
                         onClick={() => handleUserSelect('test')}
-                        className="w-full relative p-5 rounded-[22px] bg-ios-card/70 active:scale-[0.98] transition-all duration-200 text-left flex items-center gap-4 border border-white/5 backdrop-blur-xl hover:bg-ios-card/90"
+                        className="w-full relative p-5 rounded-[22px] bg-ios-card/70 active:scale-[0.98] transition-all duration-200 text-left flex items-center gap-4 border border-white/5 backdrop-blur-xl hover:bg-ios-card/90 md:col-span-2 md:max-w-md md:mx-auto"
                     >
                         <div className="absolute top-0 right-0 w-24 h-full bg-purple-500/5 rounded-r-[22px] blur-sm pointer-events-none"></div>
                         <div className="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 shadow-inner">
@@ -114,10 +116,10 @@ export default function Onboarding({ setAppState, setActiveUser, triggerSeeding 
                         </div>
                         <div className="flex-1">
                             <div className="flex items-center gap-2">
-                                <h3 className="text-[18px] font-bold text-white leading-tight">Usuario Demo</h3>
-                                <span className="text-[10px] bg-purple-500/25 text-purple-400 font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">Test</span>
+                                <h3 className="text-[18px] font-bold text-white leading-tight">{t('profile_test_title')}</h3>
+                                <span className="text-[10px] bg-purple-500/25 text-purple-400 font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">{t('profile_test')}</span>
                             </div>
-                            <p className="text-[13px] text-gray-400 mt-1">Registros progresivos de 3 meses para probar gráficos</p>
+                            <p className="text-[13px] text-gray-400 mt-1">{t('profile_test_desc')}</p>
                         </div>
                     </button>
                 )}
