@@ -349,33 +349,160 @@ export const workoutPlan = {
 
 export const expertTips = [
   {
-    profile: 'both',
+    profile: 'generic',
     icon: 'Activity',
-    title: 'Dinámica de Entrenamiento en Pareja',
-    description: 'Aprovechen la estación compartida al máximo. Mientras uno realiza su serie activa, el otro descansa y asiste con la carga. Esto maximiza la densidad del entrenamiento sin ocupar múltiples estaciones en el gimnasio.'
+    title: 'Sobrecarga Progresiva',
+    description: 'La clave del progreso es el aumento gradual de la demanda sobre el sistema musculoesquelético. Intenta aumentar el peso, las repeticiones o mejorar el rango de movimiento (ROM) en cada sesión.'
   },
   {
-    profile: 'both',
+    profile: 'generic',
     icon: 'CheckCircle',
-    title: 'Progreso Individualizado',
-    description: 'Comparten el movimiento, pero NO la carga. Cada uno debe llevar su propio registro de pesos y progresar mediante el método que mejor se adapte a su nivel actual (Sobrecarga de Peso, Volumen, ROM o Tempo).'
+    title: 'Tiempos de Descanso',
+    description: 'Respeta los tiempos de descanso para optimizar la recuperación del ATP celular. Dedica entre 90-120 segundos para ejercicios multiarticulares pesados y 60-90 segundos para ejercicios de aislamiento.'
   },
   {
-    profile: 'lina',
-    icon: 'ShieldAlert',
-    title: 'Monitoreo de Energía & Glucosa',
-    description: 'Lina, debido a tu susceptibilidad a la hipoglucemia, prioriza consumir carbohidratos de bajo índice glucémico y proteína 90 minutos antes de entrenar. Si la sesión supera los 45 minutos, toma sorbos de agua con electrolitos.'
-  },
-  {
-    profile: 'michael',
+    profile: 'generic',
     icon: 'Activity',
-    title: 'Autorregulación & BJJ',
-    description: 'Michael, si tuviste una noche de sparring dura de BJJ, autorregula reduciendo los sets de 4 a 3 o baja la intensidad. La recuperación del Sistema Nervioso Central (SNC) es prioritaria.'
+    title: 'Registro de Pesos',
+    description: 'Anotar tus cargas y repeticiones te da un mapa preciso de tu fuerza. Utiliza la función de sugerencia de pesos (Smart Inputs) para superar tu rendimiento de la semana anterior.'
   },
   {
-    profile: 'both',
+    profile: 'generic',
     icon: 'CheckCircle',
-    title: 'La Regla de los Supersets',
-    description: 'Para terminar la rutina en menos de 60 minutos, pueden realizar los ejercicios de forma alternada (Supersets). Por ejemplo, alternar Sentadilla (D1-1) con Remo (D1-2) para optimizar el tiempo de descanso.'
+    title: 'Recuperación Activa',
+    description: 'El crecimiento muscular ocurre durante el descanso. Prioriza entre 7 y 8 horas de sueño profundo y mantén un consumo proteico adecuado (1.6 a 2.0g por kg de peso corporal) para optimizar la síntesis proteica.'
   }
 ];
+
+/**
+ * Dynamically generates 3 months of progressive workout logs for the Test User.
+ * Spaced out 3 times a week (Mon, Wed, Fri) over 12 weeks = 36 sessions.
+ * Showcases clear progressive overload in weights, volume, and score.
+ */
+export function seedMockDataForTestUser() {
+  const baseWeights = {
+    'D1-1': 16, 'D1-2': 30, 'D1-3': 8, 'D1-4': 12, 'D1-5': 0, 'D1-6': 10, 'D1-7': 12, 'D1-8': 0,
+    'D2-1': 40, 'D2-2': 10, 'D2-3': 6, 'D2-4': 50, 'D2-5': 0, 'D2-6': 6, 'D2-7': 15, 'D2-8': 0,
+    'D3-1': 50, 'D3-2': 35, 'D3-3': 10, 'D3-4': 30, 'D3-5': 8, 'D3-6': 8, 'D3-7': 10, 'D3-8': 0
+  };
+
+  const increments = {
+    'D1-1': 1.0, 'D1-2': 1.25, 'D1-3': 0.5, 'D1-4': 0.5, 'D1-5': 0, 'D1-6': 0.5, 'D1-7': 0.5, 'D1-8': 0,
+    'D2-1': 1.5, 'D2-2': 0.5, 'D2-3': 0.25, 'D2-4': 2.0, 'D2-5': 0.5, 'D2-6': 0.25, 'D2-7': 0.5, 'D2-8': 0,
+    'D3-1': 2.5, 'D3-2': 1.5, 'D3-3': 0.5, 'D3-4': 1.25, 'D3-5': 0.5, 'D3-6': 0.5, 'D3-7': 0.5, 'D3-8': 0
+  };
+
+  const dayOrder = ['D1', 'D2', 'D3'];
+  const dayNames = { 'D1': 'Titán', 'D2': 'Encélado', 'D3': 'Mimas' };
+  const mockLogs = [];
+  
+  // 12 weeks of historical workouts
+  const totalWeeks = 12;
+  const now = Date.now();
+  
+  // Track previous tonnage per workout day for scoring
+  const lastTonnagePerDay = { 'D1': 0, 'D2': 0, 'D3': 0 };
+
+  for (let w = 0; w < totalWeeks; w++) {
+    // Generate D1 (Mon), D2 (Wed), D3 (Fri)
+    for (let d = 0; d < 3; d++) {
+      const day = dayOrder[d];
+      const routine = workoutPlan[day];
+      
+      // Calculate historical date (3 workouts per week, Mon/Wed/Fri)
+      // w = 0 is 12 weeks ago, w = 11 is this week
+      const weeksAgo = totalWeeks - 1 - w;
+      const dayOffset = (2 - d) * 2; // Fri is 0, Wed is 2, Mon is 4 days offset
+      const timestamp = now - (weeksAgo * 7 * 24 * 3600 * 1000) - (dayOffset * 24 * 3600 * 1000) - (2 * 3600 * 1000); // subtract a couple hours
+      const dateStr = new Date(timestamp).toISOString();
+
+      const sessionDuration = 2500 + (w * 30) + Math.floor(Math.random() * 300); // 40-50 minutes, slightly increasing
+      
+      const exercisesLogged = routine.map(ex => {
+        const baseW = baseWeights[ex.id];
+        const inc = increments[ex.id];
+        
+        // Calculate weight with progressive overload
+        // Adds random noise of ±0.5kg for extra realism
+        let weight = baseW > 0 ? baseW + (inc * w) : 0;
+        if (weight > 0) {
+          weight = Math.round(weight * 2) / 2; // round to nearest 0.5kg
+        }
+
+        // Sets: standard 3 completed sets, 4 for compound lifts D1-1, D2-1, D3-1
+        const numSets = (ex.id === 'D1-1' || ex.id === 'D2-1' || ex.id === 'D3-1') ? 4 : 3;
+        const targetReps = ex.reps.includes('-') ? parseInt(ex.reps.split('-')[1]) : parseInt(ex.reps);
+        
+        const sets = [];
+        for (let s = 1; s <= numSets; s++) {
+          // Reps slightly decline in later sets due to fatigue
+          const repsNoise = s === 1 ? 0 : s === 2 ? -1 : -2;
+          const reps = Math.max(8, targetReps + repsNoise + (Math.random() > 0.7 ? 1 : 0));
+          const rir = Math.max(0, 4 - s); // Dynamic sports-science fatigue: Set 1 = RIR 3, Set 2 = RIR 2, Set 3 = RIR 1, Set 4 = RIR 0
+          sets.push({
+            setNum: s,
+            weight: weight,
+            reps: reps,
+            rir: rir,
+            completed: true
+          });
+        }
+
+        return {
+          exerciseId: ex.id,
+          exerciseName: ex.name,
+          category: ex.category,
+          sets: sets,
+          duration: 200 + Math.floor(Math.random() * 60), // ~3.5 minutes per exercise
+          restDuration: 60 + Math.floor(Math.random() * 30)  // ~75s rest
+        };
+      });
+
+      // Calculate tonnage for this session
+      let currentTonnage = 0;
+      exercisesLogged.forEach(ex => {
+        ex.sets.forEach(s => {
+          if (s.completed && s.weight > 0 && s.reps > 0) {
+            currentTonnage += s.weight * s.reps;
+          }
+        });
+      });
+
+      // Volume Score
+      const prevTonnage = lastTonnagePerDay[day];
+      let volumeIndex = 1.0;
+      if (prevTonnage > 0) {
+        volumeIndex = currentTonnage / prevTonnage;
+      }
+      const volumeScore = Math.round(Math.min(1.0, volumeIndex) * 30);
+      lastTonnagePerDay[day] = currentTonnage;
+
+      // Completion Score: 100% = 60 points
+      const completionScore = 60;
+
+      // Pacing Score: ~8 to 10 points
+      const avgSecondsPerEx = sessionDuration / exercisesLogged.length;
+      let pacingScore = 10;
+      if (avgSecondsPerEx > 480) {
+        pacingScore = Math.max(5, Math.round(10 - (avgSecondsPerEx - 480) / 60));
+      }
+
+      const score = completionScore + volumeScore + pacingScore;
+
+      mockLogs.push({
+        id: `seeded-session-${w}-${day}`,
+        user: 'test',
+        day: day,
+        dayName: dayNames[day],
+        date: dateStr,
+        duration: sessionDuration,
+        score: Math.min(100, score),
+        exercises: exercisesLogged
+      });
+    }
+  }
+
+  // Return sorted by date descending (newest first)
+  return mockLogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+

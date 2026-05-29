@@ -14,7 +14,7 @@ export default function SplashScreen({ setAppReady }) {
         <motion.div 
             className="fixed inset-0 bg-ios-bg z-[1000] flex flex-col items-center justify-center text-white"
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.05 }}
+            exit={{ opacity: 0, scale: 1.05, pointerEvents: 'none' }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
         >
             <motion.div
