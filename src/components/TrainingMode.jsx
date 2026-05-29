@@ -3,7 +3,6 @@ import { X, ChevronLeft, ChevronRight, Check, Plus, Minus, RotateCcw } from 'luc
 import { workoutPlan } from '../data/workoutData';
 import { calculateWorkoutScore } from '../utils/scoreCalculator';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
-import { useDrag } from '@use-gesture/react';
 import { useLanguage } from '../context/LanguageContext';
 
 const getYoutubeEmbedUrl = (url) => {
@@ -61,6 +60,7 @@ export default function TrainingMode({
     const progress = Math.round(((currentExIndex + 1) / routine.length) * 100);
 
     const [selectedOptions, setSelectedOptions] = useState({});
+    const [showExitConfirm, setShowExitConfirm] = useState(false);
     const activeOption = selectedOptions[currentEx.id] || 'primary';
     
     // Active Exercise Timing
@@ -199,28 +199,6 @@ export default function TrainingMode({
     const embedUrl = getYoutubeEmbedUrl(activeVideoUrl);
 
     const controls = useAnimation();
-
-    // Native iOS Swipe-to-dismiss gesture
-    const bind = useDrag(({ movement: [mx, my], velocity: [vx, vy], down, active }) => {
-        const dist = Math.max(mx, my);
-        const vel = Math.max(vx, vy);
-        
-        if (dist > window.innerWidth / 3 || (vel > 1.2 && dist > 50)) {
-            if (!active) {
-                if (mx > my) {
-                    controls.start({ x: window.innerWidth, transition: { duration: 0.2 } }).then(() => earlyExit());
-                } else {
-                    controls.start({ y: window.innerHeight, transition: { duration: 0.2 } }).then(() => earlyExit());
-                }
-            }
-        } else {
-            controls.start({ 
-                x: down && mx > my ? Math.max(0, mx) : 0, 
-                y: down && my > mx ? Math.max(0, my) : 0, 
-                transition: { type: 'spring', bounce: 0, duration: 0.4 } 
-            });
-        }
-    }, { filterTaps: true, axis: 'lock' });
 
     useEffect(() => {
         controls.start({ x: 0, y: 0, transition: { duration: 0.35, ease: 'easeOut' } });
@@ -407,20 +385,15 @@ export default function TrainingMode({
 
     return (
         <motion.div 
-            {...bind()}
             initial={{ y: '100%', x: 0 }}
             animate={controls}
             exit={{ y: '100%', transition: { duration: 0.3 } }}
-            className="absolute inset-0 bg-ios-bg z-50 text-white font-sans flex flex-col safe-area-pt touch-pan-y overflow-hidden"
-            style={{ touchAction: 'pan-y' }}
+            className="absolute inset-0 bg-ios-bg z-50 text-white font-sans flex flex-col safe-area-pt overflow-hidden"
         >
-            {/* iOS Modal Handle Bar */}
-            <div className="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mt-2 mb-1 cursor-grab active:cursor-grabbing"></div>
-            
             {/* Top Navigation */}
             <header className="px-4 py-2 flex justify-between items-center bg-ios-bg/90 backdrop-blur-md shrink-0">
                 <button 
-                    onClick={handleExit} 
+                    onClick={() => { triggerHaptic(20); setShowExitConfirm(true); }} 
                     className="text-ios-blue flex items-center gap-1 active:opacity-70 text-[17px] font-medium"
                     aria-label="End Session and return to Home"
                 >
@@ -778,6 +751,40 @@ export default function TrainingMode({
                     </button>
                 </div>
             </footer>
+
+            {/* Exit Confirmation Modal */}
+            {showExitConfirm && (
+                <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-[200] flex items-center justify-center p-4">
+                    <div className="bg-[#1C1C1E] border border-white/10 rounded-3xl p-6 max-w-sm w-full text-center space-y-6 shadow-2xl">
+                        <div className="space-y-2">
+                            <h3 className="text-[19px] font-extrabold text-white">
+                                {t('train_exit_confirm') || '¿Seguro que deseas salir?'}
+                            </h3>
+                            <p className="text-[14px] text-gray-400">
+                                {t('train_exit_warning') || 'Se perderá el progreso de la sesión actual.'}
+                            </p>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3 pt-2">
+                            <button
+                                onClick={() => { triggerHaptic(20); setShowExitConfirm(false); }}
+                                className="py-3 px-4 rounded-xl bg-white/10 text-white font-bold hover:bg-white/15 active:scale-[0.98] transition-all text-[14px]"
+                            >
+                                {t('train_exit_continue') || 'Continuar'}
+                            </button>
+                            <button
+                                onClick={async () => {
+                                    triggerHaptic(30);
+                                    setShowExitConfirm(false);
+                                    await handleExit();
+                                }}
+                                className="py-3 px-4 rounded-xl bg-ios-pink text-white font-bold hover:bg-ios-pink/90 active:scale-[0.98] transition-all shadow-lg shadow-ios-pink/20 text-[14px]"
+                            >
+                                {t('train_exit_yes') || 'Salir'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </motion.div>
     );
 }
