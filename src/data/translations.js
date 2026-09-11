@@ -1128,7 +1128,6 @@ export const translations = {
     "D3-8_name": "Tuck-up Sit-ups",
     "D3-8_desc": "Gleichzeitiges Beugen von Hüfte und Bauch auf der Matte. Alternative: Rumpfbeugemaschine (Ab Crunch).",
     "D3-8_notes_m": "Tuck-ups explosiv beim Zusammenziehen ausführen, langsame Streckung in der Luft abbremsen.",
-    "D3-8_notes_m": "Tuck-ups explosiv beim Zusammenziehen ausführen, langsame Streckung in der Luft abbremsen.",
     "D3-8_notes_l": "Fließende Bewegung mit Fokus darauf, dass sich der untere Rücken bei der Streckung nicht schmerzhaft wölbt.",
 
     tab_tips: "Tipps",

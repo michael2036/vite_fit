@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import SplashScreen from './components/SplashScreen';
 import Onboarding from './components/Onboarding'; // Repurposed as Login Screen
@@ -7,6 +7,7 @@ import TrainingMode from './components/TrainingMode';
 import EndSplash from './components/EndSplash';
 import { seedMockDataForTestUser } from './data/workoutData';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
+import * as workoutStore from './services/workoutStore';
 
 export default function App() {
     return (
@@ -22,21 +23,8 @@ function AppContent() {
     const [appState, setAppState] = useState('login'); // Starts on the Login welcome screen
 
     // User management state scoped to active user
-    const [activeUser, setActiveUser] = useState(() => {
-        try {
-            return localStorage.getItem('vitefit_active_user') || 'michael';
-        } catch (e) {
-            return 'michael';
-        }
-    });
-
-    const [selectedDay, setSelectedDay] = useState(() => {
-        try {
-            return localStorage.getItem('vitefit_selected_day') || 'D1';
-        } catch (e) {
-            return 'D1';
-        }
-    });
+    const [activeUser, setActiveUser] = useState(() => workoutStore.getActiveUser());
+    const [selectedDay, setSelectedDay] = useState(() => workoutStore.getSelectedDay());
     
     const [activeTab, setActiveTab] = useState('routine'); 
 
@@ -60,46 +48,19 @@ function AppContent() {
     // Save active user and day changes to local storage
     const handleSetActiveUser = (user) => {
         setActiveUser(user);
-        try {
-            localStorage.setItem('vitefit_active_user', user);
-        } catch (e) {
-            console.warn("localStorage setItem activeUser denied", e);
-        }
+        workoutStore.setActiveUser(user);
     };
 
     const handleSetSelectedDay = (day) => {
         setSelectedDay(day);
-        try {
-            localStorage.setItem('vitefit_selected_day', day);
-        } catch (e) {
-            console.warn("localStorage setItem selectedDay denied", e);
-        }
+        workoutStore.setSelectedDay(day);
     };
 
     // Automated 3-month seeding helper for the Test User
     const triggerSeeding = () => {
-        try {
-            let logs = [];
-            try {
-                const rawLogs = localStorage.getItem('vitefit_workout_logs');
-                logs = rawLogs ? JSON.parse(rawLogs) : [];
-            } catch (e) {
-                logs = [];
-            }
-            
-            // Always regenerate fresh biologically realistic mock logs for Test User to see new randomized paths!
-            const seeded = seedMockDataForTestUser();
-            // Merge with other users' histories to prevent wiping Michael or Lina's logs
-            const combined = [...seeded, ...logs.filter(log => log.user !== 'test')];
-            try {
-                localStorage.setItem('vitefit_workout_logs', JSON.stringify(combined));
-                console.log("Regenerated 3 months of progressive workouts with biological noise for Test User successfully!");
-            } catch (e) {
-                console.warn("localStorage setItem logs denied", e);
-            }
-        } catch (e) {
-            console.error("Seeding operation failed", e);
-        }
+        // Always regenerate fresh biologically realistic mock logs for the
+        // Test User; other profiles' histories are left untouched.
+        workoutStore.replaceLogsForUser('test', seedMockDataForTestUser());
     };
 
     // Delta Time stopwatch logic
@@ -224,11 +185,10 @@ function AppContent() {
                                     exit={{ opacity: 0, scale: 0.98 }}
                                     transition={{ duration: 0.3 }}
                                 >
-                                    <Dashboard 
+                                    <Dashboard
                                         setAppState={setAppState}
                                         startTraining={triggerStartTraining}
-                                        activeUser={activeUser} 
-                                        setActiveUser={handleSetActiveUser}
+                                        activeUser={activeUser}
                                         selectedDay={selectedDay}
                                         setSelectedDay={handleSetSelectedDay}
                                         activeTab={activeTab}
@@ -238,9 +198,8 @@ function AppContent() {
                             )}
 
                             {appState === 'training' && (
-                                <TrainingMode 
+                                <TrainingMode
                                     key="training"
-                                    setAppState={setAppState}
                                     activeUser={activeUser}
                                     selectedDay={selectedDay}
                                     timer={timer}
