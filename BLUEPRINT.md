@@ -25,38 +25,37 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+// GitHub Pages project sites are served from /<repo>/, not the domain root;
+// Cloudflare Pages and local dev serve from the root. Only the GH Pages
+// Actions workflow sets BASE_PATH explicitly at build time.
+const base = process.env.BASE_PATH || '/';
+
 export default defineConfig({
+  base,
   plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: ['apple-touch-icon.png'],
       manifest: {
-        name: 'CoupleFit PWA',
+        name: 'CoupleFit',
         short_name: 'CoupleFit',
-        description: 'Premium Dynamic Fitness & Autoregulation Training App',
+        description: 'Synchronized workout app for couples',
         theme_color: '#000000',
         background_color: '#000000',
         display: 'standalone',
-        orientation: 'portrait-primary',
         icons: [
-          {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable'
-          }
+          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
+          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
         ]
       }
     })
-  ]
+  ],
+  test: { environment: 'node', include: ['src/**/*.test.js'] }
 });
 ```
+vite-plugin-pwa reads `base` from the surrounding Vite config automatically, so the manifest's `start_url`/`scope` and every precached asset URL pick up the `/reponame/` prefix on GitHub Pages without any extra plugin options.
 
 ---
 

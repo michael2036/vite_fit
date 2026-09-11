@@ -1,21 +1,14 @@
-import React from 'react';
+import { useMemo } from 'react';
 import { User, UserRound, Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import { getShowTestUser } from '../services/workoutStore';
 
 export default function Onboarding({ setAppState, setActiveUser, triggerSeeding }) {
     const { t } = useLanguage();
-    
-    const showTestUser = React.useMemo(() => {
-        try {
-            return localStorage.getItem('vitefit_show_test_user') === 'true';
-        } catch (e) {
-            return false;
-        }
-    }, []);
+    const showTestUser = useMemo(() => getShowTestUser(), []);
 
     const handleUserSelect = (user) => {
-        console.log("CoupleFit Welcome Screen - Profile Selected:", user);
         try {
             if (navigator.vibrate) navigator.vibrate(40);
         } catch (e) {

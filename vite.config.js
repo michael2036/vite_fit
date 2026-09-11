@@ -2,7 +2,14 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+// GitHub Pages project sites are served from https://<user>.github.io/<repo>/,
+// not from the domain root, so every asset URL needs that repo-name prefix.
+// Cloudflare Pages (and local dev) serve from the root, so this only changes
+// when the GH Pages workflow sets BASE_PATH explicitly at build time.
+const base = process.env.BASE_PATH || '/';
+
 export default defineConfig({
+  base,
   plugins: [
     react(),
     VitePWA({
@@ -35,5 +42,9 @@ export default defineConfig({
         ]
       }
     })
-  ]
+  ],
+  test: {
+    environment: 'node',
+    include: ['src/**/*.test.js'],
+  },
 });

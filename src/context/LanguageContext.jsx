@@ -1,36 +1,31 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext } from 'react';
 import { translations } from '../data/translations';
+import * as workoutStore from '../services/workoutStore';
 
 const LanguageContext = createContext();
+const SUPPORTED_LOCALES = ['es', 'en', 'de'];
+
+function detectInitialLanguage() {
+    const saved = workoutStore.getLanguage();
+    if (SUPPORTED_LOCALES.includes(saved)) return saved;
+
+    try {
+        const browserLocale = navigator.language || navigator.userLanguage || '';
+        const localeCode = browserLocale.substring(0, 2).toLowerCase();
+        if (SUPPORTED_LOCALES.includes(localeCode)) return localeCode;
+    } catch (e) {
+        // navigator unavailable — fall through to default
+    }
+    return 'es'; // default fallback is Spanish
+}
 
 export function LanguageProvider({ children }) {
-    const [language, setLanguage] = useState(() => {
-        try {
-            const savedLanguage = localStorage.getItem('vitefit_language');
-            if (savedLanguage && (savedLanguage === 'es' || savedLanguage === 'en' || savedLanguage === 'de')) {
-                return savedLanguage;
-            }
-            
-            // Detect from browser settings
-            const browserLocale = navigator.language || navigator.userLanguage || '';
-            const localeCode = browserLocale.substring(0, 2).toLowerCase();
-            if (localeCode === 'de') return 'de';
-            if (localeCode === 'en') return 'en';
-            return 'es'; // default fallback is Spanish
-        } catch (e) {
-            return 'es';
-        }
-    });
+    const [language, setLanguage] = useState(detectInitialLanguage);
 
     const changeLanguage = (locale) => {
-        if (locale === 'es' || locale === 'en' || locale === 'de') {
+        if (SUPPORTED_LOCALES.includes(locale)) {
             setLanguage(locale);
-            try {
-                localStorage.setItem('vitefit_language', locale);
-                console.log(`CoupleFit Language changed dynamically to: ${locale}`);
-            } catch (e) {
-                console.warn("localStorage setItem vitefit_language failed", e);
-            }
+            workoutStore.setLanguage(locale);
         }
     };
 
@@ -60,6 +55,7 @@ export function LanguageProvider({ children }) {
     );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- the hook belongs beside its provider
 export function useLanguage() {
     const context = useContext(LanguageContext);
     if (!context) {

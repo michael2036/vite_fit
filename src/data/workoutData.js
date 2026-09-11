@@ -1,3 +1,5 @@
+import { calculateWorkoutScore } from '../utils/scoreCalculator';
+
 export const workoutPlan = {
   D1: [
     {
@@ -473,9 +475,6 @@ export function seedMockDataForTestUser() {
   
   const totalWeeks = 12;
   const now = Date.now();
-  
-  // Track previous tonnage per workout day for scoring
-  const tonnageHistoryByDay = { 'D1': [], 'D2': [], 'D3': [] };
 
   for (let w = 0; w < totalWeeks; w++) {
     // Generate D1 (Mon), D2 (Wed), D3 (Fri)
@@ -598,54 +597,17 @@ export function seedMockDataForTestUser() {
         };
       });
 
-      // Calculate total mechanical tonnage for this session
-      let currentTonnage = 0;
-      exercisesLogged.forEach(ex => {
-        ex.sets.forEach(s => {
-          if (s.completed && s.weight > 0 && s.reps > 0) {
-            currentTonnage += s.weight * s.reps;
-          }
-        });
-      });
-
-      // 2. VOLUME PROGRESSIVE SCORE: Compare tonnage chronologically to last same-day workout
-      const sameDayHistory = tonnageHistoryByDay[day];
-      let volumeScore = 30; // default for first sessions
-      let overloadDelta = 0;
-
-      if (sameDayHistory.length > 0) {
-        const prevTonnage = sameDayHistory[sameDayHistory.length - 1];
-        if (prevTonnage > 0 && currentTonnage > 0) {
-          const volumeIndex = currentTonnage / prevTonnage;
-          overloadDelta = Math.round(((currentTonnage - prevTonnage) / prevTonnage) * 100);
-          // Score scales down if they did less volume due to fatigue
-          volumeScore = Math.round(Math.min(1.0, volumeIndex) * 30);
-        }
-      }
-      sameDayHistory.push(currentTonnage);
-
-      // 3. PACING SCORE: 10 points for good tempo
-      const avgSecondsPerEx = sessionDuration / exercisesLogged.length;
-      let pacingScore = 10;
-      if (avgSecondsPerEx > 480) {
-        pacingScore = Math.max(5, Math.round(10 - (avgSecondsPerEx - 480) / 60));
-      }
-
-      // Completion Score is always 100% (60 points) since test user is perfect at completing routines
-      const completionScore = 60;
-
-      // Final score contains realistic dips and peaks (ranging from 74 to 100)
-      const score = Math.min(100, completionScore + volumeScore + pacingScore);
-
-      mockLogs.push({
+      // Score this session with the same algorithm real players get, using
+      // the sessions generated so far as history (they're already in
+      // chronological order, so calculateWorkoutScore finds the right
+      // "previous same-day session" on its own).
+      const session = {
         id: `seeded-session-${w}-${day}`,
         user: 'test',
         day: day,
         dayName: dayNames[day],
         date: dateStr,
         duration: sessionDuration,
-        score: score,
-        tonnage: currentTonnage,
         exercises: exercisesLogged,
         wellness: {
           sleep: sleepState,
@@ -653,7 +615,13 @@ export function seedMockDataForTestUser() {
           soreness: sorenessState,
           factor: autoRegulationFactor
         }
-      });
+      };
+
+      const { score, currentTonnage } = calculateWorkoutScore(session, mockLogs);
+      session.score = score;
+      session.tonnage = currentTonnage;
+
+      mockLogs.push(session);
     }
   }
 
